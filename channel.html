@@ -204,7 +204,7 @@
     <div class="ui large top fixed hidden menu">
         <div class="ui container">
             <a class="active item">Home</a>
-            <a class="item">Channel</a>
+            <a class="item" href="channel.html">Channel</a>
             <a class="item">Videos</a>
             <a class="item">Favorties</a>
             <div class="right menu">
@@ -221,7 +221,7 @@
     <!-- Sidebar Menu -->
     <div class="ui vertical inverted sidebar menu">
         <a class="active item">Home</a>
-        <a class="item">Channel</a>
+        <a class="item" href="channel.html">Channel</a>
         <a class="item">Videos</a>
         <a class="item">Favorties</a>
         <a class="item" href="login.html">Login</a>
@@ -231,11 +231,11 @@
     <div class="pusher">
         <div class="ui vertical masthead segment">
           <!-- Menu -->
-          <div class="ui container">
-                <div class="ui large secondary inverted pointing menu">
+          <div class="ui">
+                <div class="ui large secondary container inverted pointing menu">
                 <a class="toc item"> <em class="sidebar icon"></em></a> 
                 <a class="active item" href="index.html">Home</a> 
-                <a class="item">Channel</a> 
+                <a class="item" href="channel.html">Channel</a> 
                 <a class="item">Videos</a> 
                 <a class="item">Favorties</a>
                 <div class="right item">
@@ -244,9 +244,11 @@
                 </div>
             	</div>
           </div>
-                             
+        </div>  
+                                        
             <!-- Profile -->
-			<div id="content" class="ui container grid two wide column"> 
+			<div id="content" class="ui stackable grid container"> 
+			<!-- Profile Card -->
 				<div class="ui card">
 				  <div class="image">
 					<img src="media/pictures/PCDC.jpg">
@@ -267,13 +269,18 @@
 					</a>
 				  </div>
 				</div>
-				<div class="ui items segment">
+
+				<div class="ui row segment centered">
+					<h2>Content</h2>
+				</div>
+			
+				<div class="ui items segment container">
 				  <div class="item">
 					<div class="image">
 					  <img src="https://placehold.it/350x150">
 					</div>
 					<div class="content">
-					  <a class="header">Header</a>
+					  <a class="header">Video 1</a>
 					  <div class="meta">
 						<span>Description</span>
 					  </div>
@@ -290,7 +297,7 @@
 					  <img src="https://placehold.it/350x150">
 					</div>
 					<div class="content">
-					  <a class="header">Header</a>
+					  <a class="header">Video 2</a>
 					  <div class="meta">
 						<span>Description</span>
 					  </div>
@@ -302,13 +309,46 @@
 					  </div>
 					</div>
 				  </div>
+				  <div class="item">
+					<div class="image">
+					  <img src="https://placehold.it/350x150">
+					</div>
+					<div class="content">
+					  <a class="header">Video 3</a>
+					  <div class="meta">
+						<span>Description </span>
+					  </div>
+					  <div class="description">
+						<p></p>
+					  </div>
+					  <div class="extra">
+						Additional Details
+					  </div>
+					</div>
+				  </div>
+				  <div class="item">
+					<div class="image">
+					  <img src="https://placehold.it/350x150">
+					</div>
+					<div class="content">
+					  <a class="header">Video 4</a>
+					  <div class="meta">
+						<span>Description</span>
+					  </div>
+					  <div class="description">
+						<p></p>
+					  </div>
+					  <div class="extra">
+						Additional Details
+					  </div>
+					</div>
+				  </div>				  
 				</div>           
-           
             </div>
                       
             <!-- Footer segement -->
-            <div class="ui inverted vertical footer segment">
-                <div class="ui container">
+            <div class="ui inverted vertical footer segment container">
+                <div class="ui centered">
                     <div class="ui stackable inverted divided equal height stackable grid">
                         <div class="three wide column">
                             <h4 class="ui inverted header">Creators</h4>
@@ -326,7 +366,7 @@
                     </div>
                 </div>
             </div>
-        </div>  
+
 
     </div>
 </body>
