@@ -37,6 +37,8 @@
 
     <!-- Style changes for register page -->
     <style type="text/css">
+		
+
         body {
             background-color: #1b1c1d !important;
         }
@@ -44,7 +46,15 @@
             body > .grid {
                 height: 100%;
             }
+		
+		.ui#content{
+			padding-top: 10em
+		}
+		.pusher {
+			background-color: #1b1c1d !important;
 
+		}
+		
         .image {
             margin-top: -100px;
         }
@@ -116,8 +126,9 @@
             }
 
         .footer.segment {
-            padding: 5em 0em;
+            padding: 5em;
 			bottom: 0;
+
         }
 
         .secondary.pointing.menu .toc.item {
@@ -152,13 +163,9 @@
                 font-size: 1.5em;
             }
         }
-		
-		.pusher {
-			background: #1b1c1d;
-		}
     </style>
     
-<title>Untitled Document</title>
+<title>Channel</title>
     <!-- Might have to fix these links on linux to match directory style-->
     <!-- ../dist/components/-->
     <script src="Scripts/jquery-1.8.1.min.js"></script>
@@ -221,17 +228,38 @@
     </div>
     <!-- Page Contents -->
     <div class="pusher">
-        <div class="ui inverted vertical masthead middle aligned center aligned segment">
-            <!-- Menu -->
+        <div class="ui inverted vertical masthead segment">
+          <!-- Menu -->
           <div class="ui container">
-                <div class="ui large secondary inverted pointing menu"><a class="toc item"> <em class="sidebar icon"></em> </a> <a class="active item" href="index.html">Home</a> <a class="item">Channel</a> <a class="item">Videos</a> <a class="item">Favorties</a>
-                  <div class="right item">
-                        <a class="ui inverted button" href="login.html">Log in</a>
-                        <a class="ui inverted button" href="register.html">Sign Up</a>
-                    </div>
-            </div>
-            </div>
-
+                <div class="ui large secondary inverted pointing menu">
+                <a class="toc item"> <em class="sidebar icon"></em></a> 
+                <a class="active item" href="index.html">Home</a> 
+                <a class="item">Channel</a> 
+                <a class="item">Videos</a> 
+                <a class="item">Favorties</a>
+                <div class="right item">
+                	<a class="ui inverted button" href="login.html">Log in</a>
+                	<a class="ui inverted button" href="register.html">Sign Up</a>
+                </div>
+            	</div>
+          </div>
+                             
+            <!-- Profile -->
+			<div id="content" class="ui inverted three column grid container">						
+				<div class="ui card">
+			  	 	<div class="ui image medium">
+						<img src="media/pictures/PCDC.jpg">
+					</div>
+					<div class="content">
+						<h4>Mackenzie Binns</h4>
+					</div>
+					<div class="description">
+						This is a bio!!
+					</div>
+				</div>
+				
+			</div>
+           
             <!-- Footer segement -->
             <div class="ui inverted vertical footer segment">
                 <div class="ui container">
@@ -244,9 +272,7 @@
                                 <a href="#" class="item">Kevin Kim</a>
                             </div>
                         </div>
-<?php 
-                       echo " hello"
-?>
+
                         <div class="seven wide column">
                             <h4 class="ui inverted header">About</h4>
                             <p>This is the MeTube site designed for the Clemson CPSC 4620 Databases class.</p>
@@ -254,7 +280,8 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div>  
+
     </div>
 </body>
 </html>

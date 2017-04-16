@@ -44,6 +44,10 @@
                 height: 100%;
             }
 
+		.pusher {
+			background-color: #1b1c1d !important;
+		}
+		
         .image {
             margin-top: -100px;
         }
@@ -57,6 +61,7 @@
         }
 
         .masthead.segment {
+			
             padding: 1em 0em;
         }
 
@@ -80,6 +85,9 @@
             font-weight: normal;
         }
 
+		.ui#form{
+			padding-top: 5%;
+		}
         .ui.vertical.stripe {
             padding: 8em 0em;
         }
@@ -279,7 +287,7 @@
 
     <!-- Page Contents -->
     <div class="pusher">
-        <div class="ui inverted vertical masthead middle aligned center aligned segment">
+        <div class="ui inverted vertical masthead segment">
             <!-- Menu -->
           <div class="ui container">
                 <div class="ui large secondary inverted pointing menu"><a class="toc item"> <em class="sidebar icon"></em> </a> <a class="active item" href="index.html">Home</a> <a class="item">Channel</a> <a class="item">Videos</a> <a class="item">Favorties</a>
@@ -291,7 +299,7 @@
             </div>
 
             <!-- Registration Form -->
-            <div class="ui inverted middle aligned center aligned page grid">
+            <div id="form" class="ui inverted middle aligned center aligned page grid">
                 <div class="column">
                     <h2 class="ui orange image header">
                         Register your account
