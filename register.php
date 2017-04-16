@@ -31,7 +31,8 @@ if (isset($_POST['submit']))
     <!-- Site Properties -->
     <!-- Might have to fix these links on linux to match directory style-->
     <!-- ../dist/components/-->
-    <title>MeTube</title>
+    <title>Register</title>
+    <link href="Content/semantic.css" rel="stylesheet" />
     <link href="Content/components/reset.css" rel="stylesheet" />
     <link href="Content/components/site.css" rel="stylesheet" />
     <link href="Content/components/container.css" rel="stylesheet" />
@@ -188,6 +189,7 @@ if (isset($_POST['submit']))
 
     <!-- Scripts -->
     <script src="Scripts/jquery-1.8.1.min.js"></script>
+    <script src="Scripts/semantic.js"></script>
     <script src="Content/components/transition.js"></script>
     <script src="Content/components/form.js"></script>
     <script src="Content/components/visibility.js"></script>
