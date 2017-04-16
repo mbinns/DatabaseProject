@@ -1,3 +1,24 @@
+﻿<?php
+include_once "helper.php";
+session_start();
+
+if (isset($_POST['submit']))
+{
+    $email = $_POST["email"];
+    $password = password_hash($_POST["password"], PASSWORD_DEFAULT);
+
+    if (!isExistingEmail($email))
+    {
+        registerUser($email, $password);
+        $userId = getUserId($email);
+        $_SESSION["user_id"] = $userId;
+        header("Location: index.html");
+    }
+    else
+        $registerError = "This email is already being used";
+}
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -47,7 +68,7 @@
 		.pusher {
 			background-color: #1b1c1d !important;
 		}
-		
+
         .image {
             margin-top: -100px;
         }
@@ -61,7 +82,7 @@
         }
 
         .masthead.segment {
-			
+
             padding: 1em 0em;
         }
 
@@ -159,7 +180,7 @@
                 font-size: 1.5em;
             }
         }
-		
+
 		.pusher {
 			background: #1b1c1d;
 		}
@@ -261,13 +282,13 @@
             <a class="active item" href="index.html">Home</a>
             <a class="item">Channel</a>
             <a class="item">Videos</a>
-            <a class="item">Favorties</a>
+            <a class="item">Favorites</a>
             <div class="right menu">
                 <div class="item">
-                    <a class="ui inverted button" href="login.html">Log in</a>
+                    <a class="ui inverted button" href="login.php">Log in</a>
                 </div>
                 <div class="item">
-                    <a class="ui inverted button" href="register.html">Sign Up</a>
+                    <a class="ui inverted button" href="register.php">Sign Up</a>
                 </div>
             </div>
         </div>
@@ -278,9 +299,9 @@
         <a class="active item" href="index.html">Home</a>
         <a class="item">Channel</a>
         <a class="item">Videos</a>
-        <a class="item">Favorties</a>
-        <a class="item" href="login.html">Login</a>
-        <a class="item" href="register.html">Signup</a>
+        <a class="item">Favorites</a>
+        <a class="item" href="login.php">Login</a>
+        <a class="item" href="register.php">Signup</a>
     </div>
 
 
@@ -290,12 +311,19 @@
         <div class="ui inverted vertical masthead segment">
             <!-- Menu -->
           <div class="ui container">
-                <div class="ui large secondary inverted pointing menu"><a class="toc item"> <em class="sidebar icon"></em> </a> <a class="active item" href="index.html">Home</a> <a class="item">Channel</a> <a class="item">Videos</a> <a class="item">Favorties</a>
-                  <div class="right item">
-                        <a class="ui inverted button" href="login.html">Log in</a>
-                        <a class="ui inverted button" href="register.html">Sign Up</a>
+                <div class="ui large secondary inverted pointing menu">
+                    <a class="toc item">
+                        <em class="sidebar icon"></em>
+                    </a>
+                    <a class="active item" href="index.html">Home</a>
+                    <a class="item">Channel</a>
+                    <a class="item">Videos</a>
+                    <a class="item">Favorites</a>
+                    <div class="right item">
+                        <a class="ui inverted button" href="login.php">Log in</a>
+                        <a class="ui inverted button" href="register.php">Sign Up</a>
                     </div>
-            </div>
+                </div>
             </div>
 
             <!-- Registration Form -->
@@ -304,7 +332,7 @@
                     <h2 class="ui orange image header">
                         Register your account
                     </h2>
-                    <form name="register" class="ui inverted large form" action="#">
+                    <form name="register" class="ui inverted large form" action="register.php" method="post">
                         <div class="ui stacked inverted segment">
                             <div class="field">
                                 <div class="ui left icon input">
@@ -324,15 +352,27 @@
                                     <input type="password" name="repassword" placeholder="Re-enter your Password">
                                 </div>
                             </div>
-                            <div class="ui fluid large orange submit button">Register</div>
+                            <button class="ui fluid large orange submit button" name="submit">Register</button>
                         </div>
 
                         <div name="error" class="ui error message"></div>
 
                     </form>
 
+                    <?php
+                    if (isset($registerError))
+                    {
+                        echo
+                        "<div class='ui error message'>
+                            <ul class='list'>
+                                <li>".$registerError."</li>
+                            </ul>
+                        </div>";
+                    }
+                    ?>
+
                     <div class="ui message">
-                        Already have an account? <a href="login.html">Login!</a>
+                        Already have an account? <a href="login.php">Login!</a>
                     </div>
                 </div>
             </div>
