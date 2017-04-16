@@ -11,7 +11,8 @@
     <!-- Site Properties -->
     <!-- Might have to fix these links on linux to match directory style-->
     <!-- ../dist/components/-->
-    <title>MeTube</title>
+    <title>Channel</title>
+    <link href="Content/semantic.css" rel="stylesheet" />
     <link href="Content/components/reset.css" rel="stylesheet" />
     <link href="Content/components/site.css" rel="stylesheet" />
     <link href="Content/components/container.css" rel="stylesheet" />
@@ -35,20 +36,19 @@
     <link href="Content/components/button.css" rel="stylesheet" />
     <link href="Content/components/message.css" rel="stylesheet" />
 
-    <!-- Style changes for register page -->
+   <!-- CSS for Channel -->
+   <link href="Content/components/card.css" rel="stylesheet" />
+   <link href="Content/components/item.css" rel="stylesheet" />
+  
+    <!-- Style changes for channel page -->
     <style type="text/css">
-		
-
         body {
             background-color: #1b1c1d !important;
         }
 
-            body > .grid {
-                height: 100%;
-            }
-		
 		.ui#content{
-			padding-top: 10em
+			padding-top: 10em;
+			padding-bottom: 10em;
 		}
 		.pusher {
 			background-color: #1b1c1d !important;
@@ -169,6 +169,7 @@
     <!-- Might have to fix these links on linux to match directory style-->
     <!-- ../dist/components/-->
     <script src="Scripts/jquery-1.8.1.min.js"></script>
+    <script src="Scripts/semantic.js"></script>
     <script src="Content/components/visibility.js"></script>
     <script src="Content/components/sidebar.js"></script>
     <script src="Content/components/transition.js"></script>
@@ -228,7 +229,7 @@
     </div>
     <!-- Page Contents -->
     <div class="pusher">
-        <div class="ui inverted vertical masthead segment">
+        <div class="ui vertical masthead segment">
           <!-- Menu -->
           <div class="ui container">
                 <div class="ui large secondary inverted pointing menu">
@@ -245,21 +246,66 @@
           </div>
                              
             <!-- Profile -->
-			<div id="content" class="ui inverted three column grid container">						
+			<div id="content" class="ui container grid two wide column"> 
 				<div class="ui card">
-			  	 	<div class="ui image medium">
-						<img src="media/pictures/PCDC.jpg">
-					</div>
-					<div class="content">
-						<h4>Mackenzie Binns</h4>
+				  <div class="image">
+					<img src="media/pictures/PCDC.jpg">
+				  </div>
+				  <div class="content">
+					<a class="header">Mackenzie Binns</a>
+					<div class="meta">
+					  <span class="date">Joined in 2017</span>
 					</div>
 					<div class="description">
-						This is a bio!!
+					  Mackenzie is a cyber security analyst.
 					</div>
+				  </div>
+				  <div class="extra content">
+					<a>
+					  <i class="user icon"></i>
+					  22 Followers
+					</a>
+				  </div>
 				</div>
-				
-			</div>
+				<div class="ui items segment">
+				  <div class="item">
+					<div class="image">
+					  <img src="https://placehold.it/350x150">
+					</div>
+					<div class="content">
+					  <a class="header">Header</a>
+					  <div class="meta">
+						<span>Description</span>
+					  </div>
+					  <div class="description">
+						<p></p>
+					  </div>
+					  <div class="extra">
+						Additional Details
+					  </div>
+					</div>
+				  </div>
+				  <div class="item">
+					<div class="image">
+					  <img src="https://placehold.it/350x150">
+					</div>
+					<div class="content">
+					  <a class="header">Header</a>
+					  <div class="meta">
+						<span>Description</span>
+					  </div>
+					  <div class="description">
+						<p></p>
+					  </div>
+					  <div class="extra">
+						Additional Details
+					  </div>
+					</div>
+				  </div>
+				</div>           
            
+            </div>
+                      
             <!-- Footer segement -->
             <div class="ui inverted vertical footer segment">
                 <div class="ui container">
