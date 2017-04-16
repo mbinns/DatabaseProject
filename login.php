@@ -1,3 +1,34 @@
+﻿<?php
+include_once "helper.php";
+session_start();
+
+if (isset($_POST['submit']))
+{
+    $email = $_POST["email"];
+    $password = $_POST["password"];
+
+    $validity = hasValidCredentials($email, $password);
+
+    switch ($validity)
+    {
+        // The email has not been registered
+        case 0:
+		    $loginError = "No account found with this email";
+            break;
+        // The password does not match
+        case 1:
+            $loginError = "Incorrect password";
+            break;
+        // Credentials are valid
+        case 2:
+            $userId = getUserId($email);
+            $_SESSION["user_id"] = $userId;
+            header("Location: index.html");
+            break;
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,7 +42,7 @@
     <!-- Might have to fix these links on linux to match directory style-->
     <!-- ../dist/components/-->
     <title>MeTube</title>
-    <a href="register.html">register.html</a>
+    <a href="register.php">register.php</a>
     <link href="Content/components/reset.css" rel="stylesheet" />
     <link href="Content/components/site.css" rel="stylesheet" />
     <link href="Content/components/container.css" rel="stylesheet" />
@@ -35,7 +66,6 @@
     <link href="Content/components/button.css" rel="stylesheet" />
     <link href="Content/components/message.css" rel="stylesheet" />
 
-
     <!-- Style changes for login page -->
     <style type="text/css">
         body {
@@ -53,8 +83,9 @@
         .column {
             max-width: 450px;
         }
-        
+
     </style>
+
     <!-- Scripts -->
     <script src="Scripts/jquery-1.8.1.min.js"></script>
     <script src="Content/components/transition.js"></script>
@@ -93,7 +124,7 @@
                               }
                             ]//rules
                         }//password
-                    }//fields 
+                    }//fields
                 })//form
               ;
           })
@@ -132,13 +163,13 @@
             <a class="active item" href="index.html">Home</a>
             <a class="item">Channel</a>
             <a class="item">Videos</a>
-            <a class="item">Favorties</a>
+            <a class="item">Favorites</a>
             <div class="right menu">
                 <div class="item">
-                    <a class="ui inverted button" href="login.html">Log in</a>
+                    <a class="ui inverted button" href="login.php">Log in</a>
                 </div>
                 <div class="item">
-                    <a class="ui inverted button" href="register.html">Sign Up</a>
+                    <a class="ui inverted button" href="register.php">Sign Up</a>
                 </div>
             </div>
         </div>
@@ -149,9 +180,9 @@
         <a class="active item" href="index.html">Home</a>
         <a class="item">Channel</a>
         <a class="item">Videos</a>
-        <a class="item">Favorties</a>
-        <a class="item" href="login.html">Login</a>
-        <a class="item" href="register.html">Signup</a>
+        <a class="item">Favorites</a>
+        <a class="item" href="login.php">Login</a>
+        <a class="item" href="register.php">Signup</a>
     </div>
 
     <!-- Login Form -->
@@ -160,7 +191,7 @@
             <h2 class="ui orange image header">
                 Log-in to your account
             </h2>
-            <form class="ui inverted large form">
+            <form class="ui inverted large form" action="login.php" method="post">
                 <div class="ui stacked inverted segment">
                     <div class="field">
                         <div class="ui left icon input">
@@ -174,15 +205,27 @@
                             <input type="password" name="password" placeholder="Password">
                         </div>
                     </div>
-                    <div class="ui fluid large orange submit button">Login</div>
+                    <button class="ui fluid large orange submit button" name="submit">Login</button>
                 </div>
 
                 <div class="ui error message"></div>
 
             </form>
 
+            <?php
+            if (isset($loginError))
+            {
+                echo
+                "<div class='ui error message'>
+                    <ul class='list'>
+                        <li>".$loginError."</li>
+                    </ul>
+                </div>";
+            }
+            ?>
+
             <div class="ui message">
-                New to us? <a href="register.html">Sign Up</a>
+                New to us? <a href="register.php">Sign Up</a>
             </div>
         </div>
     </div>
