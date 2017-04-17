@@ -15,6 +15,49 @@ function getUserId($email)
     return $id;
 }
 
+function getUserAbout($id)
+{
+    global $db;
+    $query = "SELECT about FROM account WHERE user_id = ?";
+    $stmt = mysqli_prepare($db, $query);
+    mysqli_stmt_bind_param($stmt, "d", $id);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_bind_result($stmt, $about);
+    mysqli_stmt_fetch($stmt);
+    mysqli_stmt_close($stmt);
+
+    return $about;
+}
+
+function getUserName($id)
+{
+    global $db;
+    $query = "SELECT firstname, lastname FROM account WHERE user_id = ?";
+    $stmt = mysqli_prepare($db, $query);
+    mysqli_stmt_bind_param($stmt, "d", $id);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_bind_result($stmt, $fname, $lname);
+    mysqli_stmt_fetch($stmt);
+    mysqli_stmt_close($stmt);
+
+    return $fname." ".$lname;
+}
+
+function getUserJoinDate($id)
+{
+    global $db;
+    $query = "SELECT joindate FROM account WHERE user_id = ?";
+    $stmt = mysqli_prepare($db, $query);
+    mysqli_stmt_bind_param($stmt, "d", $id);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_bind_result($stmt, $joindate);
+    mysqli_stmt_fetch($stmt);
+    mysqli_stmt_close($stmt);
+
+    $date = date_create($joindate);
+    return date_format($date, "F Y");
+}
+
 /*
     Determines if the users credentials are valid
     returns 0 if the email has not been registered
@@ -65,9 +108,9 @@ function isUserLoggedIn()
 function registerUser($email, $password, $firstname, $lastname)
 {
     global $db;
-    $query = "INSERT INTO account (email, password, firstname, lastname) values (?, ?, ?, ?)";
+    $query = "INSERT INTO account (email, password, firstname, lastname, joindate) values (?, ?, ?, ?, ?)";
     $stmt = mysqli_prepare($db, $query);
-    mysqli_stmt_bind_param($stmt, "ssss", $email, $password, $firstname, $lastname);
+    mysqli_stmt_bind_param($stmt, "sssss", $email, $password, $firstname, $lastname, date("Y-m-d"));
     mysqli_stmt_execute($stmt);
     mysqli_stmt_close($stmt);
 }

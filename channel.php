@@ -1,4 +1,9 @@
-<!doctype html>
+<?php
+include_once "helper.php";
+session_start();
+?>
+
+<!DOCTYPE html>
 <html>
 <head>
 <meta charset="utf-8">
@@ -39,7 +44,7 @@
    <!-- CSS for Channel -->
    <link href="Content/components/card.css" rel="stylesheet" />
    <link href="Content/components/item.css" rel="stylesheet" />
-  
+
     <!-- Style changes for channel page -->
     <style type="text/css">
         body {
@@ -54,7 +59,7 @@
 			background-color: #1b1c1d !important;
 
 		}
-		
+
         .image {
             margin-top: -100px;
         }
@@ -164,7 +169,7 @@
             }
         }
     </style>
-    
+
 <title>Channel</title>
     <!-- Might have to fix these links on linux to match directory style-->
     <!-- ../dist/components/-->
@@ -233,10 +238,10 @@
           <!-- Menu -->
           <div class="ui">
                 <div class="ui large secondary container inverted pointing menu">
-                <a class="toc item"> <em class="sidebar icon"></em></a> 
-                <a class="active item" href="index.html">Home</a> 
-                <a class="item" href="channel.html">Channel</a> 
-                <a class="item">Videos</a> 
+                <a class="toc item"> <em class="sidebar icon"></em></a>
+                <a class="active item" href="index.html">Home</a>
+                <a class="item" href="channel.html">Channel</a>
+                <a class="item">Videos</a>
                 <a class="item">Favorties</a>
                 <div class="right item">
                 	<a class="ui inverted button" href="login.html">Log in</a>
@@ -244,130 +249,134 @@
                 </div>
             	</div>
           </div>
-        </div>  
-                                        
-            <!-- Profile -->
-			<div id="content" class="ui stackable grid container"> 
-			<!-- Profile Card -->
-				<div class="ui card">
-				  <div class="image">
-					<img src="media/pictures/PCDC.jpg">
-				  </div>
-				  <div class="content">
-					<a class="header">Mackenzie Binns</a>
-					<div class="meta">
-					  <span class="date">Joined in 2017</span>
-					</div>
-					<div class="description">
-					  Mackenzie is a cyber security analyst.
-					</div>
-				  </div>
-				  <div class="extra content">
-					<a>
-					  <i class="user icon"></i>
-					  22 Followers
-					</a>
-				  </div>
-				</div>
+        </div>
 
-				<div class="ui row segment centered">
-					<h2>Content</h2>
-				</div>
-			
-				<div class="ui items segment container">
-				  <div class="item">
-					<div class="image">
-					  <img src="https://placehold.it/350x150">
-					</div>
-					<div class="content">
-					  <a class="header">Video 1</a>
-					  <div class="meta">
-						<span>Description</span>
-					  </div>
-					  <div class="description">
-						<p></p>
-					  </div>
-					  <div class="extra">
-						Additional Details
-					  </div>
-					</div>
-				  </div>
-				  <div class="item">
-					<div class="image">
-					  <img src="https://placehold.it/350x150">
-					</div>
-					<div class="content">
-					  <a class="header">Video 2</a>
-					  <div class="meta">
-						<span>Description</span>
-					  </div>
-					  <div class="description">
-						<p></p>
-					  </div>
-					  <div class="extra">
-						Additional Details
-					  </div>
-					</div>
-				  </div>
-				  <div class="item">
-					<div class="image">
-					  <img src="https://placehold.it/350x150">
-					</div>
-					<div class="content">
-					  <a class="header">Video 3</a>
-					  <div class="meta">
-						<span>Description </span>
-					  </div>
-					  <div class="description">
-						<p></p>
-					  </div>
-					  <div class="extra">
-						Additional Details
-					  </div>
-					</div>
-				  </div>
-				  <div class="item">
-					<div class="image">
-					  <img src="https://placehold.it/350x150">
-					</div>
-					<div class="content">
-					  <a class="header">Video 4</a>
-					  <div class="meta">
-						<span>Description</span>
-					  </div>
-					  <div class="description">
-						<p></p>
-					  </div>
-					  <div class="extra">
-						Additional Details
-					  </div>
-					</div>
-				  </div>				  
-				</div>           
+        <!-- Profile -->
+        <div id="content" class="ui stackable grid container">
+        <!-- Profile Card -->
+            <div class="ui card">
+                <div class="content">
+                    <?php
+                    echo
+                    "<a class='header'>"
+                        .getUserName($_SESSION['user_id'])
+                    ."</a>";
+                    ?>
+                </div>
+                <div class="meta">
+                    <?php
+                    echo
+                    "<span class='date'>Joined in "
+                    .getUserJoinDate($_SESSION['user_id'])
+                    ."</span>"
+                    ?>
+                </div>
+                <?php
+                echo
+                "<div class='description'>"
+                    .getUserAbout($_SESSION['user_id'])
+                ."</div>";
+                ?>
             </div>
-                      
-            <!-- Footer segement -->
-            <div class="ui inverted vertical footer segment container">
-                <div class="ui centered">
-                    <div class="ui stackable inverted divided equal height stackable grid">
-                        <div class="three wide column">
-                            <h4 class="ui inverted header">Creators</h4>
-                            <div class="ui inverted link list">
-                                <a href="https://mbinns.github.io" class="item">Mackenzie Binns</a>
-                                <a href="#" class="item">Ronnie Funderburk</a>
-                                <a href="#" class="item">Kevin Kim</a>
-                            </div>
-                        </div>
 
-                        <div class="seven wide column">
-                            <h4 class="ui inverted header">About</h4>
-                            <p>This is the MeTube site designed for the Clemson CPSC 4620 Databases class.</p>
+            <div class="ui row segment centered">
+                <h2>Uploads</h2>
+            </div>
+
+            <div class="ui items segment container">
+              <div class="item">
+                <div class="image">
+                  <img src="https://placehold.it/350x150">
+                </div>
+                <div class="content">
+                  <a class="header">Video 1</a>
+                  <div class="meta">
+                    <span>Description</span>
+                  </div>
+                  <div class="description">
+                    <p></p>
+                  </div>
+                  <div class="extra">
+                    Additional Details
+                  </div>
+                </div>
+              </div>
+              <div class="item">
+                <div class="image">
+                  <img src="https://placehold.it/350x150">
+                </div>
+                <div class="content">
+                  <a class="header">Video 2</a>
+                  <div class="meta">
+                    <span>Description</span>
+                  </div>
+                  <div class="description">
+                    <p></p>
+                  </div>
+                  <div class="extra">
+                    Additional Details
+                  </div>
+                </div>
+              </div>
+              <div class="item">
+                <div class="image">
+                  <img src="https://placehold.it/350x150">
+                </div>
+                <div class="content">
+                  <a class="header">Video 3</a>
+                  <div class="meta">
+                    <span>Description </span>
+                  </div>
+                  <div class="description">
+                    <p></p>
+                  </div>
+                  <div class="extra">
+                    Additional Details
+                  </div>
+                </div>
+              </div>
+              <div class="item">
+                <div class="image">
+                  <img src="https://placehold.it/350x150">
+                </div>
+                <div class="content">
+                  <a class="header">Video 4</a>
+                  <div class="meta">
+                    <span>Description</span>
+                  </div>
+                  <div class="description">
+                    <p></p>
+                  </div>
+                  <div class="extra">
+                    Additional Details
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+
+        <!-- Footer segement -->
+        <div class="ui inverted vertical footer segment container">
+            <div class="ui centered">
+                <div class="ui stackable inverted divided equal height stackable grid">
+                    <div class="three wide column">
+                        <h4 class="ui inverted header">Creators</h4>
+                        <div class="ui inverted link list">
+                            <a href="https://mbinns.github.io" class="item">Mackenzie Binns</a>
+                            <a href="#" class="item">Ronnie Funderburk</a>
+                            <a href="#" class="item">Kevin Kim</a>
                         </div>
+                    </div>
+
+                    <div class="seven wide column">
+                        <h4 class="ui inverted header">About</h4>
+                        <p>This is the MeTube site designed for the Clemson CPSC 4620 Databases class.</p>
                     </div>
                 </div>
             </div>
+        </div>
 
 
-    </div>
+</div>
 </body>
 </html>
