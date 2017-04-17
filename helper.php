@@ -4,10 +4,15 @@ include_once "config.php";
 function getUserId($email)
 {
     global $db;
-    $query = "SELECT user_id FROM account WHERE email = '$email'";
-    $result = mysqli_query($db, $query);
+    $query = "SELECT user_id FROM account WHERE email = ?";
+    $stmt = mysqli_prepare($db, $query);
+    mysqli_stmt_bind_param($stmt, "s", $email);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_bind_result($stmt, $id);
+    mysqli_stmt_fetch($stmt);
+    mysqli_stmt_close($stmt);
 
-    return mysqli_fetch_row($result)[0];
+    return $id;
 }
 
 /*
@@ -22,9 +27,13 @@ function hasValidCredentials($email, $plainPassword)
         return 0;
 
     global $db;
-    $query = "SELECT password FROM account WHERE email = '$email'";
-    $result = mysqli_query($db, $query);
-    $hashedPassword = mysqli_fetch_row($result)[0];
+    $query = "SELECT password FROM account WHERE email = ?";
+    $stmt = mysqli_prepare($db, $query);
+    mysqli_stmt_bind_param($stmt, "s", $email);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_bind_result($stmt, $hashedPassword);
+    mysqli_stmt_fetch($stmt);
+    mysqli_stmt_close($stmt);
 
     return password_verify($plainPassword, $hashedPassword) ? 2 : 1;
 }
@@ -32,10 +41,15 @@ function hasValidCredentials($email, $plainPassword)
 function isExistingEmail($email)
 {
     global $db;
-    $query = "SELECT email FROM account WHERE email = '$email'";
-    $result = mysqli_query($db, $query);
+    $query = "SELECT count(email) FROM account WHERE email = ?";
+    $stmt = mysqli_prepare($db, $query);
+    mysqli_stmt_bind_param($stmt, "s", $email);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_bind_result($stmt, $count);
+    mysqli_stmt_fetch($stmt);
+    mysqli_stmt_close($stmt);
 
-    return mysqli_num_rows($result) != 0;
+    return $count != 0;
 }
 
 /*
@@ -51,7 +65,10 @@ function isUserLoggedIn()
 function registerUser($email, $password)
 {
     global $db;
-    $query = "INSERT INTO account (email, password) values ('$email', '$password')";
-    $result = mysqli_query($db, $query);
+    $query = "INSERT INTO account (email, password) values (?, ?)";
+    $stmt = mysqli_prepare($db, $query);
+    mysqli_stmt_bind_param($stmt, "ss", $email, $password);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_close($stmt);
 }
 ?>
