@@ -15,6 +15,48 @@ function getUserId($email)
     return $id;
 }
 
+function getUserAbout($id)
+{
+    global $db;
+    $query = "SELECT about FROM account WHERE user_id = ?";
+    $stmt = mysqli_prepare($db, $query);
+    mysqli_stmt_bind_param($stmt, "d", $id);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_bind_result($stmt, $about);
+    mysqli_stmt_fetch($stmt);
+    mysqli_stmt_close($stmt);
+
+    return $about;
+}
+
+function getUserName($id)
+{
+    global $db;
+    $query = "SELECT firstname, lastname FROM account WHERE user_id = ?";
+    $stmt = mysqli_prepare($db, $query);
+    mysqli_stmt_bind_param($stmt, "d", $id);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_bind_result($stmt, $fname, $lname);
+    mysqli_stmt_fetch($stmt);
+    mysqli_stmt_close($stmt);
+
+    return $fname." ".$lname;
+}
+
+function getUserJoinYear($id)
+{
+    global $db;
+    $query = "SELECT year(joindate) FROM account WHERE user_id = ?";
+    $stmt = mysqli_prepare($db, $query);
+    mysqli_stmt_bind_param($stmt, "d", $id);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_bind_result($stmt, $year);
+    mysqli_stmt_fetch($stmt);
+    mysqli_stmt_close($stmt);
+
+    return $year;
+}
+
 /*
     Determines if the users credentials are valid
     returns 0 if the email has not been registered
