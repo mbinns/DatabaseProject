@@ -215,6 +215,24 @@ if (isset($_POST['submit']))
                               }
                             ]//rules
                         },//email
+                         lname: {
+                           identifier: 'lname',
+                           rules: [
+                             {
+                               type   : 'empty',
+                               prompt : 'Please enter your Last Name'
+                             }
+                           ]
+                         },//lname
+                         fname: {
+                           identifier: 'fname',
+                           rules: [
+                             {
+                               type   : 'empty',
+                               prompt : 'Please enter your First Name'
+                             }
+                           ]
+                         },//lname
                         password: {
                             identifier: 'password',
                             rules: [
@@ -340,6 +358,18 @@ if (isset($_POST['submit']))
                                 <div class="ui left icon input">
                                     <i class="user icon"></i>
                                     <input type="text" name="email" placeholder="E-mail address">
+                                </div>
+                            </div>
+                            <div class="field">
+                                <div class="ui left icon input">
+                                    <i class="user icon"></i>
+                                    <input type="text" name="fname" placeholder="First Name">
+                                </div>
+                            </div>
+                            <div class="field">
+                                <div class="ui left icon input">
+                                    <i class="user icon"></i>
+                                    <input type="text" name="lname" placeholder="Last Name">
                                 </div>
                             </div>
                             <div class="field">
