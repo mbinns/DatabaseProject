@@ -6,10 +6,12 @@ if (isset($_POST['submit']))
 {
     $email = $_POST["email"];
     $password = password_hash($_POST["password"], PASSWORD_DEFAULT);
+    $fname = $_POST["fname"];
+    $lname = $_POST["lname"];
 
     if (!isExistingEmail($email))
     {
-        registerUser($email, $password);
+        registerUser($email, $password, $fname, $lname);
         $userId = getUserId($email);
         $_SESSION["user_id"] = $userId;
         header("Location: channel.php");

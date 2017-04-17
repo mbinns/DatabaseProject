@@ -62,12 +62,12 @@ function isUserLoggedIn()
     return isset($_SESSION['user_id']);
 }
 
-function registerUser($email, $password)
+function registerUser($email, $password, $firstname, $lastname)
 {
     global $db;
-    $query = "INSERT INTO account (email, password) values (?, ?)";
+    $query = "INSERT INTO account (email, password, firstname, lastname) values (?, ?, ?, ?)";
     $stmt = mysqli_prepare($db, $query);
-    mysqli_stmt_bind_param($stmt, "ss", $email, $password);
+    mysqli_stmt_bind_param($stmt, "ssss", $email, $password, $firstname, $lastname);
     mysqli_stmt_execute($stmt);
     mysqli_stmt_close($stmt);
 }
