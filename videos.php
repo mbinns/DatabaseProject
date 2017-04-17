@@ -141,20 +141,11 @@
     <script src="Content/components/transition.js"></script>
 
     <!-- Menu -->
-    <link rel="import" href="menu.html">
 </head>
 
 <body>
     <div class="pusher">
-        <script>
-            var link = document.querySelector('link[rel="import"]');
-            var content = link.import;
 
-            // Grab DOM from warning.html's document.
-            var el = content.querySelector('.masthead');
-
-            document.body.appendChild(el.cloneNode(true));
-        </script>
     </div>
 </body>
 </html>
