@@ -267,7 +267,7 @@ session_start();
                     <?php
                     echo
                     "<span class='date'>Joined in "
-                    .getUserJoinYear($_SESSION['user_id'])
+                    .getUserJoinDate($_SESSION['user_id'])
                     ."</span>"
                     ?>
                 </div>

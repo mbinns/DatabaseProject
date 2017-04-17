@@ -43,18 +43,19 @@ function getUserName($id)
     return $fname." ".$lname;
 }
 
-function getUserJoinYear($id)
+function getUserJoinDate($id)
 {
     global $db;
-    $query = "SELECT year(joindate) FROM account WHERE user_id = ?";
+    $query = "SELECT joindate FROM account WHERE user_id = ?";
     $stmt = mysqli_prepare($db, $query);
     mysqli_stmt_bind_param($stmt, "d", $id);
     mysqli_stmt_execute($stmt);
-    mysqli_stmt_bind_result($stmt, $year);
+    mysqli_stmt_bind_result($stmt, $joindate);
     mysqli_stmt_fetch($stmt);
     mysqli_stmt_close($stmt);
 
-    return $year;
+    $date = date_create($joindate);
+    return date_format($date, "F Y");
 }
 
 /*
@@ -107,9 +108,9 @@ function isUserLoggedIn()
 function registerUser($email, $password, $firstname, $lastname)
 {
     global $db;
-    $query = "INSERT INTO account (email, password, firstname, lastname) values (?, ?, ?, ?)";
+    $query = "INSERT INTO account (email, password, firstname, lastname, joindate) values (?, ?, ?, ?, ?)";
     $stmt = mysqli_prepare($db, $query);
-    mysqli_stmt_bind_param($stmt, "ssss", $email, $password, $firstname, $lastname);
+    mysqli_stmt_bind_param($stmt, "sssss", $email, $password, $firstname, $lastname, date("Y-m-d"));
     mysqli_stmt_execute($stmt);
     mysqli_stmt_close($stmt);
 }
