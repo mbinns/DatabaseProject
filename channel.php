@@ -266,7 +266,7 @@ session_start();
                 <div class="meta">
                     <?php
                     echo
-                    "<span class='date'>Joined in "
+                    "<span class='date'>Member since "
                     .getUserJoinDate($_SESSION['user_id'])
                     ."</span>"
                     ?>
@@ -286,11 +286,11 @@ session_start();
             <div class="ui items segment container">
                 <?php
                 global $db;
-                $query = "SELECT title, descrip FROM media WHERE user_id = ?";
+                $query = "SELECT title, descrip, date FROM media WHERE user_id = ?";
                 $stmt = mysqli_prepare($db, $query);
                 mysqli_stmt_bind_param($stmt, "d", $_SESSION['user_id']);
                 mysqli_stmt_execute($stmt);
-                mysqli_stmt_bind_result($stmt, $title, $description);
+                mysqli_stmt_bind_result($stmt, $title, $description, $uploadDate);
 
                 while (mysqli_stmt_fetch($stmt))
                 {
@@ -301,6 +301,9 @@ session_start();
                         </div>
                         <div class='content'>
                             <a class='header'>".$title."</a>
+                            <div class='extra'>Uploaded "
+                                .date_format(date_create($uploadDate), 'F Y')
+                            ."</div>
                             <div class='meta'>
                                 <span>".$description."</span>
                             </div>
