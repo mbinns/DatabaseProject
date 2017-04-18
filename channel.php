@@ -284,74 +284,32 @@ session_start();
             </div>
 
             <div class="ui items segment container">
-              <div class="item">
-                <div class="image">
-                  <img src="https://placehold.it/350x150">
-                </div>
-                <div class="content">
-                  <a class="header">Video 1</a>
-                  <div class="meta">
-                    <span>Description</span>
-                  </div>
-                  <div class="description">
-                    <p></p>
-                  </div>
-                  <div class="extra">
-                    Additional Details
-                  </div>
-                </div>
-              </div>
-              <div class="item">
-                <div class="image">
-                  <img src="https://placehold.it/350x150">
-                </div>
-                <div class="content">
-                  <a class="header">Video 2</a>
-                  <div class="meta">
-                    <span>Description</span>
-                  </div>
-                  <div class="description">
-                    <p></p>
-                  </div>
-                  <div class="extra">
-                    Additional Details
-                  </div>
-                </div>
-              </div>
-              <div class="item">
-                <div class="image">
-                  <img src="https://placehold.it/350x150">
-                </div>
-                <div class="content">
-                  <a class="header">Video 3</a>
-                  <div class="meta">
-                    <span>Description </span>
-                  </div>
-                  <div class="description">
-                    <p></p>
-                  </div>
-                  <div class="extra">
-                    Additional Details
-                  </div>
-                </div>
-              </div>
-              <div class="item">
-                <div class="image">
-                  <img src="https://placehold.it/350x150">
-                </div>
-                <div class="content">
-                  <a class="header">Video 4</a>
-                  <div class="meta">
-                    <span>Description</span>
-                  </div>
-                  <div class="description">
-                    <p></p>
-                  </div>
-                  <div class="extra">
-                    Additional Details
-                  </div>
-                </div>
-              </div>
+                <?php
+                global $db;
+                $query = "SELECT title, descrip FROM media WHERE user_id = ?";
+                $stmt = mysqli_prepare($db, $query);
+                mysqli_stmt_bind_param($stmt, "d", $_SESSION['user_id']);
+                mysqli_stmt_execute($stmt);
+                mysqli_stmt_bind_result($stmt, $title, $description);
+
+                while (mysqli_stmt_fetch($stmt))
+                {
+                    echo
+                    "<div class='item'>
+                        <div class='image'>
+                            <img src='https://placehold.it/350x150'>
+                        </div>
+                        <div class='content'>
+                            <a class='header'>".$title."</a>
+                            <div class='meta'>
+                                <span>".$description."</span>
+                            </div>
+                        </div>
+                    </div>";
+                }
+
+                mysqli_stmt_close($stmt);
+                ?>
             </div>
         </div>
 
