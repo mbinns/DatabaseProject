@@ -50,11 +50,11 @@ function getUserJoinDate($id)
     $stmt = mysqli_prepare($db, $query);
     mysqli_stmt_bind_param($stmt, "d", $id);
     mysqli_stmt_execute($stmt);
-    mysqli_stmt_bind_result($stmt, $joindate);
+    mysqli_stmt_bind_result($stmt, $joinDate);
     mysqli_stmt_fetch($stmt);
     mysqli_stmt_close($stmt);
 
-    $date = date_create($joindate);
+    $date = date_create($joinDate);
     return date_format($date, "F Y");
 }
 

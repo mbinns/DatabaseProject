@@ -209,15 +209,15 @@ session_start();
     <div class="ui large top fixed hidden menu">
         <div class="ui container">
             <a class="active item">Home</a>
-            <a class="item" href="channel.html">Channel</a>
+            <a class="item" href="channel.php">Channel</a>
             <a class="item">Videos</a>
-            <a class="item">Favorties</a>
+            <a class="item">Favorites</a>
             <div class="right menu">
                 <div class="item">
-                    <a class="ui button" href="login.html">Log in</a>
+                    <a class="ui button" href="login.php">Log in</a>
                 </div>
                 <div class="item">
-                    <a class="ui primary button" href="register.html">Sign Up</a>
+                    <a class="ui primary button" href="register.php">Sign Up</a>
                 </div>
             </div>
         </div>
@@ -226,11 +226,11 @@ session_start();
     <!-- Sidebar Menu -->
     <div class="ui vertical inverted sidebar menu">
         <a class="active item">Home</a>
-        <a class="item" href="channel.html">Channel</a>
+        <a class="item" href="channel.php">Channel</a>
         <a class="item">Videos</a>
-        <a class="item">Favorties</a>
-        <a class="item" href="login.html">Login</a>
-        <a class="item" href="register.html">Signup</a>
+        <a class="item">Favorites</a>
+        <a class="item" href="login.php">Login</a>
+        <a class="item" href="register.php">Signup</a>
     </div>
     <!-- Page Contents -->
     <div class="pusher">
@@ -240,12 +240,12 @@ session_start();
                 <div class="ui large secondary container inverted pointing menu">
                 <a class="toc item"> <em class="sidebar icon"></em></a>
                 <a class="active item" href="index.html">Home</a>
-                <a class="item" href="channel.html">Channel</a>
+                <a class="item" href="channel.php">Channel</a>
                 <a class="item">Videos</a>
-                <a class="item">Favorties</a>
+                <a class="item">Favorites</a>
                 <div class="right item">
-                	<a class="ui inverted button" href="login.html">Log in</a>
-                	<a class="ui inverted button" href="register.html">Sign Up</a>
+                	<a class="ui inverted button" href="login.php">Log in</a>
+                	<a class="ui inverted button" href="register.php">Sign Up</a>
                 </div>
             	</div>
           </div>
@@ -266,7 +266,7 @@ session_start();
                 <div class="meta">
                     <?php
                     echo
-                    "<span class='date'>Joined in "
+                    "<span class='date'>Member since "
                     .getUserJoinDate($_SESSION['user_id'])
                     ."</span>"
                     ?>
@@ -284,74 +284,35 @@ session_start();
             </div>
 
             <div class="ui items segment container">
-              <div class="item">
-                <div class="image">
-                  <img src="https://placehold.it/350x150">
-                </div>
-                <div class="content">
-                  <a class="header">Video 1</a>
-                  <div class="meta">
-                    <span>Description</span>
-                  </div>
-                  <div class="description">
-                    <p></p>
-                  </div>
-                  <div class="extra">
-                    Additional Details
-                  </div>
-                </div>
-              </div>
-              <div class="item">
-                <div class="image">
-                  <img src="https://placehold.it/350x150">
-                </div>
-                <div class="content">
-                  <a class="header">Video 2</a>
-                  <div class="meta">
-                    <span>Description</span>
-                  </div>
-                  <div class="description">
-                    <p></p>
-                  </div>
-                  <div class="extra">
-                    Additional Details
-                  </div>
-                </div>
-              </div>
-              <div class="item">
-                <div class="image">
-                  <img src="https://placehold.it/350x150">
-                </div>
-                <div class="content">
-                  <a class="header">Video 3</a>
-                  <div class="meta">
-                    <span>Description </span>
-                  </div>
-                  <div class="description">
-                    <p></p>
-                  </div>
-                  <div class="extra">
-                    Additional Details
-                  </div>
-                </div>
-              </div>
-              <div class="item">
-                <div class="image">
-                  <img src="https://placehold.it/350x150">
-                </div>
-                <div class="content">
-                  <a class="header">Video 4</a>
-                  <div class="meta">
-                    <span>Description</span>
-                  </div>
-                  <div class="description">
-                    <p></p>
-                  </div>
-                  <div class="extra">
-                    Additional Details
-                  </div>
-                </div>
-              </div>
+                <?php
+                global $db;
+                $query = "SELECT title, type, descrip, date FROM media WHERE user_id = ?";
+                $stmt = mysqli_prepare($db, $query);
+                mysqli_stmt_bind_param($stmt, "d", $_SESSION['user_id']);
+                mysqli_stmt_execute($stmt);
+                mysqli_stmt_bind_result($stmt, $title, $type, $description, $uploadDate);
+
+                while (mysqli_stmt_fetch($stmt))
+                {
+                    echo
+                    "<div class='item'>
+                        <div class='image'>
+                            <img src='https://placehold.it/350x150'>
+                        </div>
+                        <div class='content'>
+                            <a class='header'>".$title."</a>
+                            <div class='extra'>".$type." uploaded "
+                                .date_format(date_create($uploadDate), 'F Y')
+                            ."</div>
+                            <div class='meta'>
+                                <span>".$description."</span>
+                            </div>
+                        </div>
+                    </div>";
+                }
+
+                mysqli_stmt_close($stmt);
+                ?>
             </div>
         </div>
 
