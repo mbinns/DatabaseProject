@@ -183,7 +183,7 @@ if (isset($_GET['logout']))
     <!-- Following Menu -->
     <div class="ui large top fixed hidden menu">
         <div class="ui container">
-            <a class="active item" href="index.html">Home</a>
+            <a class="active item" href="index.php">Home</a>
             <?php
             if (isUserLoggedIn())
             {
@@ -229,7 +229,7 @@ if (isset($_GET['logout']))
 
     <!-- Sidebar Menu -->
     <div class="ui vertical inverted sidebar menu">
-        <a class="active item" href="index.html">Home</a>
+        <a class="active item" href="index.php">Home</a>
         <?php
         if (isUserLoggedIn())
         {
@@ -271,7 +271,7 @@ if (isset($_GET['logout']))
                     <a class="toc item">
                         <i class="sidebar icon"></i>
                     </a>
-                    <a class="active item" href="index.html">Home</a>
+                    <a class="active item" href="index.php">Home</a>
                     <?php
                     if (isUserLoggedIn())
                     {

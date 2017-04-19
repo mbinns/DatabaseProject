@@ -239,7 +239,7 @@ session_start();
           <div class="ui">
                 <div class="ui large secondary container inverted pointing menu">
                 <a class="toc item"> <em class="sidebar icon"></em></a>
-                <a class="active item" href="index.html">Home</a>
+                <a class="active item" href="index.php">Home</a>
                 <a class="item" href="channel.php">Channel</a>
                 <a class="item">Videos</a>
                 <a class="item">Favorites</a>

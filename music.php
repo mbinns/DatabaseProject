@@ -147,7 +147,7 @@
     <!-- Following Menu -->
     <div class="ui large top fixed hidden menu">
         <div class="ui container">
-            <a class="active item" href="index.html">Home</a>
+            <a class="active item" href="index.php">Home</a>
             <a class="item" href="channel.php">Channel</a>
             <a class="item" href="playlist.php">Playlists</a>
             <div class="ui simple dropdown item">Media
@@ -173,7 +173,7 @@
 
     <!-- Sidebar Menu -->
     <div class="ui vertical inverted sidebar menu">
-        <a class="active item" href="index.html">Home</a>
+        <a class="active item" href="index.php">Home</a>
         <a class="item" href="channel.php">Channel</a>
         <a class="item" href="playlist.php">Playlists</a>
         <div class="header item">Media
@@ -194,7 +194,7 @@
                     <a class="toc item">
                         <i class="sidebar icon"></i>
                     </a>
-                    <a class="active item" href="index.html">Home</a>
+                    <a class="active item" href="index.php">Home</a>
                     <a class="item" href="channel.php">Channel</a>
                     <a class="item" href="playlist.php">Playlists</a>
                     <div class="ui simple dropdown item">Media
