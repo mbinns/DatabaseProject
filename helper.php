@@ -95,11 +95,6 @@ function isExistingEmail($email)
     return $count != 0;
 }
 
-/*
-    TODO:
-    In index.index if this returns true then instead of "Sign In/Register"
-    "Sign Out" should be shown instead
-*/
 function isUserLoggedIn()
 {
     return isset($_SESSION['user_id']);
