@@ -224,9 +224,9 @@ session_start();
                     </div>
                 </div>
 
-        <div class="ui row segment centered">
-            <h2>All Music</h2>
-        </div>
+            <div class="ui row segment centered">
+                <h2>All Music</h2>
+            </div>
 
         <div class="ui items segment container">
             <?php

@@ -48,7 +48,6 @@ if (
             move_uploaded_file($_FILES["upload"]["tmp_name"],
             "media/" . $_FILES["upload"]["name"]);
             // echo "Stored in: " . "upload/" . $_FILES["upload"]["name"];
-            $tmp = "media/" . $_FILES["upload"]["name"];
             echo $tmp;
         }
     }

@@ -39,8 +39,19 @@ if (isset($_GET['logout']))
     <link href="Content/components/transition.css" rel="stylesheet" />
 	<link href="Content/components/search.css" rel="stylesheet" />
 
+    <!-- Player stuff -->
+	<link href="Content/components/dropdown.css" rel="stylesheet" />
+	<link href="Content/components/comments.css" rel="stylesheet" />
+
+
     <!-- Modfying some stuff for the home page -->
     <style type="text/css">
+        .ui#comments{
+        }
+        .ui#media{
+            padding-top: 5em;
+            padding-bottom: 5em;
+        }
 		.pusher {
 			background-color: #1b1c1d !important;
 
@@ -50,7 +61,6 @@ if (isset($_GET['logout']))
         }
 
         .masthead.segment {
-            min-height: 700px;
             padding: 1em 0em;
         }
 
@@ -154,6 +164,9 @@ if (isset($_GET['logout']))
     <script src="Content/components/sidebar.js"></script>
     <script src="Content/components/transition.js"></script>
 	<script src= "Content/components/search.js"></script>
+	<script src= "Content/components/dropdown.js"></script>
+	<script src= "Content/components/comments.js"></script>
+    
     <!-- Script so the menu will follow -->
     <script>
         $(document)
@@ -264,7 +277,7 @@ if (isset($_GET['logout']))
 
     <!-- Page Contents -->
     <div class="pusher">
-        <div class="ui inverted vertical masthead center aligned segment">
+        <div class="ui inverted vertical masthead segment">
 
             <div class="ui container">
                 <div class="ui large secondary inverted pointing menu">
@@ -315,10 +328,98 @@ if (isset($_GET['logout']))
             </div>
         </div><!--Masthead-->
 
-    <div class="videoContainer">
-    <video id="myVideo" controls preload="auto" poster="http://s.cdpn.io/6035/vp_poster.jpg" width="380" >
-        <source src="http://simplypx.com/images/Prometheus.mp4" type="video/mp4" />
-    </div>
+        <!-- Media player -->
+        <div id="media" class="ui container inverted segment">
+            <div class="videoContainer ">
+                <video id="player" controls preload="auto" poster="" width="720" >
+                    <source src="media/mov_bbb.mp4" type="video/mp4" />
+                    <p>Your browser does not support the video tag.</p>
+                </video>
+                <div class="caption">
+                    <h1>Big Buck Bunny</h1>
+                </div>
+                <div class="control">
+                    <div class="btmControl">
+                        <div class="btnPlay btn" title="Play/Pause video"><span class="icon-play"></span></div>
+                        <div class="progress-bar">
+                            <div class="progress">
+                                <span class="bufferBar"></span>
+                                <span class="timeBar"></span>
+                            </div>
+                        </div>
+                        <!--<div class="volume" title="Set volume">
+                            <span class="volumeBar"></span>
+                        </div>-->
+                        <div class="sound sound2 btn" title="Mute/Unmute sound"><span class="icon-sound"></span></div>
+                        <div class="btnFS btn" title="Switch to full screen"><span class="icon-fullscreen"></span></div>
+                    </div>
+                </div>
+                <div class="ui compact menu">
+                    <div class="ui simple dropdown item">
+                        Add to Playlist
+                        <i class="dropdown icon"></i>
+                        <div class="menu">
+                        <div class="item">Favorites</div>
+                        <div class="item">Choice 2</div>
+                        <div class="item">Choice 3</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="comments" class="ui segment comments container">
+              <h3 class="ui dividing header">Comments</h3>
+              <div class="comment">
+                <div class="content">
+                  <a class="author">Matt</a>
+                  <div class="metadata">
+                    <span class="date">Today at 5:42PM</span>
+                  </div>
+                  <div class="text">
+                    Poor Bunny! :(
+                  </div>
+                  <div class="actions">
+                    <a class="reply">Reply</a>
+                  </div>
+                </div>
+              </div>
+              <div class="comment">
+                <div class="content">
+                  <a class="author">Elliot</a>
+                  <div class="metadata">
+                    <span class="date">Yesterday at 12:30AM</span>
+                  </div>
+                  <div class="text">
+                    <p>I bet he gets angry!</p>
+                  </div>
+                  <div class="actions">
+                    <a class="reply">Reply</a>
+                  </div>
+                </div>
+              </div>
+              <div class="comment">
+                <div class="content">
+                  <a class="author">Joe</a>
+                  <div class="metadata">
+                    <span class="date">5 days ago</span>
+                  </div>
+                  <div class="text">
+                    Dude, this is awesome. Thanks so much
+                  </div>
+                  <div class="actions">
+                    <a class="reply">Reply</a>
+                  </div>
+                </div>
+              </div>
+              <form class="ui reply form">
+                <div class="field">
+                  <textarea></textarea>
+                </div>
+                <div class="ui blue labeled submit icon button">
+                  <i class="icon edit"></i> Add Reply
+                </div>
+              </form>
+            </div>
+        </div>
         <div class="ui inverted vertical footer segment">
             <div class="ui container">
                 <div class="ui stackable inverted divided equal height stackable grid">
