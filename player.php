@@ -166,7 +166,7 @@ if (isset($_GET['logout']))
 	<script src= "Content/components/search.js"></script>
 	<script src= "Content/components/dropdown.js"></script>
 	<script src= "Content/components/comments.js"></script>
-    
+
     <!-- Script so the menu will follow -->
     <script>
         $(document)
@@ -201,7 +201,7 @@ if (isset($_GET['logout']))
             if (isUserLoggedIn())
             {
                 echo
-                "<a class='item' href='channel.php?id=".$_SESSION['user_id']."'>My Channel</a>";
+                "<a class='item' href='channel.php?user_id=".$_SESSION['user_id']."'>My Channel</a>";
             }
             ?>
             <div class="ui simple dropdown item">Media
@@ -247,7 +247,7 @@ if (isset($_GET['logout']))
         if (isUserLoggedIn())
         {
             echo
-            "<a class='item' href='channel.php?id=".$_SESSION['user_id']."'>My Channel</a>";
+            "<a class='item' href='channel.php?user_id=".$_SESSION['user_id']."'>My Channel</a>";
         }
         ?>
         <div class="header item">Media
@@ -289,7 +289,7 @@ if (isset($_GET['logout']))
                     if (isUserLoggedIn())
                     {
                         echo
-                        "<a class='item' href='channel.php?id=".$_SESSION['user_id']."'>My Channel</a>";
+                        "<a class='item' href='channel.php?user_id=".$_SESSION['user_id']."'>My Channel</a>";
                     }
                     ?>
                     <div class="ui simple dropdown item">Media
@@ -331,7 +331,7 @@ if (isset($_GET['logout']))
         <!-- Media player -->
         <div id="media" class="ui container inverted segment">
 
-            
+
             <!-- Pictures -->
             <img class="ui huge image" src="media/Anchorman_well_that_escalated_quickly_966.jpg">
             </img>

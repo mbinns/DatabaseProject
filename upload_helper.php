@@ -106,5 +106,5 @@ else
 if (isset($error))
     header("Location: upload.php?error=$error");
 else
-    header("Location: channel.php?id=$userId");
+    header("Location: channel.php?user_id=$userId");
 ?>

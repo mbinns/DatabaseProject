@@ -21,7 +21,7 @@ if (isset($_POST["submit"]))
     if (isValidUpdateEmail($_POST["email"]))
     {
         updateUser($_POST["email"], $_POST["fname"], $_POST["lname"], $_POST["about"]);
-        header("Location: channel.php?id=$userId");
+        header("Location: channel.php?user_id=$userId");
     }
     else
         $updateError = "This email is already being used";
@@ -303,7 +303,7 @@ if (isset($_POST["submit"]))
             <a class="active item" href="index.php">Home</a>
             <?php
             echo
-            "<a class='item' href='channel.php?id=".$userId."'>My Channel</a>";
+            "<a class='item' href='channel.php?user_id=".$userId."'>My Channel</a>";
             ?>
             <div class="ui simple dropdown item">Media
                 <i class="dropdown icon"></i>
@@ -330,7 +330,7 @@ if (isset($_POST["submit"]))
         if (isUserLoggedIn())
         {
             echo
-            "<a class='item' href='channel.php?id=".$userId."'>My Channel</a>";
+            "<a class='item' href='channel.php?user_id=".$userId."'>My Channel</a>";
         }
         ?>
         <div class="header item">Media
@@ -357,7 +357,7 @@ if (isset($_POST["submit"]))
                     <a class="active item" href="index.php">Home</a>
                     <?php
                     echo
-                    "<a class='item' href='channel.php?id=".$userId."'>My Channel</a>";
+                    "<a class='item' href='channel.php?user_id=".$userId."'>My Channel</a>";
                     ?>
                     <div class="ui simple dropdown item">Media
                         <i class="dropdown icon"></i>

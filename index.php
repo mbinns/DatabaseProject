@@ -188,7 +188,7 @@ if (isset($_GET['logout']))
             if (isUserLoggedIn())
             {
                 echo
-                "<a class='item' href='channel.php?id=".$_SESSION['user_id']."'>My Channel</a>";
+                "<a class='item' href='channel.php?user_id=".$_SESSION['user_id']."'>My Channel</a>";
             }
             ?>
             <div class="ui simple dropdown item">Media
@@ -234,7 +234,7 @@ if (isset($_GET['logout']))
         if (isUserLoggedIn())
         {
             echo
-            "<a class='item' href='channel.php?id=".$_SESSION['user_id']."'>My Channel</a>";
+            "<a class='item' href='channel.php?user_id=".$_SESSION['user_id']."'>My Channel</a>";
         }
         ?>
         <div class="header item">Media
@@ -276,7 +276,7 @@ if (isset($_GET['logout']))
                     if (isUserLoggedIn())
                     {
                         echo
-                        "<a class='item' href='channel.php?id=".$_SESSION['user_id']."'>My Channel</a>";
+                        "<a class='item' href='channel.php?user_id=".$_SESSION['user_id']."'>My Channel</a>";
                     }
                     ?>
                     <div class="ui simple dropdown item">Media

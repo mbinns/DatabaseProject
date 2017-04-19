@@ -14,7 +14,7 @@ if (isset($_POST["submit"]))
         registerUser($email, $password, $fname, $lname);
         $userId = getUserId($email);
         $_SESSION["user_id"] = $userId;
-        header("Location: channel.php?id=".$userId);
+        header("Location: channel.php?user_id=".$userId);
     }
     else
         $registerError = "This email is already being used";

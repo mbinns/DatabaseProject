@@ -2,10 +2,10 @@
 include_once "helper.php";
 session_start();
 
-if (!isset($_GET['id']))
+if (!isset($_GET['user_id']))
     return;
 
-$id = $_GET['id'];
+$userId = $_GET['user_id'];
 
 ?>
 
@@ -265,7 +265,7 @@ $id = $_GET['id'];
                     <?php
                     echo
                     "<a class='header'>"
-                        .getUserName($id)
+                        .getUserName($userId)
                     ."</a>";
                     ?>
                 </div>
@@ -273,14 +273,14 @@ $id = $_GET['id'];
                     <?php
                     echo
                     "<span class='date'>Member since "
-                    .getUserJoinDate($id)
+                    .getUserJoinDate($userId)
                     ."</span>"
                     ?>
                 </div>
                 <?php
                 echo
                 "<div class='description'>"
-                    .getUserAbout($id)
+                    .getUserAbout($userId)
                 ."</div>";
                 ?>
             </div>
@@ -294,7 +294,7 @@ $id = $_GET['id'];
                 global $db;
                 $query = "SELECT pl_name FROM playlist WHERE user_id = ?";
                 $stmt = mysqli_prepare($db, $query);
-                mysqli_stmt_bind_param($stmt, "i", $id);
+                mysqli_stmt_bind_param($stmt, "i", $userId);
                 mysqli_stmt_execute($stmt);
                 mysqli_stmt_bind_result($stmt, $playlistName);
 
@@ -321,7 +321,7 @@ $id = $_GET['id'];
                 global $db;
                 $query = "SELECT title, type, description, upload_date FROM media WHERE user_id = ?";
                 $stmt = mysqli_prepare($db, $query);
-                mysqli_stmt_bind_param($stmt, "i", $id);
+                mysqli_stmt_bind_param($stmt, "i", $userId);
                 mysqli_stmt_execute($stmt);
                 mysqli_stmt_bind_result($stmt, $title, $type, $description, $uploadDate);
 

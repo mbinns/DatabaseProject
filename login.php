@@ -23,7 +23,7 @@ if (isset($_POST['submit']))
         case 2:
             $userId = getUserId($email);
             $_SESSION["user_id"] = $userId;
-            header("Location: channel.php?id=".$userId);
+            header("Location: channel.php?user_id=".$userId);
             break;
     }
 }
