@@ -107,10 +107,19 @@ function isUserLoggedIn()
 
 function registerUser($email, $password, $firstname, $lastname)
 {
+    // Register user
     global $db;
     $query = "INSERT INTO account (email, password, firstname, lastname, joindate) values (?, ?, ?, ?, ?)";
     $stmt = mysqli_prepare($db, $query);
     mysqli_stmt_bind_param($stmt, "sssss", $email, $password, $firstname, $lastname, date("Y-m-d"));
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_close($stmt);
+
+    // Give this user a favorites playlist
+    $query = "INSERT INTO playlist (pl_name, user_id) values (?, ?)";
+    $stmt = mysqli_prepare($db, $query);
+    $name = "Favorites";
+    mysqli_stmt_bind_param($stmt, "sd", $name, getUserId($email));
     mysqli_stmt_execute($stmt);
     mysqli_stmt_close($stmt);
 }
