@@ -34,7 +34,8 @@ session_start();
     <!-- Nice Transitions to avoid popin -->
     <link href="Content/components/transition.css" rel="stylesheet" />
 
-    <!-- Login form -->
+    <!-- Upload form -->
+    <link href="Content/components/checkbox.css" rel="stylesheet" />
     <link href="Content/components/form.css" rel="stylesheet" />
     <link href="Content/components/input.css" rel="stylesheet" />
     <link href="Content/components/button.css" rel="stylesheet" />
@@ -178,6 +179,7 @@ session_start();
     <script src="Content/components/form.js"></script>
     <script src="Content/components/visibility.js"></script>
     <script src="Content/components/sidebar.js"></script>
+    <script src="Content/components/checkbox.js"></script>
 
     <!-- Registration Script Input Validation -->
     <script>
@@ -186,67 +188,15 @@ session_start();
               $('.ui.form')
                 .form({
                     fields: {
-                        email: {
-                            identifier: 'email',
-                            rules: [
-                              {
-                                  type: 'empty',
-                                  prompt: 'Please enter your e-mail'
-                              },
-                              {
-                                  type: 'email',
-                                  prompt: 'Please enter a valid e-mail'
-                              }
-                            ]//rules
-                        },//email
-                         lname: {
-                           identifier: 'lname',
+                         text: {
+                           identifier: 'title',
                            rules: [
                              {
                                type   : 'empty',
-                               prompt : 'Please enter your Last Name'
+                               prompt : 'Please enter your video title'
                              }
                            ]
-                         },//lname
-                         fname: {
-                           identifier: 'fname',
-                           rules: [
-                             {
-                               type   : 'empty',
-                               prompt : 'Please enter your First Name'
-                             }
-                           ]
-                         },//lname
-                        password: {
-                            identifier: 'password',
-                            rules: [
-                              {
-                                  type: 'empty',
-                                  prompt: 'Please enter your password'
-                              },
-                              {
-                                  type: 'length[6]',
-                                  prompt: 'Your password must be at least 6 characters'
-                              }
-                            ]//rules
-                        },//password
-                        password: {
-                            identifier: 'repassword',
-                            rules: [
-                              {
-                                  type: 'empty',
-                                  prompt: 'Please re-enter your password'
-                              },
-                              {
-                                  type: 'length[6]',
-                                  prompt: 'Your password must be at least 6 characters'
-                              },
-                              {
-                                  type: 'match[password]',
-                                  prompt: 'Your Passwords do not match'
-                              }
-                            ]//rules
-                        }//repassword
+                         }//lname
                     }//fields
                 })//form
               ;
@@ -346,11 +296,22 @@ session_start();
                                     <input type="text" name="title" placeholder="Title">
                                 </div>
                             </div>
-                            <div class="field">
-
-                                <!-- TODO: DESCRIPTION -->
-
+                            <div class="inline field">
+                                <div class="ui checkbox">
+                                    <input type="checkbox">
+                                    <label>Enable Comments</label>
+                                </div>
                             </div>
+                            <div class="two fields">
+                                 <div name="description" class="field">
+                                     <label>Description</label>
+                                     <textarea></textarea>
+                                 </div>
+                                 <div name="keyword" class="field">
+                                     <label>Tags</label>
+                                     <textarea></textarea>
+                                 </div>
+                             </div>
                             <button class="ui fluid large orange submit button" name="submit">Upload</button>
                         </div>
 
