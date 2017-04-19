@@ -144,8 +144,137 @@
 </head>
 
 <body>
-    <div class="pusher">
-
+    <!-- Following Menu -->
+    <div class="ui large top fixed hidden menu">
+        <div class="ui container">
+            <a class="active item" href="index.html">Home</a>
+            <a class="item" href="channel.php">Channel</a>
+            <a class="item" href="playlist.php">Playlists</a>
+            <div class="ui simple dropdown item">Media
+                <i class="dropdown icon"></i>
+                <div class="menu">
+                  <a class="item" href="all.php">All</a>
+                  <a class="item" href="videos.php">Videos</a>
+                  <a class="item" href="music.php">Music</a>
+                  <a class="item" href="pictures.php">Pictures</a>
+                </div>
+            </div>
+            <a class="item">Favorites</a>
+            <div class="right menu">
+                <div class="item">
+                    <a class="ui button" href="login.php">Log in</a>
+                </div>
+                <div class="item">
+                    <a class="ui primary button" href="register.php">Sign Up</a>
+                </div>
+            </div>
+        </div>
     </div>
+
+    <!-- Sidebar Menu -->
+    <div class="ui vertical inverted sidebar menu">
+        <a class="active item" href="index.html">Home</a>
+        <a class="item" href="channel.php">Channel</a>
+        <a class="item" href="playlist.php">Playlists</a>
+        <div class="header item">Media
+            <div class="menu">
+                <a class="item" href="all.php">All</a>
+                <a class="item" href="videos.php">Videos</a>
+                <a class="item" href="music.php">Music</a>
+                <a class="item" href="pictures.php">Pictures</a>
+            </div>
+        </div>
+        <a class="item" href="login.php">Login</a>
+        <a class="item" href="register.php">Signup</a>
+    </div>
+    <div class="pusher">
+        <div class="ui inverted vertical masthead center aligned segment">
+            <div class="ui container">
+                <div class="ui large secondary inverted pointing menu">
+                    <a class="toc item">
+                        <i class="sidebar icon"></i>
+                    </a>
+                    <a class="active item" href="index.html">Home</a>
+                    <a class="item" href="channel.php">Channel</a>
+                    <a class="item" href="playlist.php">Playlists</a>
+                    <div class="ui simple dropdown item">Media
+                        <i class="dropdown icon"></i>
+                        <div class="menu">
+                            <a class="item" href="all.php">All</a>
+                            <a class="item" href="videos.php">Videos</a>
+                            <a class="item" href="music.php">Music</a>
+                            <a class="item" href="pictures.php">Pictures</a>
+                        </div>
+                    </div>
+                    <div class="right item">
+                    <div class="ui category search item">
+                        <div class="ui icon input">
+                            <input class="prompt" type="text" placeholder="Search...">
+                                <i class="search link icon"></i>
+                            </div>
+                        <div class="results"></div>
+                    </div>
+                        <a class="ui inverted button" href="login.php">Log in</a>
+                        <a class="ui inverted button" href="register.php">Sign Up</a>
+                    </div>
+                </div>
+
+        <div class="ui row segment centered">
+            <h2>All Videos</h2>
+        </div>
+
+        <div class="ui items segment container">
+            <?php
+            global $db;
+            $query = "SELECT title, type, descrip, date FROM media WHERE user_id = ?";
+            $stmt = mysqli_prepare($db, $query);
+            mysqli_stmt_bind_param($stmt, "d", $_SESSION['user_id']);
+            mysqli_stmt_execute($stmt);
+            mysqli_stmt_bind_result($stmt, $title, $type, $description, $uploadDate);
+
+            while (mysqli_stmt_fetch($stmt))
+            {
+                echo
+                "<div class='item'>
+                    <div class='image'>
+                        <img src='https://placehold.it/350x150'>
+                    </div>
+                    <div class='content'>
+                        <a class='header'>".$title."</a>
+                        <div class='extra'>".$type." uploaded "
+                            .date_format(date_create($uploadDate), 'F Y')
+                        ."</div>
+                        <div class='meta'>
+                            <span>".$description."</span>
+                        </div>
+                    </div>
+                </div>";
+            }
+
+            mysqli_stmt_close($stmt);
+            ?>
+        </div>
+        <!-- Footer segement -->
+        <div class="ui inverted vertical footer segment container">
+            <div class="ui centered">
+                <div class="ui stackable inverted divided equal height stackable grid">
+                    <div class="three wide column">
+                        <h4 class="ui inverted header">Creators</h4>
+                        <div class="ui inverted link list">
+                            <a href="https://mbinns.github.io" class="item">Mackenzie Binns</a>
+                            <a href="#" class="item">Ronnie Funderburk</a>
+                            <a href="#" class="item">Kevin Kim</a>
+                        </div>
+                    </div>
+
+                    <div class="seven wide column">
+                        <h4 class="ui inverted header">About</h4>
+                        <p>This is the MeTube site designed for the Clemson CPSC 4620 Databases class.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>
