@@ -389,12 +389,12 @@ if (isset($_POST["submit"]))
                     </form>
 
                     <?php
-                    if (isset($updateError))
+                    if (isset($changeError))
                     {
                         echo
                         "<div class='ui error message'>
                             <ul class='list'>
-                                <li>".$updateError."</li>
+                                <li>".$changeError."</li>
                             </ul>
                         </div>";
                     }
