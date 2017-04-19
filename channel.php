@@ -1,6 +1,12 @@
 <?php
 include_once "helper.php";
 session_start();
+
+if (!isset($_GET['id']))
+    return;
+
+$id = $_GET['id'];
+
 ?>
 
 <!DOCTYPE html>
@@ -259,7 +265,7 @@ session_start();
                     <?php
                     echo
                     "<a class='header'>"
-                        .getUserName($_SESSION['user_id'])
+                        .getUserName($id)
                     ."</a>";
                     ?>
                 </div>
@@ -267,14 +273,14 @@ session_start();
                     <?php
                     echo
                     "<span class='date'>Member since "
-                    .getUserJoinDate($_SESSION['user_id'])
+                    .getUserJoinDate($id)
                     ."</span>"
                     ?>
                 </div>
                 <?php
                 echo
                 "<div class='description'>"
-                    .getUserAbout($_SESSION['user_id'])
+                    .getUserAbout($id)
                 ."</div>";
                 ?>
             </div>
@@ -288,7 +294,7 @@ session_start();
                 global $db;
                 $query = "SELECT pl_name FROM playlist WHERE user_id = ?";
                 $stmt = mysqli_prepare($db, $query);
-                mysqli_stmt_bind_param($stmt, "d", $_SESSION['user_id']);
+                mysqli_stmt_bind_param($stmt, "d", $id);
                 mysqli_stmt_execute($stmt);
                 mysqli_stmt_bind_result($stmt, $playlistName);
 
@@ -315,7 +321,7 @@ session_start();
                 global $db;
                 $query = "SELECT title, type, descrip, date FROM media WHERE user_id = ?";
                 $stmt = mysqli_prepare($db, $query);
-                mysqli_stmt_bind_param($stmt, "d", $_SESSION['user_id']);
+                mysqli_stmt_bind_param($stmt, "d", $id);
                 mysqli_stmt_execute($stmt);
                 mysqli_stmt_bind_result($stmt, $title, $type, $description, $uploadDate);
 
