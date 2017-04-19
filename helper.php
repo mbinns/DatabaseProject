@@ -69,16 +69,7 @@ function hasValidCredentials($email, $plainPassword)
     if (!isExistingEmail($email))
         return 0;
 
-    global $db;
-    $query = "SELECT password FROM account WHERE email = ?";
-    $stmt = mysqli_prepare($db, $query);
-    mysqli_stmt_bind_param($stmt, "s", $email);
-    mysqli_stmt_execute($stmt);
-    mysqli_stmt_bind_result($stmt, $hashedPassword);
-    mysqli_stmt_fetch($stmt);
-    mysqli_stmt_close($stmt);
-
-    return password_verify($plainPassword, $hashedPassword) ? 2 : 1;
+    return isValidPassword(getUserId($email), $plainPassword) ? 2 : 1;
 }
 
 function isExistingEmail($email)
@@ -117,6 +108,20 @@ function isValidUpdateEmail($email)
         return !isExistingEmail($email);
 }
 
+function isValidPassword($userId, $plainPassword)
+{
+    global $db;
+    $query = "SELECT password FROM account WHERE user_id = ?";
+    $stmt = mysqli_prepare($db, $query);
+    mysqli_stmt_bind_param($stmt, "s", $userId);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_bind_result($stmt, $hashedPassword);
+    mysqli_stmt_fetch($stmt);
+    mysqli_stmt_close($stmt);
+
+    return password_verify($plainPassword, $hashedPassword);
+}
+
 function registerUser($email, $password, $firstname, $lastname)
 {
     // Register user
@@ -132,6 +137,17 @@ function registerUser($email, $password, $firstname, $lastname)
     $stmt = mysqli_prepare($db, $query);
     $name = "Favorites";
     mysqli_stmt_bind_param($stmt, "si", $name, getUserId($email));
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_close($stmt);
+}
+
+function updatePassword($newPassword)
+{
+    // Update a user's password
+    global $db;
+    $query = "UPDATE account SET password = ? WHERE user_id = ?";
+    $stmt = mysqli_prepare($db, $query);
+    mysqli_stmt_bind_param($stmt, "sd", $newPassword, $_SESSION['user_id']);
     mysqli_stmt_execute($stmt);
     mysqli_stmt_close($stmt);
 }
