@@ -1,68 +1,60 @@
 <?php
-$target_file = basename($_FILES["upload"]["name"]);
-$FileType = pathinfo($target_file,PATHINFO_EXTENSION);
+//Define allowed extensions
+$allowedExts = array("gif", "jpeg", "jpg", "png", "mp3", "mp4", "wav", "ogg");
 
-// Allow certain file formats
-if($FileType != "jpg" && $FileType != "png" && $FileType != "jpeg"
-&& $FileType != "gif" ) {
-    echo "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
-}else{
-    $target_dir = "media/pictures/";
-    $target_file = $target_dir . basename($_FILES["upload"]["name"]);
-    
-    // Check if file already exists
-    if (file_exists($target_file)) {
-        echo "Sorry, file already exists.";
-        return;
-        $uploadOk = 0;
+//Grabs file extension by breaking the string into an array
+$extension = end(explode(".", $_FILES["file"]["name"]));
+
+//Check the mime type
+if (
+   ($_FILES["upload"]["type"] == "image/gif")
+|| ($_FILES["upload"]["type"] == "image/jpeg")
+|| ($_FILES["upload"]["type"] == "image/jpg")
+|| ($_FILES["upload"]["type"] == "image/pjpeg")
+|| ($_FILES["upload"]["type"] == "image/x-png")
+|| ($_FILES["upload"]["type"] == "image/png")
+|| ($_FILES["upload"]["type"] == 'audio/x-mpeg-3')
+|| ($_FILES["upload"]["type"] == 'audio/mp3')
+|| ($_FILES["upload"]["type"] == 'audio/mpeg3')
+|| ($_FILES["upload"]["type"] == 'audio/wav')
+|| ($_FILES["upload"]["type"] == 'audio/x-wav')
+|| ($_FILES["upload"]["type"] == 'audio/ogg')
+|| ($_FILES["upload"]["type"] == 'video/ogg')
+|| ($_FILES["upload"]["type"] == 'video/mpeg')
+|| ($_FILES["upload"]["type"] == 'video/x-mpeg')
+|| ($_FILES["upload"]["type"] == 'video/mp4')
+)
+{
+    //If the errors item has any elements then fail out
+    if ($_FILES["upload"]["error"] > 0)
+    {
+        echo "Return Code: " . $_FILES["upload"]["error"] . "<br>";
     }
-    if (move_uploaded_file($_FILES["upload"]["tmp_name"], $target_file)) {
-        echo "The file ". basename( $_FILES["upload"]["name"]). " has been uploaded.";
-        return;
-    } else {
-        echo "Sorry, there was an error uploading your file.";
-        return;
+    else
+    {
+        //Print out file upload information
+        echo "Upload: " . $_FILES["upload"]["name"] . "<br>";
+        echo "Type: " . $_FILES["upload"]["type"] . "<br>";
+        echo "Size: " . ($_FILES["upload"]["size"] / 1024) . " kB<br>";
+        echo "Temp upload: " . $_FILES["upload"]["tmp_name"] . "<br>";
+
+        //Check to see if the file has already been uploaded
+        if (file_exists("media/" . $_FILES["upload"]["name"]))
+        {
+            echo $_FILES["upload"]["name"] . " already exists. ";
+        }
+        else
+        {
+            move_uploaded_file($_FILES["upload"]["tmp_name"],
+            "media/" . $_FILES["upload"]["name"]);
+            // echo "Stored in: " . "upload/" . $_FILES["upload"]["name"];
+            $tmp = "media/" . $_FILES["upload"]["name"];
+            echo $tmp;
+        }
     }
 }
-
-// Allow certain file formats
-if($FileType != "mp3" && $FileType != "Ogg" && $FileType != "wav") {
-    echo "Sorry, only mp3, Ogg, wav files are allowed.";
-}else{
-    $target_dir = "./media/music/";
-    $target_file = $target_dir . basename($_FILES["upload"]["name"]);
-    // Check if file already exists
-    if (file_exists($target_file)) {
-        echo "Sorry, file already exists.";
-        return;
-    }
-    if (move_uploaded_file($_FILES["upload"]["tmp_name"], $target_file)) {
-        echo "The file ". basename( $_FILES["upload"]["name"]). " has been uploaded.";
-        return;
-    } else {
-        echo "Sorry, there was an error uploading your file.";
-        return;
-    }
+else
+{
+    echo "Invalid type, does not match our signature checker or file is over 1000M";
 }
-
-// Allow certain file formats
-if($FileType != "mp4" && $FileType != "webm") {
-    echo "Sorry, only mp4, Pgg, webm files are allowed.";
-}else{
-    $target_dir = "./media/videos/";
-    $target_file = $target_dir . basename($_FILES["upload"]["name"]);
-    // Check if file already exists
-    if (file_exists($target_file)) {
-        echo "Sorry, file already exists.";
-        return;
-    }
-    if (move_uploaded_file($_FILES["upload"]["tmp_name"], $target_file)) {
-        echo "The file ". basename( $_FILES["upload"]["name"]). " has been uploaded.";
-        return;
-    } else {
-        echo "Sorry, there was an error uploading your file.";
-        return;
-    }
-}
-
 ?>
