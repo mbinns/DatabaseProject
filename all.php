@@ -254,6 +254,7 @@ session_start();
             }
             ?>
         </div>
+
         <!-- Footer segement -->
         <div class="ui inverted vertical footer segment container">
             <div class="ui centered">
