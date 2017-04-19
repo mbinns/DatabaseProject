@@ -14,7 +14,7 @@ if (isset($_POST['submit']))
         registerUser($email, $password, $fname, $lname);
         $userId = getUserId($email);
         $_SESSION["user_id"] = $userId;
-        header("Location: channel.php");
+        header("Location: channel.php?id=".$userId);
     }
     else
         $registerError = "This email is already being used";
@@ -301,7 +301,7 @@ if (isset($_POST['submit']))
     <!-- Following Menu -->
     <div class="ui large top inverted fixed hidden menu ">
         <div class="ui container">
-            <a class="active item" href="index.html">Home</a>
+            <a class="active item" href="index.php">Home</a>
             <a class="item">Channel</a>
             <a class="item">Videos</a>
             <a class="item">Favorites</a>
@@ -318,7 +318,7 @@ if (isset($_POST['submit']))
 
     <!-- Sidebar Menu -->
     <div class="ui vertical inverted sidebar menu">
-        <a class="active item" href="index.html">Home</a>
+        <a class="active item" href="index.php">Home</a>
         <a class="item">Channel</a>
         <a class="item">Videos</a>
         <a class="item">Favorites</a>
@@ -337,7 +337,7 @@ if (isset($_POST['submit']))
                     <a class="toc item">
                         <em class="sidebar icon"></em>
                     </a>
-                    <a class="active item" href="index.html">Home</a>
+                    <a class="active item" href="index.php">Home</a>
                     <a class="item">Channel</a>
                     <a class="item">Videos</a>
                     <a class="item">Favorites</a>

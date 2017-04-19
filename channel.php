@@ -1,6 +1,12 @@
 <?php
 include_once "helper.php";
 session_start();
+
+if (!isset($_GET['id']))
+    return;
+
+$id = $_GET['id'];
+
 ?>
 
 <!DOCTYPE html>
@@ -307,7 +313,7 @@ session_start();
           <div class="ui">
                 <div class="ui large secondary container inverted pointing menu">
                 <a class="toc item"> <em class="sidebar icon"></em></a>
-                <a class="active item" href="index.html">Home</a>
+                <a class="active item" href="index.php">Home</a>
                 <a class="item" href="channel.php">Channel</a>
                 <a class="item">Videos</a>
                 <a class="item">Favorites</a>
@@ -327,7 +333,7 @@ session_start();
                     <?php
                     echo
                     "<a class='header'>"
-                        .getUserName($_SESSION['user_id'])
+                        .getUserName($id)
                     ."</a>";
                     ?>
                 </div>
@@ -335,28 +341,55 @@ session_start();
                     <?php
                     echo
                     "<span class='date'>Member since "
-                    .getUserJoinDate($_SESSION['user_id'])
+                    .getUserJoinDate($id)
                     ."</span>"
                     ?>
                 </div>
                 <?php
                 echo
                 "<div class='description'>"
-                    .getUserAbout($_SESSION['user_id'])
+                    .getUserAbout($id)
                 ."</div>";
                 ?>
             </div>
 
-            <div class="ui row segment centered">
-                <h2>Uploads</h2>
+            <!-- Show user playlists -->
+            <div class="ui items segment container">
+                <div class='item'>
+                    <h2>Playlists</h2>
+                </div>
+                <?php
+                global $db;
+                $query = "SELECT pl_name FROM playlist WHERE user_id = ?";
+                $stmt = mysqli_prepare($db, $query);
+                mysqli_stmt_bind_param($stmt, "d", $id);
+                mysqli_stmt_execute($stmt);
+                mysqli_stmt_bind_result($stmt, $playlistName);
+
+                while (mysqli_stmt_fetch($stmt))
+                {
+                    echo
+                    "<div class='item'>
+                        <div class='content'>
+                            <a class='header'>".$playlistName."</a>
+                        </div>
+                    </div>";
+                }
+
+                mysqli_stmt_close($stmt);
+                ?>
             </div>
 
+            <!-- Show user uploads -->
             <div class="ui items segment container">
+                <div class='item'>
+                    <h2>Uploads</h2>
+                </div>
                 <?php
                 global $db;
                 $query = "SELECT title, type, descrip, date FROM media WHERE user_id = ?";
                 $stmt = mysqli_prepare($db, $query);
-                mysqli_stmt_bind_param($stmt, "d", $_SESSION['user_id']);
+                mysqli_stmt_bind_param($stmt, "d", $id);
                 mysqli_stmt_execute($stmt);
                 mysqli_stmt_bind_result($stmt, $title, $type, $description, $uploadDate);
 
@@ -382,6 +415,7 @@ session_start();
                 mysqli_stmt_close($stmt);
                 ?>
             </div>
+
         </div>
 
         <!-- Footer segement -->

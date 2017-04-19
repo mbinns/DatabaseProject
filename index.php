@@ -1,3 +1,14 @@
+<?php
+include_once "helper.php";
+session_start();
+
+if (isset($_GET['logout']))
+{
+    session_destroy();
+    header("Location: index.php");
+}
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -172,9 +183,14 @@
     <!-- Following Menu -->
     <div class="ui large top fixed hidden menu">
         <div class="ui container">
-            <a class="active item" href="index.html">Home</a>
-            <a class="item" href="channel.php">Channel</a>
-            <a class="item" href="playlist.php">Playlists</a>
+            <a class="active item" href="index.php">Home</a>
+            <?php
+            if (isUserLoggedIn())
+            {
+                echo
+                "<a class='item' href='channel.php?id=".$_SESSION['user_id']."'>My Channel</a>";
+            }
+            ?>
             <div class="ui simple dropdown item">Media
                 <i class="dropdown icon"></i>
                 <div class="menu">
@@ -186,21 +202,41 @@
             </div>
             <a class="item">Favorites</a>
             <div class="right menu">
-                <div class="item">
-                    <a class="ui button" href="login.php">Log in</a>
-                </div>
-                <div class="item">
-                    <a class="ui primary button" href="register.php">Sign Up</a>
-                </div>
+                <?php
+                if (isUserLoggedIn())
+                {
+                    echo
+                    "<div class='item'>
+                        <a class='item' href='index.php?logout'>Log out</a>
+                    </div>";
+                }
+                else
+                {
+                    echo
+                    "<div class='item'>
+                        <a class='item' href='login.php'>Login</a>
+                    </div>";
+
+                    echo
+                    "<div class='item'>
+                        <a class='item' href='register.php'>Sign Up</a>
+                    </div>";
+                }
+                ?>
             </div>
         </div>
     </div>
 
     <!-- Sidebar Menu -->
     <div class="ui vertical inverted sidebar menu">
-        <a class="active item" href="index.html">Home</a>
-        <a class="item" href="channel.php">Channel</a>
-        <a class="item" href="playlist.php">Playlists</a>
+        <a class="active item" href="index.php">Home</a>
+        <?php
+        if (isUserLoggedIn())
+        {
+            echo
+            "<a class='item' href='channel.php?id=".$_SESSION['user_id']."'>My Channel</a>";
+        }
+        ?>
         <div class="header item">Media
             <div class="menu">
                 <a class="item" href="all.php">All</a>
@@ -209,8 +245,20 @@
                 <a class="item" href="pictures.php">Pictures</a>
             </div>
         </div>
-        <a class="item" href="login.php">Login</a>
-        <a class="item" href="register.php">Signup</a>
+        <?php
+        if (isUserLoggedIn())
+        {
+            echo
+            "<a class='item' href='index.php?logout'>Log out</a>";
+        }
+        else
+        {
+            echo
+            "<a class='item' href='login.php'>Login</a>";
+            echo
+            "<a class='item' href='register.php'>Sign Up</a>";
+        }
+        ?>
     </div>
 
 
@@ -223,9 +271,14 @@
                     <a class="toc item">
                         <i class="sidebar icon"></i>
                     </a>
-                    <a class="active item" href="index.html">Home</a>
-                    <a class="item" href="channel.php">Channel</a>
-                    <a class="item" href="playlist.php">Playlists</a>
+                    <a class="active item" href="index.php">Home</a>
+                    <?php
+                    if (isUserLoggedIn())
+                    {
+                        echo
+                        "<a class='item' href='channel.php?id=".$_SESSION['user_id']."'>My Channel</a>";
+                    }
+                    ?>
                     <div class="ui simple dropdown item">Media
                         <i class="dropdown icon"></i>
                         <div class="menu">
@@ -243,8 +296,20 @@
                             </div>
                         <div class="results"></div>
                     </div>
-                        <a class="ui inverted button" href="login.php">Log in</a>
-                        <a class="ui inverted button" href="register.php">Sign Up</a>
+                        <?php
+                        if (isUserLoggedIn())
+                        {
+                            echo
+                            "<a class='item' href='index.php?logout'>Log out</a>";
+                        }
+                        else
+                        {
+                            echo
+                            "<a class='item' href='login.php'>Login</a>";
+                            echo
+                            "<a class='item' href='register.php'>Sign Up</a>";
+                        }
+                        ?>
                     </div>
                 </div>
             </div>
@@ -254,7 +319,6 @@
                     MeTube
                 </h1>
                 <h2>Upload Whatever, Whenever</h2>
-                <div class="ui huge primary button">Signup<i class="right arrow icon"></i></div>
             </div>
 
         </div>
