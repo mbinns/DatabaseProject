@@ -234,36 +234,6 @@ if (isset($_POST["submit"]))
                              }
                            ]
                          },//lname
-                        password: {
-                            identifier: 'password',
-                            rules: [
-                              {
-                                  type: 'empty',
-                                  prompt: 'Please enter your password'
-                              },
-                              {
-                                  type: 'length[6]',
-                                  prompt: 'Your password must be at least 6 characters'
-                              }
-                            ]//rules
-                        },//password
-                        password: {
-                            identifier: 'repassword',
-                            rules: [
-                              {
-                                  type: 'empty',
-                                  prompt: 'Please re-enter your password'
-                              },
-                              {
-                                  type: 'length[6]',
-                                  prompt: 'Your password must be at least 6 characters'
-                              },
-                              {
-                                  type: 'match[password]',
-                                  prompt: 'Your Passwords do not match'
-                              }
-                            ]//rules
-                        }//repassword
                     }//fields
                 })//form
               ;
@@ -385,7 +355,7 @@ if (isset($_POST["submit"]))
             <div id="form" class="ui inverted middle aligned center aligned page grid">
                 <div class="column">
                     <h2 class="ui orange image header">
-                        Update account information
+                        Update Account Information
                     </h2>
                     <form name="update" class="ui inverted large form" action="profile_update.php" method="post">
                         <div class="ui stacked inverted segment">
