@@ -231,7 +231,7 @@ session_start();
         <div class="ui items segment container">
             <?php
             global $db;
-            $query = "SELECT title, type, date, descrip FROM media";
+            $query = "SELECT title, type, upload_date, description FROM media";
             $result = mysqli_query($db, $query);
 
             while ($row = mysqli_fetch_row($result))

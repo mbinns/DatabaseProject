@@ -20,7 +20,7 @@ function getUserAbout($id)
     global $db;
     $query = "SELECT about FROM account WHERE user_id = ?";
     $stmt = mysqli_prepare($db, $query);
-    mysqli_stmt_bind_param($stmt, "d", $id);
+    mysqli_stmt_bind_param($stmt, "i", $id);
     mysqli_stmt_execute($stmt);
     mysqli_stmt_bind_result($stmt, $about);
     mysqli_stmt_fetch($stmt);
@@ -34,7 +34,7 @@ function getUserName($id)
     global $db;
     $query = "SELECT firstname, lastname FROM account WHERE user_id = ?";
     $stmt = mysqli_prepare($db, $query);
-    mysqli_stmt_bind_param($stmt, "d", $id);
+    mysqli_stmt_bind_param($stmt, "i", $id);
     mysqli_stmt_execute($stmt);
     mysqli_stmt_bind_result($stmt, $fname, $lname);
     mysqli_stmt_fetch($stmt);
@@ -48,7 +48,7 @@ function getUserJoinDate($id)
     global $db;
     $query = "SELECT joindate FROM account WHERE user_id = ?";
     $stmt = mysqli_prepare($db, $query);
-    mysqli_stmt_bind_param($stmt, "d", $id);
+    mysqli_stmt_bind_param($stmt, "i", $id);
     mysqli_stmt_execute($stmt);
     mysqli_stmt_bind_result($stmt, $joinDate);
     mysqli_stmt_fetch($stmt);
@@ -114,7 +114,7 @@ function registerUser($email, $password, $firstname, $lastname)
     $query = "INSERT INTO playlist (pl_name, user_id) values (?, ?)";
     $stmt = mysqli_prepare($db, $query);
     $name = "Favorites";
-    mysqli_stmt_bind_param($stmt, "sd", $name, getUserId($email));
+    mysqli_stmt_bind_param($stmt, "si", $name, getUserId($email));
     mysqli_stmt_execute($stmt);
     mysqli_stmt_close($stmt);
 }

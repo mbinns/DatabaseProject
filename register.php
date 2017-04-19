@@ -2,7 +2,7 @@
 include_once "helper.php";
 session_start();
 
-if (isset($_POST['submit']))
+if (isset($_POST["submit"]))
 {
     $email = $_POST["email"];
     $password = password_hash($_POST["password"], PASSWORD_DEFAULT);
