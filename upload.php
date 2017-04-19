@@ -284,11 +284,11 @@ session_start();
                     <h2 class="ui orange image header">
                         Media Upload
                     </h2>
-                    <form name="upload" class="ui inverted large form" action="upload.php" method="post">
+                    <form name="upload" class="ui inverted large form" action="upload_helper.php" method="post" enctype="multipart/form-data">
                         <div class="ui stacked inverted segment">
                             <div class="field">
                                 <label for="file">Add a file:</label>
-                                <input type="file" id="fileInput"/>
+                                <input name="upload" type="file" id="fileInput"/>
                             </div>
 
                             <div class="field">
