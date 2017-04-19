@@ -1,30 +1,36 @@
-﻿<?php
+<?php
 include_once "helper.php";
 session_start();
 
+if (!isUserLoggedIn())
+    header("Location: index.php");
+
+$userId = $_SESSION['user_id'];
+
+global $db;
+$query = "SELECT email, firstname, lastname, about FROM account WHERE user_id = ?";
+$stmt = mysqli_prepare($db, $query);
+mysqli_stmt_bind_param($stmt, "i", $userId);
+mysqli_stmt_execute($stmt);
+mysqli_stmt_bind_result($stmt, $email, $fname, $lname, $about);
+mysqli_stmt_fetch($stmt);
+mysqli_stmt_close($stmt);
+
 if (isset($_POST["submit"]))
 {
-    $email = $_POST["email"];
-    $password = password_hash($_POST["password"], PASSWORD_DEFAULT);
-    $fname = $_POST["fname"];
-    $lname = $_POST["lname"];
-
-    if (!isExistingEmail($email))
+    if (isValidUpdateEmail($_POST["email"]))
     {
-        registerUser($email, $password, $fname, $lname);
-        $userId = getUserId($email);
-        $_SESSION["user_id"] = $userId;
-        header("Location: channel.php?id=".$userId);
+        updateUser($_POST["email"], $_POST["fname"], $_POST["lname"], $_POST["about"]);
+        header("Location: channel.php?id=$userId");
     }
     else
-        $registerError = "This email is already being used";
+        $updateError = "This email is already being used";
 }
 ?>
 
 <!DOCTYPE html>
 <html>
 <head>
-
     <!-- Standard Meta -->
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
@@ -33,7 +39,7 @@ if (isset($_POST["submit"]))
     <!-- Site Properties -->
     <!-- Might have to fix these links on linux to match directory style-->
     <!-- ../dist/components/-->
-    <title>Register</title>
+    <title>MeTube</title>
     <link href="Content/semantic.css" rel="stylesheet" />
     <link href="Content/components/reset.css" rel="stylesheet" />
     <link href="Content/components/site.css" rel="stylesheet" />
@@ -45,20 +51,13 @@ if (isset($_POST["submit"]))
     <link href="Content/components/divider.css" rel="stylesheet" />
     <link href="Content/components/dropdown.css" rel="stylesheet" />
     <link href="Content/components/segment.css" rel="stylesheet" />
+    <link href="Content/components/button.css" rel="stylesheet" />
     <link href="Content/components/list.css" rel="stylesheet" />
     <link href="Content/components/icon.css" rel="stylesheet" />
     <link href="Content/components/sidebar.css" rel="stylesheet" />
-
-    <!-- Nice Transitions to avoid popin -->
     <link href="Content/components/transition.css" rel="stylesheet" />
+	<link href="Content/components/search.css" rel="stylesheet" />
 
-    <!-- Login form -->
-    <link href="Content/components/form.css" rel="stylesheet" />
-    <link href="Content/components/input.css" rel="stylesheet" />
-    <link href="Content/components/button.css" rel="stylesheet" />
-    <link href="Content/components/message.css" rel="stylesheet" />
-
-    <!-- Style changes for register page -->
     <style type="text/css">
         body {
             background-color: #1b1c1d !important;
@@ -189,15 +188,15 @@ if (isset($_POST["submit"]))
 		}
     </style>
 
-    <!-- Scripts -->
+    <!-- ../dist/components/-->
     <script src="Scripts/jquery-1.8.1.min.js"></script>
     <script src="Scripts/semantic.js"></script>
-    <script src="Content/components/transition.js"></script>
-    <script src="Content/components/form.js"></script>
     <script src="Content/components/visibility.js"></script>
     <script src="Content/components/sidebar.js"></script>
+    <script src="Content/components/transition.js"></script>
+	<script src= "Content/components/search.js"></script>
 
-    <!-- Registration Script Input Validation -->
+    <!-- Update Script Input Validation -->
     <script>
         $(document)
           .ready(function () {
@@ -296,21 +295,29 @@ if (isset($_POST["submit"]))
         ;
     </script>
 </head>
-<body class="inverted">
+<body>
 
     <!-- Following Menu -->
-    <div class="ui large top inverted fixed hidden menu ">
+    <div class="ui large top fixed hidden menu">
         <div class="ui container">
             <a class="active item" href="index.php">Home</a>
-            <a class="item">Channel</a>
-            <a class="item">Videos</a>
+            <?php
+            echo
+            "<a class='item' href='channel.php?id=".$userId."'>My Channel</a>";
+            ?>
+            <div class="ui simple dropdown item">Media
+                <i class="dropdown icon"></i>
+                <div class="menu">
+                  <a class="item" href="all.php">All</a>
+                  <a class="item" href="videos.php">Videos</a>
+                  <a class="item" href="music.php">Music</a>
+                  <a class="item" href="pictures.php">Pictures</a>
+                </div>
+            </div>
             <a class="item">Favorites</a>
             <div class="right menu">
-                <div class="item">
-                    <a class="ui inverted button" href="login.php">Log in</a>
-                </div>
-                <div class="item">
-                    <a class="ui inverted button" href="register.php">Sign Up</a>
+				<div class='item'>
+                    <a class='item' href='index.php?logout'>Log out</a>
                 </div>
             </div>
         </div>
@@ -319,74 +326,93 @@ if (isset($_POST["submit"]))
     <!-- Sidebar Menu -->
     <div class="ui vertical inverted sidebar menu">
         <a class="active item" href="index.php">Home</a>
-        <a class="item">Channel</a>
-        <a class="item">Videos</a>
-        <a class="item">Favorites</a>
-        <a class="item" href="login.php">Login</a>
-        <a class="item" href="register.php">Signup</a>
+        <?php
+        if (isUserLoggedIn())
+        {
+            echo
+            "<a class='item' href='channel.php?id=".$userId."'>My Channel</a>";
+        }
+        ?>
+        <div class="header item">Media
+            <div class="menu">
+                <a class="item" href="all.php">All</a>
+                <a class="item" href="videos.php">Videos</a>
+                <a class="item" href="music.php">Music</a>
+                <a class="item" href="pictures.php">Pictures</a>
+            </div>
+        </div>
+		<a class='item' href='index.php?logout'>Log out</a>
     </div>
-
 
 
     <!-- Page Contents -->
     <div class="pusher">
-        <div class="ui inverted vertical masthead segment">
-            <!-- Menu -->
-          <div class="ui container">
+        <div class="ui inverted vertical masthead center aligned segment">
+
+            <div class="ui container">
                 <div class="ui large secondary inverted pointing menu">
                     <a class="toc item">
-                        <em class="sidebar icon"></em>
+                        <i class="sidebar icon"></i>
                     </a>
                     <a class="active item" href="index.php">Home</a>
-                    <a class="item">Channel</a>
-                    <a class="item">Videos</a>
-                    <a class="item">Favorites</a>
+                    <?php
+                    echo
+                    "<a class='item' href='channel.php?id=".$userId."'>My Channel</a>";
+                    ?>
+                    <div class="ui simple dropdown item">Media
+                        <i class="dropdown icon"></i>
+                        <div class="menu">
+                            <a class="item" href="all.php">All</a>
+                            <a class="item" href="videos.php">Videos</a>
+                            <a class="item" href="music.php">Music</a>
+                            <a class="item" href="pictures.php">Pictures</a>
+                        </div>
+                    </div>
                     <div class="right item">
-                        <a class="ui inverted button" href="login.php">Log in</a>
-                        <a class="ui inverted button" href="register.php">Sign Up</a>
+                    <div class="ui category search item">
+                        <div class="ui icon input">
+                            <input class="prompt" type="text" placeholder="Search...">
+                                <i class="search link icon"></i>
+                            </div>
+                        <div class="results"></div>
+                    </div>
+					<a class='item' href='index.php?logout'>Log out</a>
                     </div>
                 </div>
             </div>
 
-            <!-- Registration Form -->
+            <!-- Update Form -->
             <div id="form" class="ui inverted middle aligned center aligned page grid">
                 <div class="column">
                     <h2 class="ui orange image header">
-                        Register your account
+                        Update account information
                     </h2>
-                    <form name="register" class="ui inverted large form" action="register.php" method="post">
+                    <form name="update" class="ui inverted large form" action="profile_update.php" method="post">
                         <div class="ui stacked inverted segment">
                             <div class="field">
                                 <div class="ui left icon input">
                                     <i class="user icon"></i>
-                                    <input type="text" name="email" placeholder="E-mail address">
+                                    <input type="text" name="email" placeholder="E-mail Address" value=<?php echo $email; ?>>
                                 </div>
                             </div>
                             <div class="field">
                                 <div class="ui left icon input">
                                     <i class="user icon"></i>
-                                    <input type="text" name="fname" placeholder="First Name">
+                                    <input type="text" name="fname" placeholder="First Name" value=<?php echo $fname; ?>>
                                 </div>
                             </div>
                             <div class="field">
                                 <div class="ui left icon input">
                                     <i class="user icon"></i>
-                                    <input type="text" name="lname" placeholder="Last Name">
+                                    <input type="text" name="lname" placeholder="Last Name" value=<?php echo $lname; ?>>
                                 </div>
                             </div>
+
                             <div class="field">
-                                <div class="ui left icon input">
-                                    <i class="lock icon"></i>
-                                    <input type="password" name="password" placeholder="Password">
-                                </div>
+                                <textarea class="form control" name="about" placeholder="Write a bit about yourself"><?php echo $about; ?></textarea>
                             </div>
-                            <div class="field">
-                                <div class="ui left icon input">
-                                    <i class="lock icon"></i>
-                                    <input type="password" name="repassword" placeholder="Re-enter your Password">
-                                </div>
-                            </div>
-                            <button class="ui fluid large orange submit button" name="submit">Register</button>
+
+                            <button class="ui fluid large orange submit button" name="submit">Update</button>
                         </div>
 
                         <div name="error" class="ui error message"></div>
@@ -394,44 +420,41 @@ if (isset($_POST["submit"]))
                     </form>
 
                     <?php
-                    if (isset($registerError))
+                    if (isset($updateError))
                     {
                         echo
                         "<div class='ui error message'>
                             <ul class='list'>
-                                <li>".$registerError."</li>
+                                <li>".$updateError."</li>
                             </ul>
                         </div>";
                     }
                     ?>
 
-                    <div class="ui message">
-                        Already have an account? <a href="login.php">Login!</a>
-                    </div>
                 </div>
             </div>
+        </div>
 
-            <!-- Footer segement -->
-            <div class="ui inverted vertical footer segment">
-                <div class="ui container">
-                    <div class="ui stackable inverted divided equal height stackable grid">
-                        <div class="three wide column">
-                            <h4 class="ui inverted header">Creators</h4>
-                            <div class="ui inverted link list">
-                                <a href="https://mbinns.github.io" class="item">Mackenzie Binns</a>
-                                <a href="#" class="item">Ronnie Funderburk</a>
-                                <a href="#" class="item">Kevin Kim</a>
-                            </div>
+        <div class="ui inverted vertical footer segment">
+            <div class="ui container">
+                <div class="ui stackable inverted divided equal height stackable grid">
+                    <div class="three wide column">
+                        <h4 class="ui inverted header">Creators</h4>
+                        <div class="ui inverted link list">
+                            <a href="https://mbinns.github.io" class="item">Mackenzie Binns</a>
+                            <a href="#" class="item">Ronnie Funderburk</a>
+                            <a href="#" class="item">Kevin Kim</a>
                         </div>
+                    </div>
 
-                        <div class="seven wide column">
-                            <h4 class="ui inverted header">About</h4>
-                            <p>This is the MeTube site designed for the Clemson CPSC 4620 Databases class.</p>
-                        </div>
+                    <div class="seven wide column">
+                        <h4 class="ui inverted header">About</h4>
+                        <p>This is the MeTube site designed for the Clemson CPSC 4620 Databases class.</p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
 </body>
 </html>

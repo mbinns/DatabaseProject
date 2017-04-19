@@ -1,6 +1,24 @@
 ﻿<?php
-include_once "helper.php";
-session_start();
+if (isset($_GET['error']))
+{
+    $errorCode = $_GET['error'];
+
+    switch ($errorCode)
+    {
+        case 1:
+            $errorMsg = "Unknown upload error, the file may be corrupted";
+            break;
+        case 2:
+            $errorMsg = "This file has already been uploaded";
+            break;
+        case 3:
+            $errorMsg = "Unsupported file type";
+            break;
+        case 4:
+            $errorMsg = "Invalid type, does not match our signature header, or the file is over 1000MB";
+            break;
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -287,29 +305,29 @@ session_start();
                     <form name="upload" class="ui inverted large form" action="upload_helper.php" method="post" enctype="multipart/form-data">
                         <div class="ui stacked inverted segment">
                             <div class="field">
-                                <label for="file">Add a file:</label>
+                                <label>Add a file (Max 1000MB)</label>
                                 <input name="upload" type="file" id="fileInput"/>
                             </div>
-
                             <div class="field">
+                                <label>Title</label>
                                 <div class="ui left icon input">
-                                    <input type="text" name="title" placeholder="Title">
+                                    <input type="text" name="title">
                                 </div>
                             </div>
                             <div class="inline field">
                                 <div class="ui checkbox">
-                                    <input type="checkbox">
+                                    <input type="checkbox" name="comments">
                                     <label>Enable Comments</label>
                                 </div>
                             </div>
                             <div class="two fields">
-                                 <div name="description" class="field">
+                                 <div class="field">
                                      <label>Description</label>
-                                     <textarea></textarea>
+                                     <textarea class="form control" name="description"></textarea>
                                  </div>
-                                 <div name="keyword" class="field">
-                                     <label>Tags</label>
-                                     <textarea></textarea>
+                                 <div class="field">
+                                     <label>Tags (separated by commas)</label>
+                                     <textarea class="form control" name="tags"></textarea>
                                  </div>
                              </div>
                             <button class="ui fluid large orange submit button" name="submit">Upload</button>
@@ -317,6 +335,18 @@ session_start();
 
                         <div name="error" class="ui error message"></div>
                     </form>
+
+                    <?php
+                    if (isset($errorMsg))
+                    {
+                        echo
+                        "<div class='ui error message'>
+                            <ul class='list'>
+                                <li>".$errorMsg."</li>
+                            </ul>
+                        </div>";
+                    }
+                    ?>
 
                 </div>
             </div>
