@@ -1,4 +1,9 @@
-<!doctype html>
+<?php
+include_once "helper.php";
+session_start();
+?>
+
+<!DOCTYPE html>
 <html>
 <head>
     <!-- Standard Meta -->
@@ -226,32 +231,27 @@
         <div class="ui items segment container">
             <?php
             global $db;
-            $query = "SELECT title, type, descrip, date FROM media WHERE user_id = ?";
-            $stmt = mysqli_prepare($db, $query);
-            mysqli_stmt_bind_param($stmt, "d", $_SESSION['user_id']);
-            mysqli_stmt_execute($stmt);
-            mysqli_stmt_bind_result($stmt, $title, $type, $description, $uploadDate);
+            $query = "SELECT title, type, date, descrip FROM media";
+            $result = mysqli_query($db, $query);
 
-            while (mysqli_stmt_fetch($stmt))
+            while ($row = mysqli_fetch_row($result))
             {
                 echo
                 "<div class='item'>
-                    <div class='image'>
+                    <div class='small image'>
                         <img src='https://placehold.it/350x150'>
                     </div>
                     <div class='content'>
-                        <a class='header'>".$title."</a>
-                        <div class='extra'>".$type." uploaded "
-                            .date_format(date_create($uploadDate), 'F Y')
+                        <a class='header'>".$row[0]."</a>
+                        <div class='extra'>".$row[1]." uploaded "
+                            .date_format(date_create($row[2]), 'F Y')
                         ."</div>
                         <div class='meta'>
-                            <span>".$description."</span>
+                            <span>".$row[3]."</span>
                         </div>
                     </div>
                 </div>";
             }
-
-            mysqli_stmt_close($stmt);
             ?>
         </div>
         <!-- Footer segement -->

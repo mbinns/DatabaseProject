@@ -1,4 +1,9 @@
-<!doctype html>
+<?php
+include_once "helper.php";
+session_start();
+?>
+
+<!DOCTYPE html>
 <html>
 <head>
     <!-- Standard Meta -->

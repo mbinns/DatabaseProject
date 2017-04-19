@@ -319,7 +319,6 @@ if (isset($_GET['logout']))
                     MeTube
                 </h1>
                 <h2>Upload Whatever, Whenever</h2>
-                <div class="ui huge primary button">Signup<i class="right arrow icon"></i></div>
             </div>
 
         </div>
