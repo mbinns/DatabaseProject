@@ -330,6 +330,22 @@ if (isset($_GET['logout']))
 
         <!-- Media player -->
         <div id="media" class="ui container inverted segment">
+
+            
+            <!-- Pictures -->
+            <img class="ui huge image" src="media/Anchorman_well_that_escalated_quickly_966.jpg">
+            </img>
+
+            <!-- Audio Player -->
+            <audio controls>
+                <source src="media/15 - Xmas Blues (LP Version).mp3" type="audio/mpeg">
+            Your browser does not support the audio element.
+                <div class="caption">
+                    <h1>Big Buck Bunny</h1>
+                </div>
+            </audio>
+
+            <!-- Video Player -->
             <div class="videoContainer ">
                 <video id="player" controls preload="auto" poster="" width="720" >
                     <source src="media/mov_bbb.mp4" type="video/mp4" />
