@@ -100,6 +100,23 @@ function isUserLoggedIn()
     return isset($_SESSION['user_id']);
 }
 
+function isValidUpdateEmail($email)
+{
+    global $db;
+    $query = "SELECT email FROM account WHERE user_id = ?";
+    $stmt = mysqli_prepare($db, $query);
+    mysqli_stmt_bind_param($stmt, "d", $_SESSION['user_id']);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_bind_result($stmt, $oldEmail);
+    mysqli_stmt_fetch($stmt);
+    mysqli_stmt_close($stmt);
+
+    if ($email == $oldEmail)
+        return true;
+    else
+        return !isExistingEmail($email);
+}
+
 function registerUser($email, $password, $firstname, $lastname)
 {
     // Register user
@@ -115,6 +132,17 @@ function registerUser($email, $password, $firstname, $lastname)
     $stmt = mysqli_prepare($db, $query);
     $name = "Favorites";
     mysqli_stmt_bind_param($stmt, "si", $name, getUserId($email));
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_close($stmt);
+}
+
+function updateUser($email, $firstname, $lastname, $about)
+{
+    // Update user information (except password)
+    global $db;
+    $query = "UPDATE account SET email = ?, firstname = ?, lastname = ?, about = ? WHERE user_id = ?";
+    $stmt = mysqli_prepare($db, $query);
+    mysqli_stmt_bind_param($stmt, "ssssd", $email, $firstname, $lastname, $about, $_SESSION['user_id']);
     mysqli_stmt_execute($stmt);
     mysqli_stmt_close($stmt);
 }
