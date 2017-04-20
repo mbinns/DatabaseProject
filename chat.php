@@ -170,12 +170,13 @@ $senderId = $_GET['sender_id'];
     </script>
 
     <!-- Menu -->
-<?php include "menu_scripts.php";?>:
+<?php include "menu_scripts.php";?>
 </head>
 
 <body>
-    <!-- Following Menu -->
-    <!-- Sidebar Menu -->
+<!-- Following Menu -->
+<!-- Sidebar Menu -->
+<?php include "alt_menu.php";?>
 <div class="pusher">
     <div class="ui container">
         <?php include "menu.php";?>
