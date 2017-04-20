@@ -332,7 +332,7 @@ if (isset($_POST["submit"]))
                                      <textarea class="form control" name="tags"><?php echo $tags;?></textarea>
                                  </div>
                              </div>
-                            <button class="ui fluid large orange submit button" name="submit">Upload</button>
+                            <button class="ui fluid large orange submit button" name="submit">Update</button>
                         </div>
 
                         <div name="error" class="ui error message"></div>

@@ -392,8 +392,8 @@ $userId = $_GET['user_id'];
                         </div>
                         <div class='right floated content'>
                             <div class='ui two buttons'>
-                                <div class='ui button positive' onclick=\"location.href='update_media.php?id=$mediaId';\">Update</div>
-                                <div class='ui button negative' onclick=\"location.href='delete_media.php?id=$mediaId';\">Delete</div>
+                                <div class='ui button positive' onclick=\"location.href='update_media.php?media_id=$mediaId';\">Update</div>
+                                <div class='ui button negative' onclick=\"location.href='delete_media.php?media_id=$mediaId';\">Delete</div>
                             </div>
                         </div>
                     </div>";
