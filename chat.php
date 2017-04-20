@@ -170,7 +170,7 @@ $senderId = $_GET['sender_id'];
     </script>
 
     <!-- Menu -->
-<?php include "menue_scripts.php";?>:
+<?php include "menu_scripts.php";?>:
 </head>
 
 <body>
