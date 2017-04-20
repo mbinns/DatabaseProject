@@ -2,11 +2,19 @@
 include_once "helper.php";
 session_start();
 
-if (isset($_GET['logout']))
-{
-    session_destroy();
-    header("Location: index.php");
-}
+if (!isset($_GET['media_id']))
+    return;
+
+$mediaId = $_GET['media_id'];
+
+global $db;
+$query = "SELECT title, type, filepath, description, user_id, upload_date, download_count, mime, show_comments FROM media WHERE media_id = ?";
+$stmt = mysqli_prepare($db, $query);
+mysqli_stmt_bind_param($stmt, "i", $mediaId);
+mysqli_stmt_execute($stmt);
+mysqli_stmt_bind_result($stmt, $title, $type, $filepath, $description, $userId, $uploadDate, $downloadCount, $mime, $showComments);
+mysqli_stmt_fetch($stmt);
+mysqli_stmt_close($stmt);
 ?>
 
 <!DOCTYPE html>
@@ -20,7 +28,7 @@ if (isset($_GET['logout']))
     <!-- Site Properties -->
     <!-- Might have to fix these links on linux to match directory style-->
     <!-- ../dist/components/-->
-    <title>MeTube</title>
+    <title>MeTube Media Player</title>
     <link href="Content/semantic.css" rel="stylesheet" />
     <link href="Content/components/reset.css" rel="stylesheet" />
     <link href="Content/components/site.css" rel="stylesheet" />
@@ -331,57 +339,67 @@ if (isset($_GET['logout']))
         <!-- Media player -->
         <div id="media" class="ui container inverted segment">
 
-
-            <!-- Pictures -->
-            <img class="ui huge image" src="media/Anchorman_well_that_escalated_quickly_966.jpg">
-            </img>
-
-            <!-- Audio Player -->
-            <audio controls>
-                <source src="media/15 - Xmas Blues (LP Version).mp3" type="audio/mpeg">
-            Your browser does not support the audio element.
-                <div class="caption">
-                    <h1>Big Buck Bunny</h1>
-                </div>
-            </audio>
-
-            <!-- Video Player -->
-            <div class="videoContainer ">
-                <video id="player" controls preload="auto" poster="" width="720" >
-                    <source src="media/mov_bbb.mp4" type="video/mp4" />
-                    <p>Your browser does not support the video tag.</p>
-                </video>
-                <div class="caption">
-                    <h1>Big Buck Bunny</h1>
-                </div>
-                <div class="control">
-                    <div class="btmControl">
-                        <div class="btnPlay btn" title="Play/Pause video"><span class="icon-play"></span></div>
-                        <div class="progress-bar">
-                            <div class="progress">
-                                <span class="bufferBar"></span>
-                                <span class="timeBar"></span>
+            <?php
+            if ($type == "Picture")
+            {
+                echo
+                "<img class='ui huge image' src='".$filepath."'></img>";
+            }
+            else if ($type == "Music")
+            {
+                echo
+                "<audio controls>
+                    <source src='".$filepath."' type='audio/mpeg'>
+                        Your browser does not support the audio element.
+                </audio>";
+            }
+            else if ($type == "Video")
+            {
+                echo
+                "<div class='videoContainer'>
+                    <video id='player' controls preload='auto' poster='' width='720'>
+                        <source src='".$filepath."' type='video/mp4'/>
+                        <p>Your browser does not support the video tag.</p>
+                    </video>
+                    <div class='control'>
+                        <div class='btmControl'>
+                            <div class='btnPlay btn' title='Play/Pause video'><span class='icon-play'></span></div>
+                            <div class='progress-bar'>
+                                <div class='progress'>
+                                    <span class='bufferBar'></span>
+                                    <span class='timeBar'></span>
+                                </div>
                             </div>
+                            <div class='volume' title='Set volume'>
+                                <span class='volumeBar'></span>
+                            </div>
+                            <div class='sound sound2 btn' title='Mute/Unmute sound'><span class='icon-sound'></span></div>
+                            <div class='btnFS btn' title='Switch to full screen'><span class='icon-fullscreen'></span></div>
                         </div>
-                        <!--<div class="volume" title="Set volume">
-                            <span class="volumeBar"></span>
-                        </div>-->
-                        <div class="sound sound2 btn" title="Mute/Unmute sound"><span class="icon-sound"></span></div>
-                        <div class="btnFS btn" title="Switch to full screen"><span class="icon-fullscreen"></span></div>
                     </div>
-                </div>
-                <div class="ui compact menu">
-                    <div class="ui simple dropdown item">
+                </div>";
+            }
+
+            echo
+            "<div class='caption'>
+                <h1>".$title."</h1>
+            </div";
+
+            if (isUserLoggedIn())
+            {
+                echo
+                "<div class='ui compact menu'>
+                    <div class='ui simple dropdown item'>
                         Add to Playlist
-                        <i class="dropdown icon"></i>
-                        <div class="menu">
-                        <div class="item">Favorites</div>
-                        <div class="item">Choice 2</div>
-                        <div class="item">Choice 3</div>
+                        <i class='dropdown icon'></i>
+                        <div class='menu'>
+                            <div class='item'>Favorites</div>
                         </div>
                     </div>
-                </div>
-            </div>
+                </div>";
+            }
+            ?>
+
             <div id="comments" class="ui segment comments container">
               <h3 class="ui dividing header">Comments</h3>
               <div class="comment">
