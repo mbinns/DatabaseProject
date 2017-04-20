@@ -58,6 +58,20 @@ function getUserJoinDate($id)
     return date_format($date, "F Y");
 }
 
+function getPlaylistName($playlistId)
+{
+    global $db;
+    $query = "SELECT pl_name FROM playlist WHERE pl_id = ?";
+    $stmt = mysqli_prepare($db, $query);
+    mysqli_stmt_bind_param($stmt, "i", $playlistId);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_bind_result($stmt, $playlistName);
+    mysqli_stmt_fetch($stmt);
+    mysqli_stmt_close($stmt);
+
+    return $playlistName;
+}
+
 /*
     Determines if the users credentials are valid
     returns 0 if the email has not been registered
@@ -141,6 +155,23 @@ function isValidPassword($userId, $plainPassword)
     mysqli_stmt_close($stmt);
 
     return password_verify($plainPassword, $hashedPassword);
+}
+
+function isValidUpdatePlaylist($playlistId, $newPlaylistName)
+{
+    global $db;
+    $query = "SELECT pl_name FROM playlist WHERE pl_id = ? AND user_id = ?";
+    $stmt = mysqli_prepare($db, $query);
+    mysqli_stmt_bind_param($stmt, "ii", $playlistId, $_SESSION['user_id']);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_bind_result($stmt, $oldPlaylistName);
+    mysqli_stmt_fetch($stmt);
+    mysqli_stmt_close($stmt);
+
+    if ($newPlaylistName == $oldPlaylistName)
+        return true;
+    else
+        return !isExistingPlaylist($newPlaylistName);
 }
 
 function registerUser($email, $password, $firstname, $lastname)
