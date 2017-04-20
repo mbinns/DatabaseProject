@@ -5,9 +5,6 @@ session_start();
 $p_id = $_GET['playlist_id'];
 $m_id = $_GET['media_id'];
 
-//echo "\n" . $p_id;
-
-//echo $m_id;
 global $db;
 
 $query = "INSERT INTO playlistmedia (playlist_id, media_id) values (?,?)";
