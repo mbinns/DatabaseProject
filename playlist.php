@@ -5,7 +5,9 @@ session_start();
 if (!isset($_GET['playlist_id']))
     return;
 $playlistId = $_GET['playlist_id'];
-$userId = $_SESSION['user_id'];
+
+if (isUserLoggedIn())
+    $userId = $_SESSION['user_id'];
 ?>
 
 <!DOCTYPE html>
@@ -239,16 +241,17 @@ $userId = $_SESSION['user_id'];
         mysqli_stmt_fetch($stmt);
         mysqli_stmt_close($stmt);
 
-        $query = "SELECT media.media_id, media.title, media.type, media.description, media.upload_date
+        $query = "SELECT account.user_id, account.firstname, account.lastname,
+                  media.media_id, media.title, media.type, media.description, media.upload_date
                   FROM media
                   JOIN playlistmedia ON media.media_id = playlistmedia.media_id
+                  JOIN account ON media.user_id = account.user_id
                   WHERE playlistmedia.playlist_id = ?";
         $stmt = mysqli_prepare($db, $query);
         mysqli_stmt_bind_param($stmt, "i", $playlistId);
         mysqli_stmt_execute($stmt);
-        mysqli_stmt_bind_result($stmt, $mediaId, $title, $type, $description, $uploadDate);
+        mysqli_stmt_bind_result($stmt, $uploadUserId, $fname, $lname, $mediaId, $title, $type, $description, $uploadDate);
         ?>
-
 
         <div class="ui items divided list segment container">
             <?php
@@ -258,18 +261,19 @@ $userId = $_SESSION['user_id'];
                 echo
                 "<div class='item'>
                     <div class='small image'>
-                        <img src='https://placehold.it/350x150'>
+                        <img src='".getThumbnail($type)."'>
                     </div>
                     <div class='content'>
                         <a class='header' href='player.php?media_id=".$mediaId."'>".$title."</a>
-                        <div class='extra'>".$type." uploaded "
+                        <a class='extra' href='channel.php?user_id=$uploadUserId'>".$type." uploaded by
+                            <span style='color: #f2711c'>".$fname." ".$lname."</span>on "
                             .date_format(date_create($uploadDate), 'F Y')
-                        ."</div>
+                        ."</a>
                         <div class='meta'>
                             <span>".$description."</span>
                         </div>
                     </div>";
-                    if (isUserProfile($userId))
+                    if (isset($userId) && isUserProfile($userId))
                     {
                         echo"
                         <div class='right floated content'>

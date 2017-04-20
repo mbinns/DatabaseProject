@@ -1,6 +1,11 @@
 <?php
 include_once "config.php";
 
+function getThumbnail($type)
+{
+    return "media/".$type."_thumbnail.png";
+}
+
 function getUserId($email)
 {
     global $db;

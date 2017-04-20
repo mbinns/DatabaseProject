@@ -362,7 +362,7 @@ $userId = $_GET['user_id'];
                 echo
                 "<div class='item'>
                     <div class='image'>
-                        <img src='https://placehold.it/350x150'>
+                        <img src='".getThumbnail($type)."'>
                     </div>
                     <div class='content'>
                         <a class='header' href='player.php?media_id=".$mediaId."'><h2>".$title."</h2></a>
