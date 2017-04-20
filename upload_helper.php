@@ -81,13 +81,14 @@ if (
 
         // Write the metadata to the database
         global $db;
-        $query = "INSERT INTO media (title, type, filepath, description, user_id, upload_date, mime, show_comments) values (?, ?, ?, ?, ?, ?, ?, ?)";
+        $query = "INSERT INTO media (title, type, filepath, description, tags, user_id, upload_date, mime, show_comments) values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = mysqli_prepare($db, $query);
-        mysqli_stmt_bind_param($stmt, "ssssissi",
+        mysqli_stmt_bind_param($stmt, "sssssissi",
                                 $_POST["title"],
                                 $type,
                                 $filePath,
                                 $_POST["description"],
+                                $_POST["tags"],
                                 $userId,
                                 $timestamp,
                                 $mime,
@@ -95,6 +96,7 @@ if (
 
         mysqli_stmt_execute($stmt);
         mysqli_stmt_close($stmt);
+        chmod($filePath, 0644);
     }
 }
 else
