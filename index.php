@@ -177,6 +177,39 @@ if (isset($_GET['logout']))
           })
         ;
     </script>
+<script>
+window.onload = function() {
+    // Setup search
+
+    <?php
+    include_once "helper.php";
+    session_start();
+
+    global $db;
+    $query = "SELECT media_id, title, type, upload_date, tags, description FROM media";
+    $result = mysqli_query($db, $query);
+    $rows = array();
+
+    while($r = mysqli_fetch_assoc($result)) {
+        $rows[] = $r;
+    }
+    echo "var content = " . json_encode($rows) . ";";
+    ?>
+    $('.ui.search')
+        .search({
+            type: 'standard',
+            source: content,
+            searchFields : [
+                'title','description', 
+            ],
+
+        onSelect: function(result, response) {
+            location.href="player.php?media_id=" + result.media_id
+        },
+        searchFullText: false
+        });
+}
+</script>
 </head>
 <body>
 
@@ -289,10 +322,10 @@ if (isset($_GET['logout']))
                         </div>
                     </div>
                     <div class="right item">
-                    <div class="ui category search item">
+                    <div class="ui search">
                         <div class="ui icon input">
                             <input class="prompt" type="text" placeholder="Search...">
-                                <i class="search link icon"></i>
+                                <i class="search icon"></i>
                             </div>
                         <div class="results"></div>
                     </div>
