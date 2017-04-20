@@ -387,6 +387,9 @@ $userId = $_GET['user_id'];
             <!-- Show user uploads -->
             <div class="ui items segment divided list container">
                 <div class='item'>
+                    <div class="right floated content">
+                        <div class="ui positive button" onclick="location.href='upload.php';">Upload</div>
+                    </div>
                     <h2>Uploads</h2>
                 </div>
                 <?php
