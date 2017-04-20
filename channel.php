@@ -347,9 +347,21 @@ $userId = $_GET['user_id'];
 
             <!-- Show user playlists -->
             <div class="ui list items segment divided container">
-                <div class='header'>
+
+                <div class='item'>
+                <?php
+                if (isUserProfile($userId))
+                {
+                ?>
+                    <div class="right floated content">
+                        <div class="ui positive button" onclick="location.href='create_playlist.php';">Create Playlist</div>
+                    </div>
+                <?php
+                }
+                ?>
                     <h2>Playlists</h2>
                 </div>
+
                 <?php
                 global $db;
                 $query = "SELECT pl_id, pl_name FROM playlist WHERE user_id = ?";

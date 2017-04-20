@@ -86,6 +86,21 @@ function isExistingEmail($email)
     return $count != 0;
 }
 
+function isExistingPlaylist($playlistName)
+{
+    global $db;
+
+    $query = "SELECT count(pl_name) FROM playlist WHERE pl_name = ? AND user_id = ?";
+    $stmt = mysqli_prepare($db, $query);
+    mysqli_stmt_bind_param($stmt, "si", $playlistName, $_SESSION['user_id']);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_bind_result($stmt, $count);
+    mysqli_stmt_fetch($stmt);
+    mysqli_stmt_close($stmt);
+
+    return $count != 0;
+}
+
 function isUserLoggedIn()
 {
     return isset($_SESSION['user_id']);
