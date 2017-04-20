@@ -162,4 +162,15 @@ function updateUser($email, $firstname, $lastname, $about)
     mysqli_stmt_execute($stmt);
     mysqli_stmt_close($stmt);
 }
+
+function updateMedia($title, $desc, $tags, $comm, $m_id)
+{
+    // Update user information (except password)
+    global $db;
+    $query = "UPDATE media SET title = ?, description = ?, tags = ?, show_comments = ? WHERE media_id = ?";
+    $stmt = mysqli_prepare($db, $query);
+    mysqli_stmt_bind_param($stmt, "ssssd", $title, $desc, $tags, $comm, $m_id);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_close($stmt);
+}
 ?>

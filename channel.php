@@ -333,7 +333,7 @@ $userId = $_GET['user_id'];
                 $stmt = mysqli_prepare($db, $query);
                 mysqli_stmt_bind_param($stmt, "i", $userId);
                 mysqli_stmt_execute($stmt);
-                mysqli_stmt_bind_result($stmt,$p_id, $playlistName);
+                mysqli_stmt_bind_result($stmt, $p_id, $playlistName);
                 
 
                 while (mysqli_stmt_fetch($stmt))
@@ -344,8 +344,8 @@ $userId = $_GET['user_id'];
                             <a class='header'>".$playlistName."</a>
                             <div class='right floated content'>
                                 <div class='ui two buttons'>
-                                    <div class='ui button positive' onclick=\"location.href='update_playlist.php/?id=$p_id';\">Update</div>
-                                    <div class='ui button negative' onclick=\"location.href='delete_playlist.php/?id=$p_id';\">Delete</div>
+                                    <div class='ui button positive' onclick=\"location.href='update_playlist.php?play_id=$p_id';\">Update</div>
+                                    <div class='ui button negative' onclick=\"location.href='delete_playlist.php?play_id=$p_id';\">Delete</div>
                                 </div>
                             </div>
                         </div>
@@ -387,8 +387,8 @@ $userId = $_GET['user_id'];
                         </div>
                         <div class='right floated content'>
                             <div class='ui two buttons'>
-                                <div class='ui button positive' onclick=\"location.href='update_media.php/?id=$m_id';\">Update</div>
-                                <div class='ui button negative' onclick=\"location.href='delete_media.php/?id=$m_id';\">Delete</div>
+                                <div class='ui button positive' onclick=\"location.href='update_media.php?media_id=$m_id';\">Update</div>
+                                <div class='ui button negative' onclick=\"location.href='delete_media.php?media_id=$m_id';\">Delete</div>
                             </div>
                         </div>
                     </div>";
