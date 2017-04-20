@@ -5,6 +5,12 @@ session_start();
 if (!isset($_GET['media_id']))
     return;
 
+function formatTimestamp($time)
+{
+    $date = date_create($time);
+    return date_format($date, "F d Y h:i A");
+}
+
 $mediaId = $_GET['media_id'];
 
 global $db;
@@ -383,10 +389,12 @@ mysqli_stmt_close($stmt);
             echo
             "<div class='caption'>
                 <h1>".$title."</h1>
+                <h3>".$downloadCount."&nbsp;&nbsp;&nbsp;Views</h3>
             </div";
 
             if (isUserLoggedIn())
             {
+                // TODO: Add all of the user's playlists
                 echo
                 "<div class='ui compact menu'>
                     <div class='ui simple dropdown item'>
@@ -400,60 +408,56 @@ mysqli_stmt_close($stmt);
             }
             ?>
 
-            <div id="comments" class="ui segment comments container">
-              <h3 class="ui dividing header">Comments</h3>
-              <div class="comment">
-                <div class="content">
-                  <a class="author">Matt</a>
-                  <div class="metadata">
-                    <span class="date">Today at 5:42PM</span>
-                  </div>
-                  <div class="text">
-                    Poor Bunny! :(
-                  </div>
-                  <div class="actions">
-                    <a class="reply">Reply</a>
-                  </div>
-                </div>
-              </div>
-              <div class="comment">
-                <div class="content">
-                  <a class="author">Elliot</a>
-                  <div class="metadata">
-                    <span class="date">Yesterday at 12:30AM</span>
-                  </div>
-                  <div class="text">
-                    <p>I bet he gets angry!</p>
-                  </div>
-                  <div class="actions">
-                    <a class="reply">Reply</a>
-                  </div>
-                </div>
-              </div>
-              <div class="comment">
-                <div class="content">
-                  <a class="author">Joe</a>
-                  <div class="metadata">
-                    <span class="date">5 days ago</span>
-                  </div>
-                  <div class="text">
-                    Dude, this is awesome. Thanks so much
-                  </div>
-                  <div class="actions">
-                    <a class="reply">Reply</a>
-                  </div>
-                </div>
-              </div>
-              <form class="ui reply form">
-                <div class="field">
-                  <textarea></textarea>
-                </div>
-                <div class="ui blue labeled submit icon button">
-                  <i class="icon edit"></i> Add Reply
-                </div>
-              </form>
-            </div>
+            <?php
+            if ($showComments)
+            {
+                echo
+                "<div id='comments' class='ui segment comments container'>
+                    <h3 class='ui dividing header'>Comments</h3>";
+
+                global $db;
+                // $query = "SELECT comment, time, user_id FROM comments WHERE media_id = ? ORDER BY time DESC";
+
+                $query = "SELECT comments.comment, comments.time, comments.user_id, account.firstname, account.lastname
+                          FROM comments
+                          JOIN account ON comments.user_id = account.user_id
+                          WHERE media_id = ? ORDER BY time DESC";
+
+                $stmt = mysqli_prepare($db, $query);
+                mysqli_stmt_bind_param($stmt, "i", $mediaId);
+                mysqli_stmt_execute($stmt);
+                mysqli_stmt_bind_result($stmt, $comment, $time, $userId, $fname, $lname);
+
+                while (mysqli_stmt_fetch($stmt))
+                {
+                    echo
+                    "<div class='comment'>
+                        <div class='content'>
+                            <a class='author' href='channel.php?user_id=".$userId."'>".$fname." ".$lname."</a>
+                            <div class='metadata'>
+                                <span class='date'>".formatTimestamp($time)."</span>
+                            </div>
+                            <div class='text'>"
+                                .$comment.
+                            "</div>
+                        </div>
+                    </div>";
+                }
+
+                echo
+                "<form class='ui reply form'>
+                    <div class='field'>
+                        <textarea></textarea>
+                    </div>
+                    <div class='ui blue labeled submit icon button'>
+                        <i class='icon edit'></i> Add Reply
+                    </div>
+                </form>
+            </div>";
+        }
+        ?>
         </div>
+
         <div class="ui inverted vertical footer segment">
             <div class="ui container">
                 <div class="ui stackable inverted divided equal height stackable grid">
