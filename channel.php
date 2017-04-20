@@ -306,7 +306,7 @@ $userId = $_GET['user_id'];
               <div class="header"><h2>Messages</h2></div>
               <div class="item">
                 <div class="right floated content">
-                  <div class="ui button" onclick="location.href='reply.php/?id=';">Reply</div>
+                  <div class="ui button" onclick="location.href='reply.php?id=';">Reply</div>
                 </div>
                 <div class="content">
                   <h3>Alice</h3>
@@ -314,7 +314,7 @@ $userId = $_GET['user_id'];
               </div>
               <div class="item">
                 <div class="right floated content">
-                  <div class="ui button" onclick="location.href='reply.php/?id=';">Reply</div>
+                  <div class="ui button" onclick="location.href='reply.php?id=';">Reply</div>
                 </div>
                 <div class="content">
                   <h3>Mack</h3>
@@ -333,19 +333,19 @@ $userId = $_GET['user_id'];
                 $stmt = mysqli_prepare($db, $query);
                 mysqli_stmt_bind_param($stmt, "i", $userId);
                 mysqli_stmt_execute($stmt);
-                mysqli_stmt_bind_result($stmt,$p_id, $playlistName);
-                
+                mysqli_stmt_bind_result($stmt, $playlistId, $playlistName);
+
 
                 while (mysqli_stmt_fetch($stmt))
                 {
                     echo
                     "<div class='item'>
                         <div class='content'>
-                            <a class='header'>".$playlistName."</a>
+                            <a class='header' href='playlist.php?playlist_id=".$playlistId."'>".$playlistName."</a>
                             <div class='right floated content'>
                                 <div class='ui two buttons'>
-                                    <div class='ui button positive' onclick=\"location.href='update_playlist.php/?id=$p_id';\">Update</div>
-                                    <div class='ui button negative' onclick=\"location.href='delete_playlist.php/?id=$p_id';\">Delete</div>
+                                    <div class='ui button positive' onclick=\"location.href='update_playlist.php?playlist_id=$playlistId';\">Update</div>
+                                    <div class='ui button negative' onclick=\"location.href='delete_playlist.php?playlist_id=$playlistId';\">Delete</div>
                                 </div>
                             </div>
                         </div>
@@ -363,11 +363,11 @@ $userId = $_GET['user_id'];
                 </div>
                 <?php
                 global $db;
-                $query = "SELECT title, type, description, upload_date, media_id FROM media WHERE user_id = ?";
+                $query = "SELECT media_id, title, type, description, upload_date FROM media WHERE user_id = ?";
                 $stmt = mysqli_prepare($db, $query);
                 mysqli_stmt_bind_param($stmt, "i", $userId);
                 mysqli_stmt_execute($stmt);
-                mysqli_stmt_bind_result($stmt, $title, $type, $description, $uploadDate, $m_id);
+                mysqli_stmt_bind_result($stmt, $mediaId, $title, $type, $description, $uploadDate);
 
                 while (mysqli_stmt_fetch($stmt))
                 {
@@ -377,7 +377,7 @@ $userId = $_GET['user_id'];
                             <img src='https://placehold.it/350x150'>
                         </div>
                         <div class='content'>
-                            <a class='header'><h2>".$title."</h2></a>
+                            <a class='header' href='player.php?media_id=".$mediaId."'><h2>".$title."</h2></a>
                             <div class='extra'><h3>".$type." uploaded "
                                 .date_format(date_create($uploadDate), 'F Y')
                             ."</h3></div>
@@ -387,8 +387,8 @@ $userId = $_GET['user_id'];
                         </div>
                         <div class='right floated content'>
                             <div class='ui two buttons'>
-                                <div class='ui button positive' onclick=\"location.href='update_media.php/?id=$m_id';\">Update</div>
-                                <div class='ui button negative' onclick=\"location.href='delete_media.php/?id=$m_id';\">Delete</div>
+                                <div class='ui button positive' onclick=\"location.href='update_media.php?id=$mediaId';\">Update</div>
+                                <div class='ui button negative' onclick=\"location.href='delete_media.php?id=$mediaId';\">Delete</div>
                             </div>
                         </div>
                     </div>";
