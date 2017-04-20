@@ -149,10 +149,8 @@ session_start();
     <!-- Sidebar Menu -->
 <?php include "alt_menu.php";?>
 <div class="pusher">
-    <div class="ui inverted vertical masthead center aligned segment">
-        <!-- Menu -->
-        <?php include "menu.php";?>
-    </div>
+    <!-- Menu -->
+    <?php include "menu.php";?>
 
     <div class="ui items list divided segment container">
         <?php

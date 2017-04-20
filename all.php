@@ -148,10 +148,8 @@ session_start();
 <?php include "alt_menu.php";?>
 
 <div class="pusher">
-    <div class="ui inverted vertical masthead center aligned segment">
-        <!-- Menu -->
-        <?php include "menu.php";?>
-    </div>
+    <!-- Menu -->
+    <?php include "menu.php";?>
         <!-- List -->
         <div class="ui items divided list segment container">
             <?php

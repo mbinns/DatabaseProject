@@ -41,7 +41,6 @@ session_start();
         }
 
         .masthead.segment {
-            min-height: 700px;
             padding: 1em 0em;
         }
 
@@ -122,10 +121,6 @@ session_start();
                 display: block;
             }
 
-            .masthead.segment {
-                min-height: 350px;
-            }
-
             .masthead h1.ui.header {
                 font-size: 2em;
                 margin-top: 1.5em;
@@ -146,93 +141,25 @@ session_start();
     <script src="Content/components/transition.js"></script>
 
     <!-- Menu -->
+    <?php include "menu_scripts.php";?>
 </head>
 
 <body>
-    <!-- Following Menu -->
-    <div class="ui large top fixed hidden menu">
-        <div class="ui container">
-            <a class="active item" href="index.php">Home</a>
-            <a class="item" href="channel.php">Channel</a>
-            <a class="item" href="playlist.php">Playlists</a>
-            <div class="ui simple dropdown item">Media
-                <i class="dropdown icon"></i>
-                <div class="menu">
-                  <a class="item" href="all.php">All</a>
-                  <a class="item" href="videos.php">Videos</a>
-                  <a class="item" href="music.php">Music</a>
-                  <a class="item" href="pictures.php">Pictures</a>
-                </div>
-            </div>
-            <a class="item">Favorites</a>
-            <div class="right menu">
-                <div class="item">
-                    <a class="ui button" href="login.php">Log in</a>
-                </div>
-                <div class="item">
-                    <a class="ui primary button" href="register.php">Sign Up</a>
-                </div>
-            </div>
-        </div>
-    </div>
+<!-- Following Menu -->
+<!-- Sidebar Menu --
+<?php include "menu.php";?>
 
-    <!-- Sidebar Menu -->
-    <div class="ui vertical inverted sidebar menu">
-        <a class="active item" href="index.php">Home</a>
-        <a class="item" href="channel.php">Channel</a>
-        <a class="item" href="playlist.php">Playlists</a>
-        <div class="header item">Media
-            <div class="menu">
-                <a class="item" href="all.php">All</a>
-                <a class="item" href="videos.php">Videos</a>
-                <a class="item" href="music.php">Music</a>
-                <a class="item" href="pictures.php">Pictures</a>
-            </div>
-        </div>
-        <a class="item" href="login.php">Login</a>
-        <a class="item" href="register.php">Signup</a>
-    </div>
-    <div class="pusher">
-        <div class="ui inverted vertical masthead center aligned segment">
-            <div class="ui container">
-                <div class="ui large secondary inverted pointing menu">
-                    <a class="toc item">
-                        <i class="sidebar icon"></i>
-                    </a>
-                    <a class="active item" href="index.php">Home</a>
-                    <a class="item" href="channel.php">Channel</a>
-                    <a class="item" href="playlist.php">Playlists</a>
-                    <div class="ui simple dropdown item">Media
-                        <i class="dropdown icon"></i>
-                        <div class="menu">
-                            <a class="item" href="all.php">All</a>
-                            <a class="item" href="videos.php">Videos</a>
-                            <a class="item" href="music.php">Music</a>
-                            <a class="item" href="pictures.php">Pictures</a>
-                        </div>
-                    </div>
-                    <div class="right item">
-                    <div class="ui category search item">
-                        <div class="ui icon input">
-                            <input class="prompt" type="text" placeholder="Search...">
-                                <i class="search link icon"></i>
-                            </div>
-                        <div class="results"></div>
-                    </div>
-                        <a class="ui inverted button" href="login.php">Log in</a>
-                        <a class="ui inverted button" href="register.php">Sign Up</a>
-                    </div>
-                </div>
-
-            <div class="ui row segment centered">
-                <h2>All Music</h2>
-            </div>
 
         <div class="ui items segment container">
             <?php
             global $db;
             $query = "SELECT title, type, upload_date, description FROM media WHERE type = 'Music'";
             $result = mysqli_query($db, $query);
+            echo "
+                <div class='ui row segment centered'>
+                    <h2>All Music</h2>
+                </div>
+            ";
 
             while ($row = mysqli_fetch_row($result))
             {
