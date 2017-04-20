@@ -173,4 +173,5 @@ function updateMedia($title, $desc, $tags, $comm, $m_id)
     mysqli_stmt_execute($stmt);
     mysqli_stmt_close($stmt);
 }
+
 ?>
