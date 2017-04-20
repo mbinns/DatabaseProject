@@ -160,10 +160,6 @@ if (isset($_POST["submit"]))
                 display: block;
             }
 
-            .masthead.segment {
-                min-height: 350px;
-            }
-
             .masthead h1.ui.header {
                 font-size: 2em;
                 margin-top: 1.5em;
@@ -246,184 +242,68 @@ if (isset($_POST["submit"]))
     </script>
 
     <!-- Script so the menu will follow -->
-    <script>
-        $(document)
-          .ready(function () {
-              // fix menu when passed
-              $('.masthead')
-                .visibility({
-                    once: false,
-                    onBottomPassed: function () {
-                        $('.fixed.menu').transition('fade in');
-                    },
-                    onBottomPassedReverse: function () {
-                        $('.fixed.menu').transition('fade out');
-                    }
-                })
-              ;
-              // create sidebar and attach to menu open
-              $('.ui.sidebar')
-                .sidebar('attach events', '.toc.item')
-              ;
-          })
-        ;
-    </script>
+    <?php include "menu_scripts.php";?>
 </head>
 <body>
 
-    <!-- Following Menu -->
-    <div class="ui large top fixed hidden menu">
-        <div class="ui container">
-            <a class="active item" href="index.php">Home</a>
-            <?php
-            echo
-            "<a class='item' href='channel.php?user_id=".$userId."'>My Channel</a>";
-            ?>
-            <div class="ui simple dropdown item">Media
-                <i class="dropdown icon"></i>
-                <div class="menu">
-                  <a class="item" href="all.php">All</a>
-                  <a class="item" href="videos.php">Videos</a>
-                  <a class="item" href="music.php">Music</a>
-                  <a class="item" href="pictures.php">Pictures</a>
-                </div>
-            </div>
-            <a class="item">Favorites</a>
-            <div class="right menu">
-				<div class='item'>
-                    <a class='item' href='index.php?logout'>Log out</a>
-                </div>
-            </div>
-        </div>
-    </div>
+<!-- Following Menu -->
+<!-- Sidebar Menu -->
+<?php include "alt_menu.php";?>
+<!-- Page Contents -->
+<div class="pusher">
+i   <!-- Menu -->
+    <?php include "menu.php";?>
+        <!-- Update Form -->
+        <div id="form" class="ui inverted middle aligned center aligned page grid">
+            <div class="column">
+                <h2 class="ui orange image header">
+                    Change Password
+                </h2>
+                <form name="change" class="ui inverted large form" action="change_password.php" method="post">
+                    <div class="ui stacked inverted segment">
+                        <div class="field">
+                            <div class="ui left icon input">
+                                <i class="lock icon"></i>
+                                <input type="password" name="old_password" placeholder="Current Password">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="ui left icon input">
+                                <i class="lock icon"></i>
+                                <input type="password" name="new_password" placeholder="New Password">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="ui left icon input">
+                                <i class="lock icon"></i>
+                                <input type="password" name="new_repassword" placeholder="Re-enter Your New Password">
+                            </div>
+                        </div>
+                        <button class="ui fluid large orange submit button" name="submit">Update</button>
+                    </div>
 
-    <!-- Sidebar Menu -->
-    <div class="ui vertical inverted sidebar menu">
-        <a class="active item" href="index.php">Home</a>
-        <?php
-        if (isUserLoggedIn())
-        {
-            echo
-            "<a class='item' href='channel.php?user_id=".$userId."'>My Channel</a>";
-        }
-        ?>
-        <div class="header item">Media
-            <div class="menu">
-                <a class="item" href="all.php">All</a>
-                <a class="item" href="videos.php">Videos</a>
-                <a class="item" href="music.php">Music</a>
-                <a class="item" href="pictures.php">Pictures</a>
-            </div>
-        </div>
-		<a class='item' href='index.php?logout'>Log out</a>
-    </div>
+                    <div name="error" class="ui error message"></div>
 
+                </form>
 
-    <!-- Page Contents -->
-    <div class="pusher">
-        <div class="ui inverted vertical masthead center aligned segment">
-
-            <div class="ui container">
-                <div class="ui large secondary inverted pointing menu">
-                    <a class="toc item">
-                        <i class="sidebar icon"></i>
-                    </a>
-                    <a class="active item" href="index.php">Home</a>
-                    <?php
+                <?php
+                if (isset($changeError))
+                {
                     echo
-                    "<a class='item' href='channel.php?user_id=".$userId."'>My Channel</a>";
-                    ?>
-                    <div class="ui simple dropdown item">Media
-                        <i class="dropdown icon"></i>
-                        <div class="menu">
-                            <a class="item" href="all.php">All</a>
-                            <a class="item" href="videos.php">Videos</a>
-                            <a class="item" href="music.php">Music</a>
-                            <a class="item" href="pictures.php">Pictures</a>
-                        </div>
-                    </div>
-                    <div class="right item">
-                    <div class="ui category search item">
-                        <div class="ui icon input">
-                            <input class="prompt" type="text" placeholder="Search...">
-                                <i class="search link icon"></i>
-                            </div>
-                        <div class="results"></div>
-                    </div>
-					<a class='item' href='index.php?logout'>Log out</a>
-                    </div>
-                </div>
-            </div>
+                    "<div class='ui error message'>
+                        <ul class='list'>
+                            <li>".$changeError."</li>
+                        </ul>
+                    </div>";
+                }
+                ?>
 
-            <!-- Update Form -->
-            <div id="form" class="ui inverted middle aligned center aligned page grid">
-                <div class="column">
-                    <h2 class="ui orange image header">
-                        Change Password
-                    </h2>
-                    <form name="change" class="ui inverted large form" action="change_password.php" method="post">
-                        <div class="ui stacked inverted segment">
-                            <div class="field">
-                                <div class="ui left icon input">
-                                    <i class="lock icon"></i>
-                                    <input type="password" name="old_password" placeholder="Current Password">
-                                </div>
-                            </div>
-                            <div class="field">
-                                <div class="ui left icon input">
-                                    <i class="lock icon"></i>
-                                    <input type="password" name="new_password" placeholder="New Password">
-                                </div>
-                            </div>
-                            <div class="field">
-                                <div class="ui left icon input">
-                                    <i class="lock icon"></i>
-                                    <input type="password" name="new_repassword" placeholder="Re-enter Your New Password">
-                                </div>
-                            </div>
-                            <button class="ui fluid large orange submit button" name="submit">Update</button>
-                        </div>
-
-                        <div name="error" class="ui error message"></div>
-
-                    </form>
-
-                    <?php
-                    if (isset($changeError))
-                    {
-                        echo
-                        "<div class='ui error message'>
-                            <ul class='list'>
-                                <li>".$changeError."</li>
-                            </ul>
-                        </div>";
-                    }
-                    ?>
-
-                </div>
-            </div>
-        </div>
-
-        <div class="ui inverted vertical footer segment">
-            <div class="ui container">
-                <div class="ui stackable inverted divided equal height stackable grid">
-                    <div class="three wide column">
-                        <h4 class="ui inverted header">Creators</h4>
-                        <div class="ui inverted link list">
-                            <a href="https://mbinns.github.io" class="item">Mackenzie Binns</a>
-                            <a href="#" class="item">Ronnie Funderburk</a>
-                            <a href="#" class="item">Kevin Kim</a>
-                        </div>
-                    </div>
-
-                    <div class="seven wide column">
-                        <h4 class="ui inverted header">About</h4>
-                        <p>This is the MeTube site designed for the Clemson CPSC 4620 Databases class.</p>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
+
+<?php include "footer.php";?>
+</div>
 
 </body>
 </html>
