@@ -171,10 +171,6 @@ if (isset($_POST["submit"]))
                 display: block;
             }
 
-            .masthead.segment {
-                min-height: 350px;
-            }
-
             .masthead h1.ui.header {
                 font-size: 2em;
                 margin-top: 1.5em;
@@ -223,130 +219,47 @@ if (isset($_POST["submit"]))
     </script>
 
     <!-- Script so the menu will follow -->
-    <script>
-        $(document)
-          .ready(function () {
-              // fix menu when passed
-              $('.masthead')
-                .visibility({
-                    once: false,
-                    onBottomPassed: function () {
-                        $('.fixed.menu').transition('fade in');
-                    },
-                    onBottomPassedReverse: function () {
-                        $('.fixed.menu').transition('fade out');
-                    }
-                })
-              ;
-              // create sidebar and attach to menu open
-              $('.ui.sidebar')
-                .sidebar('attach events', '.toc.item')
-              ;
-          })
-        ;
-    </script>
+<?php include "menu_scripts.php";?>
 </head>
 <body class="inverted">
+<!-- Following Menu -->
+<!-- Sidebar Menu -->
+<?php include "alt_menu.php";?>
+<!-- Page Contents -->
+<div class="pusher">
+      <!-- Menu -->
+      <?php include "menu.php";?>
+        <!-- Playlist Form -->
+        <div id="form" class="ui inverted middle aligned center aligned page grid">
+            <div class="column">
+                <h2 class="ui orange image header">
+                    Update Playlist
+                </h2>
+                <form name="create_playlist" class="ui inverted large form" action=<?php echo "update_playlist.php?playlist_id=$playlistId"; ?> method="post">
+                    <div class="field">
+                        <input type="text" name="playlist_name" placeholder="Playlist name" value="<?php echo getPlaylistName($playlistId); ?>">
+                    </div>
+                    <button class="ui fluid large orange submit button" name="submit">Update Playlist</button>
 
-    <!-- Following Menu -->
-    <div class="ui large top inverted fixed hidden menu ">
-        <div class="ui container">
-            <a class="active item" href="index.php">Home</a>
-            <a class="item">Channel</a>
-            <a class="item">Videos</a>
-            <a class="item">Favorites</a>
-            <div class="right menu">
-                <div class="item">
-                    <a class="ui inverted button" href="login.php">Log in</a>
-                </div>
-                <div class="item">
-                    <a class="ui inverted button" href="register.php">Sign Up</a>
-                </div>
+                    <div name="error" class="ui error message"></div>
+                </form>
+
+                <?php
+                if (isset($updateError))
+                {
+                    echo
+                    "<div class='ui error message'>
+                        <ul class='list'>
+                            <li>".$updateError."</li>
+                        </ul>
+                    </div>";
+                }
+                ?>
             </div>
         </div>
-    </div>
-
-    <!-- Sidebar Menu -->
-    <div class="ui vertical inverted sidebar menu">
-        <a class="active item" href="index.php">Home</a>
-        <a class="item">Channel</a>
-        <a class="item">Videos</a>
-        <a class="item">Favorites</a>
-        <a class="item" href="login.php">Login</a>
-        <a class="item" href="register.php">Signup</a>
-    </div>
-
-
-
-    <!-- Page Contents -->
-    <div class="pusher">
-        <div class="ui inverted vertical masthead segment">
-            <!-- Menu -->
-          <div class="ui container">
-                <div class="ui large secondary inverted pointing menu">
-                    <a class="toc item">
-                        <em class="sidebar icon"></em>
-                    </a>
-                    <a class="active item" href="index.php">Home</a>
-                    <a class="item">Channel</a>
-                    <a class="item">Videos</a>
-                    <a class="item">Favorites</a>
-                    <div class="right item">
-                        <a class="ui inverted button" href="login.php">Log in</a>
-                        <a class="ui inverted button" href="register.php">Sign Up</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Playlist Form -->
-            <div id="form" class="ui inverted middle aligned center aligned page grid">
-                <div class="column">
-                    <h2 class="ui orange image header">
-                        Update Playlist
-                    </h2>
-                    <form name="create_playlist" class="ui inverted large form" action=<?php echo "update_playlist.php?playlist_id=$playlistId"; ?> method="post">
-                        <div class="field">
-                            <input type="text" name="playlist_name" placeholder="Playlist name" value="<?php echo getPlaylistName($playlistId); ?>">
-                        </div>
-                        <button class="ui fluid large orange submit button" name="submit">Update Playlist</button>
-
-                        <div name="error" class="ui error message"></div>
-                    </form>
-
-                    <?php
-                    if (isset($updateError))
-                    {
-                        echo
-                        "<div class='ui error message'>
-                            <ul class='list'>
-                                <li>".$updateError."</li>
-                            </ul>
-                        </div>";
-                    }
-                    ?>
-                </div>
-            </div>
 
             <!-- Footer segement -->
-            <div class="ui inverted vertical footer segment">
-                <div class="ui container">
-                    <div class="ui stackable inverted divided equal height stackable grid">
-                        <div class="three wide column">
-                            <h4 class="ui inverted header">Creators</h4>
-                            <div class="ui inverted link list">
-                                <a href="https://mbinns.github.io" class="item">Mackenzie Binns</a>
-                                <a href="#" class="item">Ronnie Funderburk</a>
-                                <a href="#" class="item">Kevin Kim</a>
-                            </div>
-                        </div>
-
-                        <div class="seven wide column">
-                            <h4 class="ui inverted header">About</h4>
-                            <p>This is the MeTube site designed for the Clemson CPSC 4620 Databases class.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <?php include "footer.php";?>
         </div>
     </div>
 </body>
