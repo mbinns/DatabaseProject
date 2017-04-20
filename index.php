@@ -50,7 +50,6 @@ if (isset($_GET['logout']))
         }
 
         .masthead.segment {
-            min-height: 700px;
             padding: 1em 0em;
         }
 
@@ -165,9 +164,9 @@ if (isset($_GET['logout']))
 
     <!-- Page Contents -->
     <div class="pusher">
-        <div class="ui inverted vertical masthead center aligned segment">
             <!-- Menu -->
             <?php include "menu.php";?>
+        <div class="ui inverted vertical masthead center aligned segment">
             <div class="ui text container">
                 <h1 class="ui inverted header">
                     MeTube
@@ -175,7 +174,7 @@ if (isset($_GET['logout']))
                 <h2>Upload Whatever, Whenever</h2>
             </div>
         </div>
-    <?php include "footer.php";?>
     </div>
+    <?php include "footer.php";?>
 </body>
 </html>

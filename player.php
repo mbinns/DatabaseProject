@@ -180,10 +180,6 @@ $downloadCount = $downloadCount + 1;
                 display: block;
             }
 
-            .masthead.segment {
-                min-height: 350px;
-            }
-
             .masthead h1.ui.header {
                 font-size: 2em;
                 margin-top: 1.5em;
@@ -207,312 +203,143 @@ $downloadCount = $downloadCount + 1;
 	<script src= "Content/components/comments.js"></script>
 
     <!-- Script so the menu will follow -->
-    <script>
-        $(document)
-          .ready(function () {
-              // fix menu when passed
-              $('.masthead')
-                .visibility({
-                    once: false,
-                    onBottomPassed: function () {
-                        $('.fixed.menu').transition('fade in');
-                    },
-                    onBottomPassedReverse: function () {
-                        $('.fixed.menu').transition('fade out');
-                    }
-                })
-              ;
-              // create sidebar and attach to menu open
-              $('.ui.sidebar')
-                .sidebar('attach events', '.toc.item')
-              ;
-          })
-        ;
-    </script>
+<?php include "menu_scripts.php";?>
 </head>
 <body>
+<!-- Following Menu -->
+<!-- Sidebar Menu -->
+<?php include "alt_menu.php";?>
 
-    <!-- Following Menu -->
-    <div class="ui large top fixed hidden menu">
-        <div class="ui container">
-            <a class="active item" href="index.php">Home</a>
-            <?php
-            if (isUserLoggedIn())
-            {
-                echo
-                "<a class='item' href='channel.php?user_id=".$_SESSION['user_id']."'>My Channel</a>";
-            }
-            ?>
-            <div class="ui simple dropdown item">Media
-                <i class="dropdown icon"></i>
-                <div class="menu">
-                  <a class="item" href="all.php">All</a>
-                  <a class="item" href="videos.php">Videos</a>
-                  <a class="item" href="music.php">Music</a>
-                  <a class="item" href="pictures.php">Pictures</a>
-                </div>
-            </div>
-            <a class="item">Favorites</a>
-            <div class="right menu">
-                <?php
-                if (isUserLoggedIn())
-                {
-                    echo
-                    "<div class='item'>
-                        <a class='item' href='index.php?logout'>Log out</a>
-                    </div>";
-                }
-                else
-                {
-                    echo
-                    "<div class='item'>
-                        <a class='item' href='login.php'>Login</a>
-                    </div>";
+<!-- Page Contents -->
+<div class="pusher">
+<?php include "menu.php";?>
+    <!-- Media player -->
+    <div id="media" class="ui container inverted segment">
 
-                    echo
-                    "<div class='item'>
-                        <a class='item' href='register.php'>Sign Up</a>
-                    </div>";
-                }
-                ?>
-            </div>
-        </div>
-    </div>
-
-    <!-- Sidebar Menu -->
-    <div class="ui vertical inverted sidebar menu">
-        <a class="active item" href="index.php">Home</a>
         <?php
-        if (isUserLoggedIn())
+        if ($type == "Picture")
         {
             echo
-            "<a class='item' href='channel.php?user_id=".$_SESSION['user_id']."'>My Channel</a>";
+            "<img class='ui huge image' src='".$filepath."'></img>";
         }
-        ?>
-        <div class="header item">Media
-            <div class="menu">
-                <a class="item" href="all.php">All</a>
-                <a class="item" href="videos.php">Videos</a>
-                <a class="item" href="music.php">Music</a>
-                <a class="item" href="pictures.php">Pictures</a>
-            </div>
-        </div>
-        <?php
-        if (isUserLoggedIn())
+        else if ($type == "Music")
         {
             echo
-            "<a class='item' href='index.php?logout'>Log out</a>";
+            "<audio controls>
+                <source src='".$filepath."' type='audio/mpeg'>
+                    Your browser does not support the audio element.
+            </audio>";
         }
-        else
+        else if ($type == "Video")
         {
             echo
-            "<a class='item' href='login.php'>Login</a>";
-            echo
-            "<a class='item' href='register.php'>Sign Up</a>";
-        }
-        ?>
-    </div>
-
-
-    <!-- Page Contents -->
-    <div class="pusher">
-        <div class="ui inverted vertical masthead segment">
-
-            <div class="ui container">
-                <div class="ui large secondary inverted pointing menu">
-                    <a class="toc item">
-                        <i class="sidebar icon"></i>
-                    </a>
-                    <a class="active item" href="index.php">Home</a>
-                    <?php
-                    if (isUserLoggedIn())
-                    {
-                        echo
-                        "<a class='item' href='channel.php?user_id=".$_SESSION['user_id']."'>My Channel</a>";
-                    }
-                    ?>
-                    <div class="ui simple dropdown item">Media
-                        <i class="dropdown icon"></i>
-                        <div class="menu">
-                            <a class="item" href="all.php">All</a>
-                            <a class="item" href="videos.php">Videos</a>
-                            <a class="item" href="music.php">Music</a>
-                            <a class="item" href="pictures.php">Pictures</a>
-                        </div>
-                    </div>
-                    <div class="right item">
-                    <div class="ui category search item">
-                        <div class="ui icon input">
-                            <input class="prompt" type="text" placeholder="Search...">
-                                <i class="search link icon"></i>
+            "<div class='videoContainer'>
+                <video id='player' controls preload='auto' poster='' width='720'>
+                    <source src='".$filepath."' type='video/mp4'/>
+                    <p>Your browser does not support the video tag.</p>
+                </video>
+                <div class='control'>
+                    <div class='btmControl'>
+                        <div class='btnPlay btn' title='Play/Pause video'><span class='icon-play'></span></div>
+                        <div class='progress-bar'>
+                            <div class='progress'>
+                                <span class='bufferBar'></span>
+                                <span class='timeBar'></span>
                             </div>
-                        <div class="results"></div>
-                    </div>
-                        <?php
-                        if (isUserLoggedIn())
-                        {
-                            echo
-                            "<a class='item' href='index.php?logout'>Log out</a>";
-                        }
-                        else
-                        {
-                            echo
-                            "<a class='item' href='login.php'>Login</a>";
-                            echo
-                            "<a class='item' href='register.php'>Sign Up</a>";
-                        }
-                        ?>
+                        </div>
+                        <div class='volume' title='Set volume'>
+                            <span class='volumeBar'></span>
+                        </div>
+                        <div class='sound sound2 btn' title='Mute/Unmute sound'><span class='icon-sound'></span></div>
+                        <div class='btnFS btn' title='Switch to full screen'><span class='icon-fullscreen'></span></div>
                     </div>
                 </div>
-            </div>
-        </div><!--Masthead-->
+            </div>";
+        }
 
-        <!-- Media player -->
-        <div id="media" class="ui container inverted segment">
+        echo
+        "<div class='caption'>
+            <h1>".$title."</h1>
+            <h3>".$downloadCount."&nbsp;&nbsp;&nbsp;Views</h3>
+        </div";
 
-            <?php
-            if ($type == "Picture")
-            {
-                echo
-                "<img class='ui huge image' src='".$filepath."'></img>";
-            }
-            else if ($type == "Music")
-            {
-                echo
-                "<audio controls>
-                    <source src='".$filepath."' type='audio/mpeg'>
-                        Your browser does not support the audio element.
-                </audio>";
-            }
-            else if ($type == "Video")
-            {
-                echo
-                "<div class='videoContainer'>
-                    <video id='player' controls preload='auto' poster='' width='720'>
-                        <source src='".$filepath."' type='video/mp4'/>
-                        <p>Your browser does not support the video tag.</p>
-                    </video>
-                    <div class='control'>
-                        <div class='btmControl'>
-                            <div class='btnPlay btn' title='Play/Pause video'><span class='icon-play'></span></div>
-                            <div class='progress-bar'>
-                                <div class='progress'>
-                                    <span class='bufferBar'></span>
-                                    <span class='timeBar'></span>
-                                </div>
-                            </div>
-                            <div class='volume' title='Set volume'>
-                                <span class='volumeBar'></span>
-                            </div>
-                            <div class='sound sound2 btn' title='Mute/Unmute sound'><span class='icon-sound'></span></div>
-                            <div class='btnFS btn' title='Switch to full screen'><span class='icon-fullscreen'></span></div>
-                        </div>
-                    </div>
-                </div>";
-            }
+        if (isUserLoggedIn())
+        {
+            global $db;
+            $query = "SELECT pl_id, pl_name FROM playlist WHERE user_id = ?";
+            $stmt = mysqli_prepare($db, $query);
+            mysqli_stmt_bind_param($stmt, "i", $_SESSION['user_id']);
+            mysqli_stmt_execute($stmt);
+            mysqli_stmt_bind_result($stmt, $playlistId, $playlistName);
 
             echo
-            "<div class='caption'>
-                <h1>".$title."</h1>
-                <h3>".$downloadCount."&nbsp;&nbsp;&nbsp;Views</h3>
-            </div";
+            "<div class='ui compact menu'>
+                <div class='ui simple dropdown item'>
+                    Add to Playlist
+                    <i class='dropdown icon'></i>
+                    <div class='menu'>";
+                    while (mysqli_stmt_fetch($stmt))
+                        echo "<a class='item' href='insert_to_playlist.php?playlist_id=".$playlistId."&media_id=".$mediaId."'>".$playlistName."</a>";
 
-            if (isUserLoggedIn())
+            echo
+                    "</div>
+                </div>
+            </div>";
+
+            mysqli_stmt_close($stmt);
+        }
+        ?>
+
+        <?php
+        if ($showComments)
+        {
+            echo
+            "<div id='comments' class='ui segment comments container'>
+                <h3 class='ui dividing header'>Comments</h3>";
+
+            global $db;
+            $query = "SELECT comments.comment, comments.time, comments.user_id, account.firstname, account.lastname
+                      FROM comments
+                      JOIN account ON comments.user_id = account.user_id
+                      WHERE media_id = ? ORDER BY time DESC";
+
+            $stmt = mysqli_prepare($db, $query);
+            mysqli_stmt_bind_param($stmt, "i", $mediaId);
+            mysqli_stmt_execute($stmt);
+            mysqli_stmt_bind_result($stmt, $comment, $time, $userId, $fname, $lname);
+
+            while (mysqli_stmt_fetch($stmt))
             {
-                global $db;
-                $query = "SELECT pl_id, pl_name FROM playlist WHERE user_id = ?";
-                $stmt = mysqli_prepare($db, $query);
-                mysqli_stmt_bind_param($stmt, "i", $_SESSION['user_id']);
-                mysqli_stmt_execute($stmt);
-                mysqli_stmt_bind_result($stmt, $playlistId, $playlistName);
-
                 echo
-                "<div class='ui compact menu'>
-                    <div class='ui simple dropdown item'>
-                        Add to Playlist
-                        <i class='dropdown icon'></i>
-                        <div class='menu'>";
-                        while (mysqli_stmt_fetch($stmt))
-                            echo "<a class='item' href='insert_to_playlist.php?playlist_id=".$playlistId."&media_id=".$mediaId."'>".$playlistName."</a>";
-
-                echo
+                "<div class='comment'>
+                    <div class='content'>
+                        <a class='author' href='channel.php?user_id=".$userId."'>".$fname." ".$lname."</a>
+                        <div class='metadata'>
+                            <span class='date'>".formatTimestamp($time)."</span>
+                        </div>
+                        <div class='text'>"
+                            .$comment.
                         "</div>
                     </div>
                 </div>";
-
-                mysqli_stmt_close($stmt);
             }
-            ?>
 
-            <?php
-            if ($showComments)
-            {
-                echo
-                "<div id='comments' class='ui segment comments container'>
-                    <h3 class='ui dividing header'>Comments</h3>";
+            mysqli_stmt_close($stmt);
 
-                global $db;
-                $query = "SELECT comments.comment, comments.time, comments.user_id, account.firstname, account.lastname
-                          FROM comments
-                          JOIN account ON comments.user_id = account.user_id
-                          WHERE media_id = ? ORDER BY time DESC";
-
-                $stmt = mysqli_prepare($db, $query);
-                mysqli_stmt_bind_param($stmt, "i", $mediaId);
-                mysqli_stmt_execute($stmt);
-                mysqli_stmt_bind_result($stmt, $comment, $time, $userId, $fname, $lname);
-
-                while (mysqli_stmt_fetch($stmt))
-                {
-                    echo
-                    "<div class='comment'>
-                        <div class='content'>
-                            <a class='author' href='channel.php?user_id=".$userId."'>".$fname." ".$lname."</a>
-                            <div class='metadata'>
-                                <span class='date'>".formatTimestamp($time)."</span>
-                            </div>
-                            <div class='text'>"
-                                .$comment.
-                            "</div>
-                        </div>
-                    </div>";
-                }
-
-                mysqli_stmt_close($stmt);
-
-                echo
-                "<form name='comment_form' class='ui reply form' action='player.php?media_id=".$mediaId."' method='post'>
-                    <div class='field'>
-                        <textarea name='comment'></textarea>
-                    </div>
-                    <button class='ui blue labeled submit icon button' name='submit'>
-                        <i class='icon edit'></i> Add Reply
-                    </button>
-                </form>
-            </div>";
-        }
-        ?>
-        </div>
-
-        <div class="ui inverted vertical footer segment">
-            <div class="ui container">
-                <div class="ui stackable inverted divided equal height stackable grid">
-                    <div class="three wide column">
-                        <h4 class="ui inverted header">Creators</h4>
-                        <div class="ui inverted link list">
-                            <a href="https://mbinns.github.io" class="item">Mackenzie Binns</a>
-                            <a href="#" class="item">Ronnie Funderburk</a>
-                            <a href="#" class="item">Kevin Kim</a>
-                        </div>
-                    </div>
-
-                    <div class="seven wide column">
-                        <h4 class="ui inverted header">About</h4>
-                        <p>This is the MeTube site designed for the Clemson CPSC 4620 Databases class.</p>
-                    </div>
+            echo
+            "<form name='comment_form' class='ui reply form' action='player.php?media_id=".$mediaId."' method='post'>
+                <div class='field'>
+                    <textarea name='comment'></textarea>
                 </div>
-            </div>
-        </div>
-    </div><!-- Pusher -->
+                <button class='ui blue labeled submit icon button' name='submit'>
+                    <i class='icon edit'></i> Add Reply
+                </button>
+            </form>
+        </div>";
+    }
+    ?>
+    </div>
+<?php include "footer.php";?>
+</div><!-- Pusher -->
 </body>
 
