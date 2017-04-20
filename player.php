@@ -433,7 +433,7 @@ $downloadCount = $downloadCount + 1;
                         <i class='dropdown icon'></i>
                         <div class='menu'>";
                         while (mysqli_stmt_fetch($stmt))
-                            echo "<a class='item' href='insert_to_playlist.php?playlist_id=".$playlistId."?media_id=".$mediaId."'>".$playlistName."</a>";
+                            echo "<a class='item' href='insert_to_playlist.php?playlist_id=".$playlistId."&media_id=".$mediaId."'>".$playlistName."</a>";
 
                 echo
                         "</div>
