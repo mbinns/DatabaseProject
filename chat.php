@@ -150,6 +150,30 @@ $senderId = $_GET['sender_id'];
     <script src="Content/components/sidebar.js"></script>
     <script src="Content/components/transition.js"></script>
 
+
+    <!-- Reply Script input Validation -->
+    <script>
+        $(document)
+            .ready(function () {
+                $('.ui.form')
+                    .form({
+                        fields: {
+                            message: {
+                                identifier: 'message',
+                                rules: [
+                                    {
+                                        type    :   'empty',
+                                        prompt  :   'Please enter a message'
+                                    }
+                                ]
+                            }
+                        }
+                    })
+                ;
+            })
+        ;
+    </script>
+
     <!-- Menu -->
 </head>
 
