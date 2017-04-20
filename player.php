@@ -11,6 +11,16 @@ function formatTimestamp($time)
     return date_format($date, "F d Y h:i A");
 }
 
+function updateDownloadCount($newCount, $mediaId)
+{
+    global $db;
+        $query = "UPDATE media SET download_count = ? WHERE media_id = ?";
+        $stmt = mysqli_prepare($db, $query);
+        mysqli_stmt_bind_param($stmt, "ii", $newCount, $mediaId);
+        mysqli_stmt_execute($stmt);
+        mysqli_stmt_close($stmt);
+}
+
 $mediaId = $_GET['media_id'];
 
 if (isset($_POST['submit']) && !empty($_POST['comment']))
@@ -32,6 +42,10 @@ mysqli_stmt_execute($stmt);
 mysqli_stmt_bind_result($stmt, $title, $type, $filepath, $description, $userId, $uploadDate, $downloadCount, $mime, $showComments);
 mysqli_stmt_fetch($stmt);
 mysqli_stmt_close($stmt);
+
+updateDownloadCount($downloadCount + 1, $mediaId);
+$downloadCount = $downloadCount + 1;
+
 ?>
 
 <!DOCTYPE html>
