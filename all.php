@@ -165,7 +165,7 @@ session_start();
                 echo
                 "<div class='item'>
                     <div class='small image'>
-                        <img src='https://placehold.it/350x150'>
+                        <img src='".getThumbnail($row[5])."'>
                     </div>
                     <div class='content'>
                         <a class='header' href='player.php?media_id=$row[3]'>".$row[4]."</a>

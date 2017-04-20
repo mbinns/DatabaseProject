@@ -261,7 +261,7 @@ if (isUserLoggedIn())
                 echo
                 "<div class='item'>
                     <div class='small image'>
-                        <img src='https://placehold.it/350x150'>
+                        <img src='".getThumbnail($type)."'>
                     </div>
                     <div class='content'>
                         <a class='header' href='player.php?media_id=".$mediaId."'>".$title."</a>
