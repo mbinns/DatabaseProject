@@ -161,10 +161,6 @@ $userId = $_GET['user_id'];
                 display: block;
             }
 
-            .masthead.segment {
-                min-height: 350px;
-            }
-
             .masthead h1.ui.header {
                 font-size: 2em;
                 margin-top: 1.5em;
@@ -186,302 +182,216 @@ $userId = $_GET['user_id'];
     <script src="Content/components/sidebar.js"></script>
     <script src="Content/components/transition.js"></script>
 
-    <!-- Script so the menu will follow -->
-    <script>
-        $(document)
-          .ready(function () {
-              // fix menu when passed
-              $('.masthead')
-                .visibility({
-                    once: false,
-                    onBottomPassed: function () {
-                        $('.fixed.menu').transition('fade in');
-                    },
-                    onBottomPassedReverse: function () {
-                        $('.fixed.menu').transition('fade out');
-                    }
-                })
-              ;
-              // create sidebar and attach to menu open
-              $('.ui.sidebar')
-                .sidebar('attach events', '.toc.item')
-              ;
-          })
-        ;
-    </script>
+    <?php include "menu_scripts.php";?>
 </head>
 <body>
+<!-- Following Menu -->
+<!-- Sidebar Menu -->
+<?php include "alt_menu.php";?>
+<div class="pusher">
+    <?php include "menu.php";?>
+    <!-- Profile -->
+    <div id="content" class="ui stackable container grid">
 
-    <!-- Following Menu -->
-    <div class="ui large top fixed hidden menu">
-        <div class="ui container">
-            <a class="active item">Home</a>
-            <a class="item" href="channel.php">Channel</a>
-            <a class="item">Videos</a>
-            <a class="item">Favorites</a>
-            <div class="right menu">
-                <div class="item">
-                    <a class="ui button" href="login.php">Log in</a>
-                </div>
-                <div class="item">
-                    <a class="ui primary button" href="register.php">Sign Up</a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Sidebar Menu -->
-    <div class="ui vertical inverted sidebar menu">
-        <a class="active item">Home</a>
-        <a class="item" href="channel.php">Channel</a>
-        <a class="item">Videos</a>
-        <a class="item">Favorites</a>
-        <a class="item" href="login.php">Login</a>
-        <a class="item" href="register.php">Signup</a>
-    </div>
-    <!-- Page Contents -->
-    <div class="pusher">
-        <div class="ui vertical masthead segment">
-          <!-- Menu -->
-          <div class="ui">
-                <div class="ui large secondary container inverted pointing menu">
-                <a class="toc item"> <em class="sidebar icon"></em></a>
-                <a class="active item" href="index.php">Home</a>
-                <a class="item" href="channel.php">Channel</a>
-                <a class="item">Videos</a>
-                <a class="item">Favorites</a>
-                <div class="right item">
-                	<a class="ui inverted button" href="login.php">Log in</a>
-                	<a class="ui inverted button" href="register.php">Sign Up</a>
-                </div>
-            	</div>
-          </div>
-        </div>
-
-        <!-- Profile -->
-        <div id="content" class="ui stackable container grid">
-
-            <!-- Profile Card -->
-            <div class="ui card fluid">
-                <div class="content">
-                    <?php
-                    echo
-                    "<a class='center aligned header'>" .
-                    "<h1>"
-                        .getUserName($userId) .
-                    "</h1>"
-                    ."</a>";
-                    ?>
-                </div>
-                <div class="meta">
-                    <?php
-                    echo
-                    "<span class='date'><h3>Member since "
-                    .getUserJoinDate($userId).
-                    "</h3>"
-                    ."</span>"
-                    ?>
-                </div>
+        <!-- Profile Card -->
+        <div class="ui card fluid">
+            <div class="content">
                 <?php
                 echo
-                "<div class='description'><h5> "
-                    .getUserAbout($userId).
-                "</h5>"
-                ."</div>";
-                ?>
-
-                <?php
-                if (isUserProfile($userId))
-                {
-                ?>
-                    <div class="extra content">
-                        <div class="ui two buttons bottom attached">
-                            <div class="ui button" onclick="location.href='profile_update.php';">
-                                <i class="icon settings"></i>Update Profile
-                            </div>
-                            <div class="ui button" onclick="location.href='change_password.php';">
-                                <i class="icon settings"></i>Change Password
-                            </div>
-                        </div>
-                    </div>
-                <?php
-                }
-                else
-                {
-                    echo
-                    "<div class='ui fluid blue labeled button' onclick=\"location.href='message.php?receiver_id=$userId';\">Send Message
-                    </div>";
-                }
+                "<a class='center aligned header'>" .
+                "<h1>"
+                    .getUserName($userId) .
+                "</h1>"
+                ."</a>";
                 ?>
             </div>
+            <div class="meta">
+                <?php
+                echo
+                "<span class='date'><h3>Member since "
+                .getUserJoinDate($userId).
+                "</h3>"
+                ."</span>"
+                ?>
+            </div>
+            <?php
+            echo
+            "<div class='description'><h5> "
+                .getUserAbout($userId).
+            "</h5>"
+            ."</div>";
+            ?>
 
-            <!-- Messages -->
             <?php
             if (isUserProfile($userId))
             {
-                global $db;
-                $query = "SELECT DISTINCT messages.sender_id, account.firstname, account.lastname
-                          FROM account
-                          JOIN messages ON account.user_id = messages.sender_id
-                          WHERE receiver_id = ?";
-                $stmt = mysqli_prepare($db, $query);
-                mysqli_stmt_bind_param($stmt, "i", $userId);
-                mysqli_stmt_execute($stmt);
-                mysqli_stmt_bind_result($stmt, $senderId, $fname, $lname);
-
-                echo
-                "<div class='ui segment container divided list'>
-                    <div class='header'><h2>Messages</h2></div>";
-
-                while (mysqli_stmt_fetch($stmt))
-                {
-                    echo
-                    "<div class='item'>
-                        <div class='right floated content'>
-                        <div class='ui button' onclick=\"location.href='chat.php?sender_id=$senderId';\">Reply</div>
+            ?>
+                <div class="extra content">
+                    <div class="ui two buttons bottom attached">
+                        <div class="ui button" onclick="location.href='profile_update.php';">
+                            <i class="icon settings"></i>Update Profile
                         </div>
-                        <div class='content'>
-                            <h3>".$fname." ".$lname."</h3>
+                        <div class="ui button" onclick="location.href='change_password.php';">
+                            <i class="icon settings"></i>Change Password
                         </div>
-                    </div>";
-                }
+                    </div>
+                </div>
+            <?php
+            }
+            else
+            {
                 echo
-                "</div>";
-                mysqli_stmt_close($stmt);
+                "<div class='ui fluid blue labeled button' onclick=\"location.href='message.php?receiver_id=$userId';\">Send Message
+                </div>";
             }
             ?>
+        </div>
 
-            <!-- Show user playlists -->
-            <div class="ui list items segment divided container">
+        <!-- Messages -->
+        <?php
+        if (isUserProfile($userId))
+        {
+            global $db;
+            $query = "SELECT DISTINCT messages.sender_id, account.firstname, account.lastname
+                      FROM account
+                      JOIN messages ON account.user_id = messages.sender_id
+                      WHERE receiver_id = ?";
+            $stmt = mysqli_prepare($db, $query);
+            mysqli_stmt_bind_param($stmt, "i", $userId);
+            mysqli_stmt_execute($stmt);
+            mysqli_stmt_bind_result($stmt, $senderId, $fname, $lname);
 
-                <div class='item'>
-                <?php
-                if (isUserProfile($userId))
-                {
-                ?>
-                    <div class="right floated content">
-                        <div class="ui positive button" onclick="location.href='create_playlist.php';">Create Playlist</div>
+            echo
+            "<div class='ui segment container divided list'>
+                <div class='header'><h2>Messages</h2></div>";
+
+            while (mysqli_stmt_fetch($stmt))
+            {
+                echo
+                "<div class='item'>
+                    <div class='right floated content'>
+                    <div class='ui button' onclick=\"location.href='chat.php?sender_id=$senderId';\">Reply</div>
                     </div>
-                <?php
-                }
-                ?>
-                    <h2>Playlists</h2>
+                    <div class='content'>
+                        <h3>".$fname." ".$lname."</h3>
+                    </div>
+                </div>";
+            }
+            echo
+            "</div>";
+            mysqli_stmt_close($stmt);
+        }
+        ?>
+
+        <!-- Show user playlists -->
+        <div class="ui list items segment divided container">
+
+            <div class='item'>
+            <?php
+            if (isUserProfile($userId))
+            {
+            ?>
+                <div class="right floated content">
+                    <div class="ui positive button" onclick="location.href='create_playlist.php';">Create Playlist</div>
                 </div>
-
-                <?php
-                global $db;
-                $query = "SELECT pl_id, pl_name FROM playlist WHERE user_id = ?";
-                $stmt = mysqli_prepare($db, $query);
-                mysqli_stmt_bind_param($stmt, "i", $userId);
-                mysqli_stmt_execute($stmt);
-                mysqli_stmt_bind_result($stmt, $playlistId, $playlistName);
-
-                while (mysqli_stmt_fetch($stmt))
-                {
-                    echo
-                    "<div class='item'>
-                        <div class='content'>
-                            <a class='header' href='playlist.php?playlist_id=".$playlistId."'>".$playlistName."</a>";
-
-                            if (isUserProfile($userId) && $playlistName != "Favorites")
-                            {
-                                echo
-                                "<div class='right floated content'>
-                                    <div class='ui two buttons'>
-                                        <div class='ui button positive' onclick=\"location.href='update_playlist.php?playlist_id=$playlistId';\">Update</div>
-                                        <div class='ui button negative' onclick=\"location.href='delete_playlist.php?playlist_id=$playlistId';\">Delete</div>
-                                    </div>
-                                </div>";
-                            }
-                        echo
-                        "</div>
-                    </div>";
-                }
-
-                mysqli_stmt_close($stmt);
-                ?>
+            <?php
+            }
+            ?>
+                <h2>Playlists</h2>
             </div>
 
-            <!-- Show user uploads -->
-            <div class="ui items segment divided list container">
-                <div class='item'>
-                <?php
-                if (isUserProfile($userId))
-                {
-                ?>
-                    <div class="right floated content">
-                        <div class="ui positive button" onclick="location.href='upload.php';">Upload</div>
-                    </div>
-                <?php
-                }
-                ?>
-                    <h2>Uploads</h2>
-                </div>
-                <?php
-                global $db;
-                $query = "SELECT media_id, title, type, description, upload_date FROM media WHERE user_id = ?";
-                $stmt = mysqli_prepare($db, $query);
-                mysqli_stmt_bind_param($stmt, "i", $userId);
-                mysqli_stmt_execute($stmt);
-                mysqli_stmt_bind_result($stmt, $mediaId, $title, $type, $description, $uploadDate);
+            <?php
+            global $db;
+            $query = "SELECT pl_id, pl_name FROM playlist WHERE user_id = ?";
+            $stmt = mysqli_prepare($db, $query);
+            mysqli_stmt_bind_param($stmt, "i", $userId);
+            mysqli_stmt_execute($stmt);
+            mysqli_stmt_bind_result($stmt, $playlistId, $playlistName);
 
-                while (mysqli_stmt_fetch($stmt))
-                {
-                    echo
-                    "<div class='item'>
-                        <div class='image'>
-                            <img src='https://placehold.it/350x150'>
-                        </div>
-                        <div class='content'>
-                            <a class='header' href='player.php?media_id=".$mediaId."'><h2>".$title."</h2></a>
-                            <div class='extra'><h3>".$type." uploaded "
-                                .date_format(date_create($uploadDate), 'F Y')
-                            ."</h3></div>
-                            <div class='meta'>
-                                <span><h4>".$description."</h4></span>
-                            </div>
-                        </div>";
-                        if (isUserProfile($userId))
+            while (mysqli_stmt_fetch($stmt))
+            {
+                echo
+                "<div class='item'>
+                    <div class='content'>
+                        <a class='header' href='playlist.php?playlist_id=".$playlistId."'>".$playlistName."</a>";
+
+                        if (isUserProfile($userId) && $playlistName != "Favorites")
                         {
                             echo
                             "<div class='right floated content'>
                                 <div class='ui two buttons'>
-                                    <div class='ui button positive' onclick=\"location.href='update_media.php?media_id=$mediaId';\">Update</div>
-                                    <div class='ui button negative' onclick=\"location.href='delete_media.php?media_id=$mediaId';\">Delete</div>
+                                    <div class='ui button positive' onclick=\"location.href='update_playlist.php?playlist_id=$playlistId';\">Update</div>
+                                    <div class='ui button negative' onclick=\"location.href='delete_playlist.php?playlist_id=$playlistId';\">Delete</div>
                                 </div>
                             </div>";
                         }
-                    echo "</div>";
-                }
+                    echo
+                    "</div>
+                </div>";
+            }
 
-                mysqli_stmt_close($stmt);
-                ?>
-            </div>
-
+            mysqli_stmt_close($stmt);
+            ?>
         </div>
 
-        <!-- Footer segement -->
-        <div class="ui inverted vertical footer segment container">
-            <div class="ui centered">
-                <div class="ui stackable inverted divided equal height stackable grid">
-                    <div class="three wide column">
-                        <h4 class="ui inverted header">Creators</h4>
-                        <div class="ui inverted link list">
-                            <a href="https://mbinns.github.io" class="item">Mackenzie Binns</a>
-                            <a href="#" class="item">Ronnie Funderburk</a>
-                            <a href="#" class="item">Kevin Kim</a>
-                        </div>
-                    </div>
-
-                    <div class="seven wide column">
-                        <h4 class="ui inverted header">About</h4>
-                        <p>This is the MeTube site designed for the Clemson CPSC 4620 Databases class.</p>
-                    </div>
+        <!-- Show user uploads -->
+        <div class="ui items segment divided list container">
+            <div class='item'>
+            <?php
+            if (isUserProfile($userId))
+            {
+            ?>
+                <div class="right floated content">
+                    <div class="ui positive button" onclick="location.href='upload.php';">Upload</div>
                 </div>
+            <?php
+            }
+            ?>
+                <h2>Uploads</h2>
             </div>
+            <?php
+            global $db;
+            $query = "SELECT media_id, title, type, description, upload_date FROM media WHERE user_id = ?";
+            $stmt = mysqli_prepare($db, $query);
+            mysqli_stmt_bind_param($stmt, "i", $userId);
+            mysqli_stmt_execute($stmt);
+            mysqli_stmt_bind_result($stmt, $mediaId, $title, $type, $description, $uploadDate);
+
+            while (mysqli_stmt_fetch($stmt))
+            {
+                echo
+                "<div class='item'>
+                    <div class='image'>
+                        <img src='https://placehold.it/350x150'>
+                    </div>
+                    <div class='content'>
+                        <a class='header' href='player.php?media_id=".$mediaId."'><h2>".$title."</h2></a>
+                        <div class='extra'><h3>".$type." uploaded "
+                            .date_format(date_create($uploadDate), 'F Y')
+                        ."</h3></div>
+                        <div class='meta'>
+                            <span><h4>".$description."</h4></span>
+                        </div>
+                    </div>";
+                    if (isUserProfile($userId))
+                    {
+                        echo
+                        "<div class='right floated content'>
+                            <div class='ui two buttons'>
+                                <div class='ui button positive' onclick=\"location.href='update_media.php?media_id=$mediaId';\">Update</div>
+                                <div class='ui button negative' onclick=\"location.href='delete_media.php?media_id=$mediaId';\">Delete</div>
+                            </div>
+                        </div>";
+                    }
+                echo "</div>";
+            }
+
+            mysqli_stmt_close($stmt);
+            ?>
         </div>
 
-
+    </div>
+<?php include "footer.php";?>
 </div>
 </body>
 </html>
