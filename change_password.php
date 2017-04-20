@@ -31,7 +31,7 @@ if (isset($_POST["submit"]))
     <!-- Site Properties -->
     <!-- Might have to fix these links on linux to match directory style-->
     <!-- ../dist/components/-->
-    <title>MeTube</title>
+    <title>Change Password</title>
     <link href="Content/semantic.css" rel="stylesheet" />
     <link href="Content/components/reset.css" rel="stylesheet" />
     <link href="Content/components/site.css" rel="stylesheet" />
@@ -359,7 +359,7 @@ if (isset($_POST["submit"]))
             <div id="form" class="ui inverted middle aligned center aligned page grid">
                 <div class="column">
                     <h2 class="ui orange image header">
-                        Update Account Information
+                        Change Password
                     </h2>
                     <form name="change" class="ui inverted large form" action="change_password.php" method="post">
                         <div class="ui stacked inverted segment">
