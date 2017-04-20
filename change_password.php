@@ -195,12 +195,12 @@ if (isset($_POST["submit"]))
               $('.ui.form')
                 .form({
                     fields: {
-                        password: {
+                        opassword: {
                             identifier: 'old_password',
                             rules: [
                               {
                                   type: 'empty',
-                                  prompt: 'Please enter your new password confirmation'
+                                  prompt: 'Please enter your old password'
                               },
                               {
                                   type: 'length[6]',
@@ -208,12 +208,12 @@ if (isset($_POST["submit"]))
                               }
                             ]//rules
                         },//old_password
-                        password: {
+                        npassword: {
                             identifier: 'new_password',
                             rules: [
                               {
                                   type: 'empty',
-                                  prompt: 'Please enter your new password confirmation'
+                                  prompt: 'Please enter your new password'
                               },
                               {
                                   type: 'length[6]',
@@ -221,12 +221,12 @@ if (isset($_POST["submit"]))
                               }
                             ]//rules
                         },//new_password
-                        password: {
+                        rnpassword: {
                             identifier: 'new_repassword',
                             rules: [
                               {
                                   type: 'empty',
-                                  prompt: 'Please enter your new password confirmation'
+                                  prompt: 'Please enter your re-enter your new password'
                               },
                               {
                                   type: 'length[6]',
