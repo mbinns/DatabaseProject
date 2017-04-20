@@ -249,12 +249,10 @@ $userId = $_SESSION['user_id'];
         mysqli_stmt_bind_result($stmt, $mediaId, $title, $type, $description, $uploadDate);
         ?>
 
-        <div class="ui row segment centered">
-            <h2><?php echo $playlistName ?></h2>
-        </div>
 
         <div class="ui items divided list segment container">
             <?php
+            echo " <div class='header'><h2>$playlistName</h2></div>";
             while (mysqli_stmt_fetch($stmt))
             {
                 echo
