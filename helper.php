@@ -91,6 +91,12 @@ function isUserLoggedIn()
     return isset($_SESSION['user_id']);
 }
 
+// Is the current user in their own profile?
+function isUserProfile($userId)
+{
+    return isUserLoggedIn() && $userId == $_SESSION['user_id'];
+}
+
 function isValidUpdateEmail($email)
 {
     global $db;

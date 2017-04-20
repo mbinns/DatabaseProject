@@ -289,16 +289,24 @@ $userId = $_GET['user_id'];
                 "</h5>"
                 ."</div>";
                 ?>
-                <div class="extra content">
-                    <div class="ui two buttons bottom attached">
-                        <div class="ui button" onclick="location.href='profile_update.php';">
-                            <i class="icon settings"></i>Update Profile
-                        </div>
-                        <div class="ui button" onclick="location.href='change_password.php';">
-                            <i class="icon settings"></i>Change Password
+
+                <?php
+                if (isUserProfile($userId))
+                {
+                ?>
+                    <div class="extra content">
+                        <div class="ui two buttons bottom attached">
+                            <div class="ui button" onclick="location.href='profile_update.php';">
+                                <i class="icon settings"></i>Update Profile
+                            </div>
+                            <div class="ui button" onclick="location.href='change_password.php';">
+                                <i class="icon settings"></i>Change Password
+                            </div>
                         </div>
                     </div>
-                </div>
+                <?php
+                }
+                ?>
             </div>
 
             <!-- Messages -->
@@ -342,7 +350,7 @@ $userId = $_GET['user_id'];
                         <div class='content'>
                             <a class='header' href='playlist.php?playlist_id=".$playlistId."'>".$playlistName."</a>";
 
-                            if ($playlistName != "Favorites")
+                            if (isUserProfile($userId) && $playlistName != "Favorites")
                             {
                                 echo
                                 "<div class='right floated content'>
@@ -389,14 +397,18 @@ $userId = $_GET['user_id'];
                             <div class='meta'>
                                 <span><h4>".$description."</h4></span>
                             </div>
-                        </div>
-                        <div class='right floated content'>
-                            <div class='ui two buttons'>
-                                <div class='ui button positive' onclick=\"location.href='update_media.php?media_id=$mediaId';\">Update</div>
-                                <div class='ui button negative' onclick=\"location.href='delete_media.php?media_id=$mediaId';\">Delete</div>
-                            </div>
-                        </div>
-                    </div>";
+                        </div>";
+                        if (isUserProfile($userId))
+                        {
+                            echo
+                            "<div class='right floated content'>
+                                <div class='ui two buttons'>
+                                    <div class='ui button positive' onclick=\"location.href='update_media.php?media_id=$mediaId';\">Update</div>
+                                    <div class='ui button negative' onclick=\"location.href='delete_media.php?media_id=$mediaId';\">Delete</div>
+                                </div>
+                            </div>";
+                        }
+                    echo "</div>";
                 }
 
                 mysqli_stmt_close($stmt);
