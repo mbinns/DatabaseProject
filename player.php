@@ -394,17 +394,28 @@ mysqli_stmt_close($stmt);
 
             if (isUserLoggedIn())
             {
-                // TODO: Add all of the user's playlists
+                global $db;
+                $query = "SELECT pl_id, pl_name FROM playlist WHERE user_id = ?";
+                $stmt = mysqli_prepare($db, $query);
+                mysqli_stmt_bind_param($stmt, "i", $_SESSION['user_id']);
+                mysqli_stmt_execute($stmt);
+                mysqli_stmt_bind_result($stmt, $playlistId, $playlistName);
+
                 echo
                 "<div class='ui compact menu'>
                     <div class='ui simple dropdown item'>
                         Add to Playlist
                         <i class='dropdown icon'></i>
-                        <div class='menu'>
-                            <div class='item'>Favorites</div>
-                        </div>
+                        <div class='menu'>";
+                        while (mysqli_stmt_fetch($stmt))
+                            echo "<a class='item' href='insert_to_playlist.php?playlist_id=".$playlistId."?media_id=".$mediaId."'>".$playlistName."</a>";
+
+                echo
+                        "</div>
                     </div>
                 </div>";
+
+                mysqli_stmt_close($stmt);
             }
             ?>
 
@@ -416,8 +427,6 @@ mysqli_stmt_close($stmt);
                     <h3 class='ui dividing header'>Comments</h3>";
 
                 global $db;
-                // $query = "SELECT comment, time, user_id FROM comments WHERE media_id = ? ORDER BY time DESC";
-
                 $query = "SELECT comments.comment, comments.time, comments.user_id, account.firstname, account.lastname
                           FROM comments
                           JOIN account ON comments.user_id = account.user_id
@@ -443,6 +452,8 @@ mysqli_stmt_close($stmt);
                         </div>
                     </div>";
                 }
+
+                mysqli_stmt_close($stmt);
 
                 echo
                 "<form class='ui reply form'>
