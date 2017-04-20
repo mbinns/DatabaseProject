@@ -50,6 +50,7 @@ $userId = $_GET['user_id'];
    <!-- CSS for Channel -->
    <link href="Content/components/card.css" rel="stylesheet" />
    <link href="Content/components/item.css" rel="stylesheet" />
+   <link href="Content/components/list.css" rel="stylesheet" />
 
     <!-- Style changes for channel page -->
     <style type="text/css">
@@ -258,36 +259,72 @@ $userId = $_GET['user_id'];
         </div>
 
         <!-- Profile -->
-        <div id="content" class="ui stackable grid container">
-        <!-- Profile Card -->
-            <div class="ui card">
+        <div id="content" class="ui stackable container grid">
+
+            <!-- Profile Card -->
+            <div class="ui card fluid">
                 <div class="content">
                     <?php
                     echo
-                    "<a class='header'>"
-                        .getUserName($userId)
+                    "<a class='center aligned header'>" .
+                    "<h1>"
+                        .getUserName($userId) .
+                    "</h1>"
                     ."</a>";
                     ?>
                 </div>
                 <div class="meta">
                     <?php
                     echo
-                    "<span class='date'>Member since "
-                    .getUserJoinDate($userId)
+                    "<span class='date'><h3>Member since "
+                    .getUserJoinDate($userId).
+                    "</h3>"
                     ."</span>"
                     ?>
                 </div>
                 <?php
                 echo
-                "<div class='description'>"
-                    .getUserAbout($userId)
+                "<div class='description'><h5> "
+                    .getUserAbout($userId).
+                "</h5>"
                 ."</div>";
                 ?>
+                <div class="extra content">
+                    <div class="ui two buttons bottom attached">
+                        <div class="ui button" onclick="location.href='profile_update.php';">
+                            <i class="icon settings"></i>Update Profile
+                        </div>
+                        <div class="ui button" onclick="location.href='change_password.php';">
+                            <i class="icon settings"></i>Change Password
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Messages -->
+            <div class="ui segment container divided list">
+              <div class="header"><h2>Messages</h2></div>
+              <div class="item">
+                <div class="right floated content">
+                  <div class="ui button">Reply</div>
+                </div>
+                <div class="content">
+                  <h3>Alice</h3>
+                </div>
+              </div>
+              <div class="item">
+                <div class="right floated content">
+                  <div class="ui button">Reply</div>
+                </div>
+                <div class="content">
+                  <h3>Mack</h3>
+                </div>
+              </div>
             </div>
 
             <!-- Show user playlists -->
-            <div class="ui items segment container">
-                <div class='item'>
+            <div class="ui list items segment divided container">
+                <div class='header'>
                     <h2>Playlists</h2>
                 </div>
                 <?php
@@ -304,6 +341,12 @@ $userId = $_GET['user_id'];
                     "<div class='item'>
                         <div class='content'>
                             <a class='header'>".$playlistName."</a>
+                            <div class='right floated content'>
+                                <div class='ui two buttons'>
+                                    <div class='ui button positive' onclick=\"location.href='update_media.php/?id=$p_id';\">Update</div>
+                                    <div class='ui button negative'>Delete</div>
+                                </div>
+                            </div>
                         </div>
                     </div>";
                 }
@@ -313,7 +356,7 @@ $userId = $_GET['user_id'];
             </div>
 
             <!-- Show user uploads -->
-            <div class="ui items segment container">
+            <div class="ui items segment divided list container">
                 <div class='item'>
                     <h2>Uploads</h2>
                 </div>
@@ -333,12 +376,18 @@ $userId = $_GET['user_id'];
                             <img src='https://placehold.it/350x150'>
                         </div>
                         <div class='content'>
-                            <a class='header'>".$title."</a>
-                            <div class='extra'>".$type." uploaded "
+                            <a class='header'><h2>".$title."</h2></a>
+                            <div class='extra'><h3>".$type." uploaded "
                                 .date_format(date_create($uploadDate), 'F Y')
-                            ."</div>
+                            ."</h3></div>
                             <div class='meta'>
-                                <span>".$description."</span>
+                                <span><h4>".$description."</h4></span>
+                            </div>
+                        </div>
+                        <div class='right floated content'>
+                            <div class='ui two buttons'>
+                                <div class='ui button positive'>Update</div>
+                                <div class='ui button negative'>Delete</div>
                             </div>
                         </div>
                     </div>";
