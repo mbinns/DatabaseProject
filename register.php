@@ -169,10 +169,6 @@ if (isset($_POST["submit"]))
                 display: block;
             }
 
-            .masthead.segment {
-                min-height: 350px;
-            }
-
             .masthead h1.ui.header {
                 font-size: 2em;
                 margin-top: 1.5em;
@@ -273,165 +269,79 @@ if (isset($_POST["submit"]))
     </script>
 
     <!-- Script so the menu will follow -->
-    <script>
-        $(document)
-          .ready(function () {
-              // fix menu when passed
-              $('.masthead')
-                .visibility({
-                    once: false,
-                    onBottomPassed: function () {
-                        $('.fixed.menu').transition('fade in');
-                    },
-                    onBottomPassedReverse: function () {
-                        $('.fixed.menu').transition('fade out');
-                    }
-                })
-              ;
-              // create sidebar and attach to menu open
-              $('.ui.sidebar')
-                .sidebar('attach events', '.toc.item')
-              ;
-          })
-        ;
-    </script>
+    <?php include "menu_scripts.php";?>
 </head>
+
 <body class="inverted">
+<!-- Following Menu -->
+<!-- Sidebar Menu -->
+<?php include "alt_menu.php";?>
+<!-- Page Contents -->
+<div class="pusher">
+    <?php include "menu.php";?>
+    <!-- Registration Form -->
+    <div id="form" class="ui inverted middle aligned center aligned page grid">
+        <div class="column">
+            <h2 class="ui orange image header">
+                Register your account
+            </h2>
+            <form name="register" class="ui inverted large form" action="register.php" method="post">
+                <div class="ui stacked inverted segment">
+                    <div class="field">
+                        <div class="ui left icon input">
+                            <i class="user icon"></i>
+                            <input type="text" name="email" placeholder="E-mail address">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="ui left icon input">
+                            <i class="user icon"></i>
+                            <input type="text" name="fname" placeholder="First Name">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="ui left icon input">
+                            <i class="user icon"></i>
+                            <input type="text" name="lname" placeholder="Last Name">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="ui left icon input">
+                            <i class="lock icon"></i>
+                            <input type="password" name="password" placeholder="Password">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="ui left icon input">
+                            <i class="lock icon"></i>
+                            <input type="password" name="repassword" placeholder="Re-enter your Password">
+                        </div>
+                    </div>
+                    <button class="ui fluid large orange submit button" name="submit">Register</button>
+                </div>
 
-    <!-- Following Menu -->
-    <div class="ui large top inverted fixed hidden menu ">
-        <div class="ui container">
-            <a class="active item" href="index.php">Home</a>
-            <a class="item">Channel</a>
-            <a class="item">Videos</a>
-            <a class="item">Favorites</a>
-            <div class="right menu">
-                <div class="item">
-                    <a class="ui inverted button" href="login.php">Log in</a>
-                </div>
-                <div class="item">
-                    <a class="ui inverted button" href="register.php">Sign Up</a>
-                </div>
+                <div name="error" class="ui error message"></div>
+
+            </form>
+
+            <?php
+            if (isset($registerError))
+            {
+                echo
+                "<div class='ui error message'>
+                    <ul class='list'>
+                        <li>".$registerError."</li>
+                    </ul>
+                </div>";
+            }
+            ?>
+
+            <div class="ui message">
+                Already have an account? <a href="login.php">Login!</a>
             </div>
         </div>
     </div>
-
-    <!-- Sidebar Menu -->
-    <div class="ui vertical inverted sidebar menu">
-        <a class="active item" href="index.php">Home</a>
-        <a class="item">Channel</a>
-        <a class="item">Videos</a>
-        <a class="item">Favorites</a>
-        <a class="item" href="login.php">Login</a>
-        <a class="item" href="register.php">Signup</a>
-    </div>
-
-
-
-    <!-- Page Contents -->
-    <div class="pusher">
-        <div class="ui inverted vertical masthead segment">
-            <!-- Menu -->
-          <div class="ui container">
-                <div class="ui large secondary inverted pointing menu">
-                    <a class="toc item">
-                        <em class="sidebar icon"></em>
-                    </a>
-                    <a class="active item" href="index.php">Home</a>
-                    <a class="item">Channel</a>
-                    <a class="item">Videos</a>
-                    <a class="item">Favorites</a>
-                    <div class="right item">
-                        <a class="ui inverted button" href="login.php">Log in</a>
-                        <a class="ui inverted button" href="register.php">Sign Up</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Registration Form -->
-            <div id="form" class="ui inverted middle aligned center aligned page grid">
-                <div class="column">
-                    <h2 class="ui orange image header">
-                        Register your account
-                    </h2>
-                    <form name="register" class="ui inverted large form" action="register.php" method="post">
-                        <div class="ui stacked inverted segment">
-                            <div class="field">
-                                <div class="ui left icon input">
-                                    <i class="user icon"></i>
-                                    <input type="text" name="email" placeholder="E-mail address">
-                                </div>
-                            </div>
-                            <div class="field">
-                                <div class="ui left icon input">
-                                    <i class="user icon"></i>
-                                    <input type="text" name="fname" placeholder="First Name">
-                                </div>
-                            </div>
-                            <div class="field">
-                                <div class="ui left icon input">
-                                    <i class="user icon"></i>
-                                    <input type="text" name="lname" placeholder="Last Name">
-                                </div>
-                            </div>
-                            <div class="field">
-                                <div class="ui left icon input">
-                                    <i class="lock icon"></i>
-                                    <input type="password" name="password" placeholder="Password">
-                                </div>
-                            </div>
-                            <div class="field">
-                                <div class="ui left icon input">
-                                    <i class="lock icon"></i>
-                                    <input type="password" name="repassword" placeholder="Re-enter your Password">
-                                </div>
-                            </div>
-                            <button class="ui fluid large orange submit button" name="submit">Register</button>
-                        </div>
-
-                        <div name="error" class="ui error message"></div>
-
-                    </form>
-
-                    <?php
-                    if (isset($registerError))
-                    {
-                        echo
-                        "<div class='ui error message'>
-                            <ul class='list'>
-                                <li>".$registerError."</li>
-                            </ul>
-                        </div>";
-                    }
-                    ?>
-
-                    <div class="ui message">
-                        Already have an account? <a href="login.php">Login!</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Footer segement -->
-            <div class="ui inverted vertical footer segment">
-                <div class="ui container">
-                    <div class="ui stackable inverted divided equal height stackable grid">
-                        <div class="three wide column">
-                            <h4 class="ui inverted header">Creators</h4>
-                            <div class="ui inverted link list">
-                                <a href="https://mbinns.github.io" class="item">Mackenzie Binns</a>
-                                <a href="#" class="item">Ronnie Funderburk</a>
-                                <a href="#" class="item">Kevin Kim</a>
-                            </div>
-                        </div>
-
-                        <div class="seven wide column">
-                            <h4 class="ui inverted header">About</h4>
-                            <p>This is the MeTube site designed for the Clemson CPSC 4620 Databases class.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+</div>
+<?php include "footer.php";?>
 </body>
 </html>
