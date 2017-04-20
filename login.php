@@ -41,8 +41,8 @@ if (isset($_POST['submit']))
     <!-- Site Properties -->
     <!-- Might have to fix these links on linux to match directory style-->
     <!-- ../dist/components/-->
-    <title>MeTube</title>
-    <a href="register.php">register.php</a>
+    <title>Register</title>
+    <link href="Content/semantic.css" rel="stylesheet" />
     <link href="Content/components/reset.css" rel="stylesheet" />
     <link href="Content/components/site.css" rel="stylesheet" />
     <link href="Content/components/container.css" rel="stylesheet" />
@@ -66,7 +66,7 @@ if (isset($_POST['submit']))
     <link href="Content/components/button.css" rel="stylesheet" />
     <link href="Content/components/message.css" rel="stylesheet" />
 
-    <!-- Style changes for login page -->
+    <!-- Style changes for register page -->
     <style type="text/css">
         body {
             background-color: #1b1c1d !important;
@@ -76,6 +76,10 @@ if (isset($_POST['submit']))
                 height: 100%;
             }
 
+		.pusher {
+			background-color: #1b1c1d !important;
+		}
+
         .image {
             margin-top: -100px;
         }
@@ -84,12 +88,118 @@ if (isset($_POST['submit']))
             max-width: 450px;
         }
 
+        .hidden.menu {
+            display: none;
+        }
+
+        .masthead.segment {
+
+            padding: 1em 0em;
+        }
+
+        .masthead .logo.item img {
+            margin-right: 1em;
+        }
+
+        .masthead .ui.menu .ui.button {
+            margin-left: 0.5em;
+        }
+
+        .masthead h1.ui.header {
+            margin-top: 3em;
+            margin-bottom: 0em;
+            font-size: 4em;
+            font-weight: normal;
+        }
+
+        .masthead h2 {
+            font-size: 1.7em;
+            font-weight: normal;
+        }
+
+		.ui#form{
+			padding-top: 5%;
+		}
+        .ui.vertical.stripe {
+            padding: 8em 0em;
+        }
+
+            .ui.vertical.stripe h3 {
+                font-size: 2em;
+            }
+
+            .ui.vertical.stripe .button + h3,
+            .ui.vertical.stripe p + h3 {
+                margin-top: 3em;
+            }
+
+            .ui.vertical.stripe .floated.image {
+                clear: both;
+            }
+
+            .ui.vertical.stripe p {
+                font-size: 1.33em;
+            }
+
+            .ui.vertical.stripe .horizontal.divider {
+                margin: 3em 0em;
+            }
+
+        .quote.stripe.segment {
+            padding: 0em;
+        }
+
+            .quote.stripe.segment .grid .column {
+                padding-top: 5em;
+                padding-bottom: 5em;
+            }
+
+        .footer.segment {
+            padding: 5em 0em;
+			bottom: 0;
+        }
+
+        .secondary.pointing.menu .toc.item {
+            display: none;
+        }
+
+        @media only screen and (max-width: 700px) {
+            .ui.fixed.menu {
+                display: none !important;
+            }
+
+            .secondary.pointing.menu .item,
+            .secondary.pointing.menu .menu {
+                display: none;
+            }
+
+            .secondary.pointing.menu .toc.item {
+                display: block;
+            }
+
+            .masthead h1.ui.header {
+                font-size: 2em;
+                margin-top: 1.5em;
+            }
+
+            .masthead h2 {
+                margin-top: 0.5em;
+                font-size: 1.5em;
+            }
+        }
+
+		.pusher {
+			background: #1b1c1d;
+		}
     </style>
 
     <!-- Scripts -->
     <script src="Scripts/jquery-1.8.1.min.js"></script>
+    <script src="Scripts/semantic.js"></script>
     <script src="Content/components/transition.js"></script>
     <script src="Content/components/form.js"></script>
+    <script src="Content/components/visibility.js"></script>
+    <script src="Content/components/sidebar.js"></script>
 
     <!-- Login Script Input Validation -->
     <script>
@@ -131,103 +241,61 @@ if (isset($_POST['submit']))
         ;
     </script>
 
-    <!-- Script so the menu will follow -->
-    <script>
-        $(document)
-          .ready(function () {
-              // fix menu when passed
-              $('.masthead')
-                .visibility({
-                    once: false,
-                    onBottomPassed: function () {
-                        $('.fixed.menu').transition('fade in');
-                    },
-                    onBottomPassedReverse: function () {
-                        $('.fixed.menu').transition('fade out');
-                    }
-                })
-              ;
-              // create sidebar and attach to menu open
-              $('.ui.sidebar')
-                .sidebar('attach events', '.toc.item')
-              ;
-          })
-        ;
-    </script>
+    <!-- Scripts for menu -->
+    <?php include "menu_scripts.php";?>
 </head>
 <body>
+<!-- Following Menu -->
+<!-- Sidebar Menu -->
+<?php include "alt_menu.php";?>
 
-    <!-- Following Menu -->
-    <div class="ui large top inverted fixed hidden menu ">
-        <div class="ui container">
-            <a class="active item" href="index.php">Home</a>
-            <a class="item">Channel</a>
-            <a class="item">Videos</a>
-            <a class="item">Favorites</a>
-            <div class="right menu">
-                <div class="item">
-                    <a class="ui inverted button" href="login.php">Log in</a>
-                </div>
-                <div class="item">
-                    <a class="ui inverted button" href="register.php">Sign Up</a>
+<div class="pusher">
+        <?php include "menu.php";?>
+        <!-- Login Form -->
+        <div class="ui middle aligned center aligned grid">
+            <div class="column">
+                <h2 class="ui orange image header">
+                    Log-in to your account
+                </h2>
+                <form class="ui inverted large form" action="login.php" method="post">
+                    <div class="ui stacked inverted segment">
+                        <div class="field">
+                            <div class="ui left icon input">
+                                <i class="user icon"></i>
+                                <input type="text" name="email" placeholder="E-mail address">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="ui left icon input">
+                                <i class="lock icon"></i>
+                                <input type="password" name="password" placeholder="Password">
+                            </div>
+                        </div>
+                        <button class="ui fluid large orange submit button" name="submit">Login</button>
+                    </div>
+
+                    <div class="ui error message"></div>
+
+                </form>
+
+                <?php
+                if (isset($loginError))
+                {
+                    echo
+                    "<div class='ui error message'>
+                        <ul class='list'>
+                            <li>".$loginError."</li>
+                        </ul>
+                    </div>";
+                }
+                ?>
+
+                <div class="ui message">
+                    New to us? <a href="register.php">Sign Up</a>
                 </div>
             </div>
         </div>
     </div>
-
-    <!-- Sidebar Menu -->
-    <div class="ui vertical inverted sidebar menu">
-        <a class="active item" href="index.php">Home</a>
-        <a class="item">Channel</a>
-        <a class="item">Videos</a>
-        <a class="item">Favorites</a>
-        <a class="item" href="login.php">Login</a>
-        <a class="item" href="register.php">Signup</a>
-    </div>
-
-    <!-- Login Form -->
-    <div class="ui middle aligned center aligned grid">
-        <div class="column">
-            <h2 class="ui orange image header">
-                Log-in to your account
-            </h2>
-            <form class="ui inverted large form" action="login.php" method="post">
-                <div class="ui stacked inverted segment">
-                    <div class="field">
-                        <div class="ui left icon input">
-                            <i class="user icon"></i>
-                            <input type="text" name="email" placeholder="E-mail address">
-                        </div>
-                    </div>
-                    <div class="field">
-                        <div class="ui left icon input">
-                            <i class="lock icon"></i>
-                            <input type="password" name="password" placeholder="Password">
-                        </div>
-                    </div>
-                    <button class="ui fluid large orange submit button" name="submit">Login</button>
-                </div>
-
-                <div class="ui error message"></div>
-
-            </form>
-
-            <?php
-            if (isset($loginError))
-            {
-                echo
-                "<div class='ui error message'>
-                    <ul class='list'>
-                        <li>".$loginError."</li>
-                    </ul>
-                </div>";
-            }
-            ?>
-
-            <div class="ui message">
-                New to us? <a href="register.php">Sign Up</a>
-            </div>
-        </div>
-    </div>
+<?php include "footer.php";?>
 </body>
 </html>
