@@ -2,21 +2,24 @@
 include_once "helper.php";
 session_start();
 
-$receiverId = $_GET['receiver_id'];
+$playlistId = $_GET["playlist_id"];
 
 if (isset($_POST["submit"]))
 {
-    $senderId = $_SESSION['user_id'];
+    $userId = $_SESSION['user_id'];
 
-    global $db;
-    $query = "INSERT INTO messages (sender_id, receiver_id, time, message) values (?, ?, ?, ?)";
-    $stmt = mysqli_prepare($db, $query);
-    $timestamp = date("Y-m-d h:i:sa");
-    mysqli_stmt_bind_param($stmt, "iiss", $senderId, $receiverId, $timestamp, $_POST['message']);
-    mysqli_stmt_execute($stmt);
-    mysqli_stmt_close($stmt);
-
-    header("Location: channel.php?user_id=$receiverId");
+    if (isValidUpdatePlaylist($playlistId, $_POST["playlist_name"]))
+    {
+        global $db;
+        $query = "UPDATE playlist SET pl_name = ? WHERE pl_id = ?";
+        $stmt = mysqli_prepare($db, $query);
+        mysqli_stmt_bind_param($stmt, "si", $_POST['playlist_name'], $playlistId);
+        mysqli_stmt_execute($stmt);
+        mysqli_stmt_close($stmt);
+        header("Location: channel.php?user_id=$userId");
+    }
+    else
+        $updateError = "A playlist with this name already exists";
 }
 ?>
 
@@ -32,7 +35,7 @@ if (isset($_POST["submit"]))
     <!-- Site Properties -->
     <!-- Might have to fix these links on linux to match directory style-->
     <!-- ../dist/components/-->
-    <title>Send a Message</title>
+    <title>Update Playlist</title>
     <link href="Content/semantic.css" rel="stylesheet" />
     <link href="Content/components/reset.css" rel="stylesheet" />
     <link href="Content/components/site.css" rel="stylesheet" />
@@ -196,19 +199,19 @@ if (isset($_POST["submit"]))
     <script src="Content/components/visibility.js"></script>
     <script src="Content/components/sidebar.js"></script>
 
-    <!-- Message Script Input Validation -->
+    <!-- Playlist Script Input Validation -->
     <script>
         $(document)
           .ready(function () {
               $('.ui.form')
                 .form({
                     fields: {
-                         message: {
-                           identifier: 'message',
+                         playlist_name: {
+                           identifier: 'playlist_name',
                            rules: [
                              {
                                type   : 'empty',
-                               prompt : 'Please enter a message'
+                               prompt : 'Please enter a playlist name'
                              }
                            ]
                          }
@@ -295,21 +298,32 @@ if (isset($_POST["submit"]))
                 </div>
             </div>
 
-            <!-- Message Form -->
+            <!-- Playlist Form -->
             <div id="form" class="ui inverted middle aligned center aligned page grid">
                 <div class="column">
                     <h2 class="ui orange image header">
-                        Send a Message
+                        Update Playlist
                     </h2>
-                    <form name="send_message" class="ui inverted large form" action=<?php echo "message.php?receiver_id=$receiverId"; ?> method="post">
+                    <form name="create_playlist" class="ui inverted large form" action=<?php echo "update_playlist.php?playlist_id=$playlistId"; ?> method="post">
                         <div class="field">
-                            <textarea name="message"></textarea>
+                            <input type="text" name="playlist_name" placeholder="Playlist name" value="<?php echo getPlaylistName($playlistId); ?>">
                         </div>
-                        <button class="ui fluid large blue submit button" name="submit">Send Message</button>
+                        <button class="ui fluid large orange submit button" name="submit">Update Playlist</button>
 
                         <div name="error" class="ui error message"></div>
                     </form>
 
+                    <?php
+                    if (isset($updateError))
+                    {
+                        echo
+                        "<div class='ui error message'>
+                            <ul class='list'>
+                                <li>".$updateError."</li>
+                            </ul>
+                        </div>";
+                    }
+                    ?>
                 </div>
             </div>
 

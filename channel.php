@@ -306,6 +306,12 @@ $userId = $_GET['user_id'];
                     </div>
                 <?php
                 }
+                else
+                {
+                    echo
+                    "<div class='ui fluid blue labeled button' onclick=\"location.href='message.php?receiver_id=$userId';\">Send Message
+                    </div>";
+                }
                 ?>
             </div>
 
@@ -332,7 +338,7 @@ $userId = $_GET['user_id'];
                     echo
                     "<div class='item'>
                         <div class='right floated content'>
-                        <div class='ui button' onclick=\"location.href='message.php?sender_id=$senderId';\">Reply</div>
+                        <div class='ui button' onclick=\"location.href='chat.php?sender_id=$senderId';\">Reply</div>
                         </div>
                         <div class='content'>
                             <h3>".$fname." ".$lname."</h3>
@@ -347,9 +353,21 @@ $userId = $_GET['user_id'];
 
             <!-- Show user playlists -->
             <div class="ui list items segment divided container">
-                <div class='header'>
+
+                <div class='item'>
+                <?php
+                if (isUserProfile($userId))
+                {
+                ?>
+                    <div class="right floated content">
+                        <div class="ui positive button" onclick="location.href='create_playlist.php';">Create Playlist</div>
+                    </div>
+                <?php
+                }
+                ?>
                     <h2>Playlists</h2>
                 </div>
+
                 <?php
                 global $db;
                 $query = "SELECT pl_id, pl_name FROM playlist WHERE user_id = ?";
@@ -387,9 +405,16 @@ $userId = $_GET['user_id'];
             <!-- Show user uploads -->
             <div class="ui items segment divided list container">
                 <div class='item'>
+                <?php
+                if (isUserProfile($userId))
+                {
+                ?>
                     <div class="right floated content">
                         <div class="ui positive button" onclick="location.href='upload.php';">Upload</div>
                     </div>
+                <?php
+                }
+                ?>
                     <h2>Uploads</h2>
                 </div>
                 <?php
