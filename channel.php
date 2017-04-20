@@ -335,20 +335,25 @@ $userId = $_GET['user_id'];
                 mysqli_stmt_execute($stmt);
                 mysqli_stmt_bind_result($stmt, $playlistId, $playlistName);
 
-
                 while (mysqli_stmt_fetch($stmt))
                 {
                     echo
                     "<div class='item'>
                         <div class='content'>
-                            <a class='header' href='playlist.php?playlist_id=".$playlistId."'>".$playlistName."</a>
-                            <div class='right floated content'>
-                                <div class='ui two buttons'>
-                                    <div class='ui button positive' onclick=\"location.href='update_playlist.php?playlist_id=$playlistId';\">Update</div>
-                                    <div class='ui button negative' onclick=\"location.href='delete_playlist.php?playlist_id=$playlistId';\">Delete</div>
-                                </div>
-                            </div>
-                        </div>
+                            <a class='header' href='playlist.php?playlist_id=".$playlistId."'>".$playlistName."</a>";
+
+                            if ($playlistName != "Favorites")
+                            {
+                                echo
+                                "<div class='right floated content'>
+                                    <div class='ui two buttons'>
+                                        <div class='ui button positive' onclick=\"location.href='update_playlist.php?playlist_id=$playlistId';\">Update</div>
+                                        <div class='ui button negative' onclick=\"location.href='delete_playlist.php?playlist_id=$playlistId';\">Delete</div>
+                                    </div>
+                                </div>";
+                            }
+                        echo
+                        "</div>
                     </div>";
                 }
 
