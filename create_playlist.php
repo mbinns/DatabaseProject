@@ -223,7 +223,7 @@ if (isset($_POST["submit"]))
 
     <!-- Following Menu -->
     <!-- Sidebar Menu -->
-    <?php include "alt_manu.php";?>
+    <?php include "alt_menu.php";?>
 
 <!-- Page Contents -->
 <div class="pusher">
