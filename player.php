@@ -13,6 +13,17 @@ function formatTimestamp($time)
 
 $mediaId = $_GET['media_id'];
 
+if (isset($_POST['submit']) && !empty($_POST['comment']))
+{
+    $timestamp = date("Y-m-d h:i:sa");
+    global $db;
+    $query = "INSERT INTO comments (comment, time, user_id, media_id) values (?, ?, ?, ?)";
+    $stmt = mysqli_prepare($db, $query);
+    mysqli_stmt_bind_param($stmt, "ssii", $_POST['comment'], $timestamp, $_SESSION['user_id'], $mediaId);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_close($stmt);
+}
+
 global $db;
 $query = "SELECT title, type, filepath, description, user_id, upload_date, download_count, mime, show_comments FROM media WHERE media_id = ?";
 $stmt = mysqli_prepare($db, $query);
@@ -456,13 +467,13 @@ mysqli_stmt_close($stmt);
                 mysqli_stmt_close($stmt);
 
                 echo
-                "<form class='ui reply form'>
+                "<form name='comment_form' class='ui reply form' action='player.php?media_id=".$mediaId."' method='post'>
                     <div class='field'>
-                        <textarea></textarea>
+                        <textarea name='comment'></textarea>
                     </div>
-                    <div class='ui blue labeled submit icon button'>
+                    <button class='ui blue labeled submit icon button' name='submit'>
                         <i class='icon edit'></i> Add Reply
-                    </div>
+                    </button>
                 </form>
             </div>";
         }
