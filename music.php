@@ -146,14 +146,15 @@ session_start();
 
 <body>
 <!-- Following Menu -->
-<!-- Sidebar Menu --
-<?php include "menu.php";?>
+<!-- Sidebar Menu -->
+<?php include "alt_menu.php";?>
 
-
-        <div class="ui items segment container">
+<div class="pusher">
+    <?php include "menu.php";?>
+        <div class="ui divided list items segment container">
             <?php
             global $db;
-            $query = "SELECT title, type, upload_date, description FROM media WHERE type = 'Music'";
+            $query = "SELECT title, type, upload_date, description, media_id FROM media WHERE type = 'Music'";
             $result = mysqli_query($db, $query);
             echo "
                 <div class='ui row segment centered'>
@@ -169,7 +170,7 @@ session_start();
                         <img src='https://placehold.it/350x150'>
                     </div>
                     <div class='content'>
-                        <a class='header'>".$row[0]."</a>
+                        <a class='header' href='player.php?media_id=$row[4]'>".$row[0]."</a>
                         <div class='extra'>".$row[1]." uploaded "
                             .date_format(date_create($row[2]), 'F Y')
                         ."</div>
@@ -181,28 +182,7 @@ session_start();
             }
             ?>
         </div>
-
-        <!-- Footer segement -->
-        <div class="ui inverted vertical footer segment container">
-            <div class="ui centered">
-                <div class="ui stackable inverted divided equal height stackable grid">
-                    <div class="three wide column">
-                        <h4 class="ui inverted header">Creators</h4>
-                        <div class="ui inverted link list">
-                            <a href="https://mbinns.github.io" class="item">Mackenzie Binns</a>
-                            <a href="#" class="item">Ronnie Funderburk</a>
-                            <a href="#" class="item">Kevin Kim</a>
-                        </div>
-                    </div>
-
-                    <div class="seven wide column">
-                        <h4 class="ui inverted header">About</h4>
-                        <p>This is the MeTube site designed for the Clemson CPSC 4620 Databases class.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
-</div>
+        <?php include "footer.php";?>
 </body>
 </html>
