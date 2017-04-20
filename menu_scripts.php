@@ -27,7 +27,6 @@ window.onload = function() {
 
     <?php
     include_once "helper.php";
-    session_start();
 
     global $db;
     $query = "SELECT media_id, title, type, upload_date, tags, description FROM media";
