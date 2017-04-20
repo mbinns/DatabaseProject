@@ -17,10 +17,10 @@ mysqli_stmt_execute($stmt);
 mysqli_stmt_bind_result($stmt, $title, $desc, $tags, $comm);
 mysqli_stmt_fetch($stmt);
 mysqli_stmt_close($stmt);
-
 if (isset($_POST["submit"]))
 {
-    updateMedia($_POST["title"], $_POST["description"], $_POST["tags"], $_POST["comment"], $m_id);
+    $comm = isset($_POST["comments"]) ? 1 : 0;
+    updateMedia($_POST["title"], $_POST["description"], $_POST["tags"], $comm, $m_id);
     header("Location: channel.php?user_id=$user_id");
 }
 //Send them back to their channel
@@ -318,7 +318,7 @@ if (isset($_POST["submit"]))
                             </div>
                             <div class="inline field">
                                 <div class="ui checkbox">
-                                <input type="checkbox" name="comments" <?php if($comm){echo 'checked=""';}?>">
+                                <input type="checkbox" name="comments" <?php if($comm){echo 'checked=""';}?>>
                                     <label>Enable Comments</label>
                                 </div>
                             </div>
