@@ -310,25 +310,40 @@ $userId = $_GET['user_id'];
             </div>
 
             <!-- Messages -->
-            <div class="ui segment container divided list">
-              <div class="header"><h2>Messages</h2></div>
-              <div class="item">
-                <div class="right floated content">
-                  <div class="ui button" onclick="location.href='reply.php?id=';">Reply</div>
-                </div>
-                <div class="content">
-                  <h3>Alice</h3>
-                </div>
-              </div>
-              <div class="item">
-                <div class="right floated content">
-                  <div class="ui button" onclick="location.href='reply.php?id=';">Reply</div>
-                </div>
-                <div class="content">
-                  <h3>Mack</h3>
-                </div>
-              </div>
-            </div>
+            <?php
+            if (isUserProfile($userId))
+            {
+                global $db;
+                $query = "SELECT DISTINCT messages.sender_id, account.firstname, account.lastname
+                          FROM account
+                          JOIN messages ON account.user_id = messages.sender_id
+                          WHERE receiver_id = ?";
+                $stmt = mysqli_prepare($db, $query);
+                mysqli_stmt_bind_param($stmt, "i", $userId);
+                mysqli_stmt_execute($stmt);
+                mysqli_stmt_bind_result($stmt, $senderId, $fname, $lname);
+
+                echo
+                "<div class='ui segment container divided list'>
+                    <div class='header'><h2>Messages</h2></div>";
+
+                while (mysqli_stmt_fetch($stmt))
+                {
+                    echo
+                    "<div class='item'>
+                        <div class='right floated content'>
+                        <div class='ui button' onclick=\"location.href='message.php?sender_id=$senderId';\">Reply</div>
+                        </div>
+                        <div class='content'>
+                            <h3>".$fname." ".$lname."</h3>
+                        </div>
+                    </div>";
+                }
+                echo
+                "</div>";
+                mysqli_stmt_close($stmt);
+            }
+            ?>
 
             <!-- Show user playlists -->
             <div class="ui list items segment divided container">
