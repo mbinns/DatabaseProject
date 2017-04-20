@@ -155,9 +155,12 @@ session_start();
     <div class="ui items list divided segment container">
         <?php
         global $db;
-        $query = "SELECT title, type, upload_date, description, media_id FROM media WHERE type = 'Video'";
+        $query = "SELECT account.user_id, account.firstname, account.lastname,
+                  media.media_id, media.title, media.type, media.upload_date, media.description
+                  FROM media
+                  JOIN account ON media.user_id = account.user_id
+                  WHERE media.type = 'Video'";
         $result = mysqli_query($db, $query);
-
         echo "<div class='header'><h2>All Videos</h2></div>";
         while ($row = mysqli_fetch_row($result))
         {
@@ -167,12 +170,13 @@ session_start();
                     <img src='https://placehold.it/350x150'>
                 </div>
                 <div class='content'>
-                    <a class='header' href='player.php?media_id=$row[4]'>".$row[0]."</a>
-                    <div class='extra'>".$row[1]." uploaded "
-                        .date_format(date_create($row[2]), 'F Y')
-                    ."</div>
+                    <a class='header' href='player.php?media_id=$row[3]'>".$row[4]."</a>
+                    <a class='extra' href='channel.php?user_id=$row[0]'>".$row[5]." uploaded by
+                        <span style='color: #f2711c'>".$row[1]." ".$row[2]."</span>on "
+                        .date_format(date_create($row[6]), 'F Y')
+                    ."</a>
                     <div class='meta'>
-                        <span>".$row[3]."</span>
+                        <span>".$row[7]."</span>
                     </div>
                 </div>
             </div>";
