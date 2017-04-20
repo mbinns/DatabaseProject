@@ -4,8 +4,8 @@ session_start();
 
 if (!isset($_GET['playlist_id']))
     return;
-
 $playlistId = $_GET['playlist_id'];
+$userId = $_SESSION['user_id'];
 ?>
 
 <!DOCTYPE html>
@@ -253,7 +253,7 @@ $playlistId = $_GET['playlist_id'];
             <h2><?php echo $playlistName ?></h2>
         </div>
 
-        <div class="ui items segment container">
+        <div class="ui items divided list segment container">
             <?php
             while (mysqli_stmt_fetch($stmt))
             {
@@ -270,7 +270,15 @@ $playlistId = $_GET['playlist_id'];
                         <div class='meta'>
                             <span>".$description."</span>
                         </div>
-                    </div>
+                    </div>";
+                    if (isUserProfile($userId))
+                    {
+                        echo"
+                        <div class='right floated content'>
+                            <div class='ui button negative' onclick=\"location.href='remove_from_playlist.php?media_id=$mediaId&pId=$playlistId';\">Remove</div>
+                        </div>";
+                    }
+                echo "
                 </div>";
             }
             mysqli_stmt_close($stmt);
