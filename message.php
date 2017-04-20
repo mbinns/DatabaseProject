@@ -1,24 +1,38 @@
-<?php
+﻿<?php
 include_once "helper.php";
 session_start();
 
-if (!isset($_GET['sender_id']))
-    return;
+$receiverId = $_GET['receiver_id'];
 
-$senderId = $_GET['sender_id'];
+if (isset($_POST["submit"]))
+{
+    $senderId = $_SESSION['user_id'];
+
+    global $db;
+    $query = "INSERT INTO messages (sender_id, receiver_id, time, message) values (?, ?, ?, ?)";
+    $stmt = mysqli_prepare($db, $query);
+    $timestamp = date("Y-m-d h:i:sa");
+    mysqli_stmt_bind_param($stmt, "iiss", $senderId, $receiverId, $timestamp, $_POST['message']);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_close($stmt);
+
+    header("Location: channel.php?user_id=$receiverId");
+}
 ?>
 
 <!DOCTYPE html>
 <html>
 <head>
+
     <!-- Standard Meta -->
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
     <!-- Site Properties -->
+    <!-- Might have to fix these links on linux to match directory style-->
     <!-- ../dist/components/-->
-    <title>Messages</title>
+    <title>Send a Message</title>
     <link href="Content/semantic.css" rel="stylesheet" />
     <link href="Content/components/reset.css" rel="stylesheet" />
     <link href="Content/components/site.css" rel="stylesheet" />
@@ -27,26 +41,50 @@ $senderId = $_GET['sender_id'];
     <link rel="stylesheet" type="text/css" href="Content/components/image.css">
     <link rel="stylesheet" type="text/css" href="Content/components/menu.css">
     <link href="Content/components/header.css" rel="stylesheet" />
+    <link href="Content/components/divider.css" rel="stylesheet" />
     <link href="Content/components/dropdown.css" rel="stylesheet" />
     <link href="Content/components/segment.css" rel="stylesheet" />
-    <link href="Content/components/button.css" rel="stylesheet" />
     <link href="Content/components/list.css" rel="stylesheet" />
     <link href="Content/components/icon.css" rel="stylesheet" />
     <link href="Content/components/sidebar.css" rel="stylesheet" />
+
+    <!-- Nice Transitions to avoid popin -->
     <link href="Content/components/transition.css" rel="stylesheet" />
 
-    <!-- Modfying some stuff for the home page -->
+    <!-- Login form -->
+    <link href="Content/components/form.css" rel="stylesheet" />
+    <link href="Content/components/input.css" rel="stylesheet" />
+    <link href="Content/components/button.css" rel="stylesheet" />
+    <link href="Content/components/message.css" rel="stylesheet" />
+
+    <!-- Style changes for register page -->
     <style type="text/css">
+        body {
+            background-color: #1b1c1d !important;
+        }
+
+            body > .grid {
+                height: 100%;
+            }
+
 		.pusher {
 			background-color: #1b1c1d !important;
-
 		}
+
+        .image {
+            margin-top: -100px;
+        }
+
+        .column {
+            max-width: 450px;
+        }
+
         .hidden.menu {
             display: none;
         }
 
         .masthead.segment {
-            min-height: 700px;
+
             padding: 1em 0em;
         }
 
@@ -70,6 +108,9 @@ $senderId = $_GET['sender_id'];
             font-weight: normal;
         }
 
+		.ui#form{
+			padding-top: 5%;
+		}
         .ui.vertical.stripe {
             padding: 8em 0em;
         }
@@ -141,41 +182,82 @@ $senderId = $_GET['sender_id'];
                 font-size: 1.5em;
             }
         }
+
+		.pusher {
+			background: #1b1c1d;
+		}
     </style>
 
-    <!-- ../dist/components/-->
+    <!-- Scripts -->
     <script src="Scripts/jquery-1.8.1.min.js"></script>
     <script src="Scripts/semantic.js"></script>
+    <script src="Content/components/transition.js"></script>
+    <script src="Content/components/form.js"></script>
     <script src="Content/components/visibility.js"></script>
     <script src="Content/components/sidebar.js"></script>
-    <script src="Content/components/transition.js"></script>
 
-    <!-- Menu -->
+    <!-- Message Script Input Validation -->
+    <script>
+        $(document)
+          .ready(function () {
+              $('.ui.form')
+                .form({
+                    fields: {
+                         message: {
+                           identifier: 'message',
+                           rules: [
+                             {
+                               type   : 'empty',
+                               prompt : 'Please enter a message'
+                             }
+                           ]
+                         }
+                    }//fields
+                })//form
+              ;
+          })
+        ;
+    </script>
+
+    <!-- Script so the menu will follow -->
+    <script>
+        $(document)
+          .ready(function () {
+              // fix menu when passed
+              $('.masthead')
+                .visibility({
+                    once: false,
+                    onBottomPassed: function () {
+                        $('.fixed.menu').transition('fade in');
+                    },
+                    onBottomPassedReverse: function () {
+                        $('.fixed.menu').transition('fade out');
+                    }
+                })
+              ;
+              // create sidebar and attach to menu open
+              $('.ui.sidebar')
+                .sidebar('attach events', '.toc.item')
+              ;
+          })
+        ;
+    </script>
 </head>
+<body class="inverted">
 
-<body>
     <!-- Following Menu -->
-    <div class="ui large top fixed hidden menu">
+    <div class="ui large top inverted fixed hidden menu ">
         <div class="ui container">
             <a class="active item" href="index.php">Home</a>
-            <a class="item" href="channel.php">Channel</a>
-            <a class="item" href="playlist.php">Playlists</a>
-            <div class="ui simple dropdown item">Media
-                <i class="dropdown icon"></i>
-                <div class="menu">
-                  <a class="item" href="all.php">All</a>
-                  <a class="item" href="videos.php">Videos</a>
-                  <a class="item" href="music.php">Music</a>
-                  <a class="item" href="pictures.php">Pictures</a>
-                </div>
-            </div>
+            <a class="item">Channel</a>
+            <a class="item">Videos</a>
             <a class="item">Favorites</a>
             <div class="right menu">
                 <div class="item">
-                    <a class="ui button" href="login.php">Log in</a>
+                    <a class="ui inverted button" href="login.php">Log in</a>
                 </div>
                 <div class="item">
-                    <a class="ui primary button" href="register.php">Sign Up</a>
+                    <a class="ui inverted button" href="register.php">Sign Up</a>
                 </div>
             </div>
         </div>
@@ -184,114 +266,74 @@ $senderId = $_GET['sender_id'];
     <!-- Sidebar Menu -->
     <div class="ui vertical inverted sidebar menu">
         <a class="active item" href="index.php">Home</a>
-        <a class="item" href="channel.php">Channel</a>
-        <a class="item" href="playlist.php">Playlists</a>
-        <div class="header item">Media
-            <div class="menu">
-                <a class="item" href="all.php">All</a>
-                <a class="item" href="videos.php">Videos</a>
-                <a class="item" href="music.php">Music</a>
-                <a class="item" href="pictures.php">Pictures</a>
-            </div>
-        </div>
+        <a class="item">Channel</a>
+        <a class="item">Videos</a>
+        <a class="item">Favorites</a>
         <a class="item" href="login.php">Login</a>
         <a class="item" href="register.php">Signup</a>
     </div>
+
+
+
+    <!-- Page Contents -->
     <div class="pusher">
-        <div class="ui inverted vertical masthead center aligned segment">
-            <div class="ui container">
+        <div class="ui inverted vertical masthead segment">
+            <!-- Menu -->
+          <div class="ui container">
                 <div class="ui large secondary inverted pointing menu">
                     <a class="toc item">
-                        <i class="sidebar icon"></i>
+                        <em class="sidebar icon"></em>
                     </a>
                     <a class="active item" href="index.php">Home</a>
-                    <a class="item" href="channel.php">Channel</a>
-                    <a class="item" href="playlist.php">Playlists</a>
-                    <div class="ui simple dropdown item">Media
-                        <i class="dropdown icon"></i>
-                        <div class="menu">
-                            <a class="item" href="all.php">All</a>
-                            <a class="item" href="videos.php">Videos</a>
-                            <a class="item" href="music.php">Music</a>
-                            <a class="item" href="pictures.php">Pictures</a>
-                        </div>
-                    </div>
+                    <a class="item">Channel</a>
+                    <a class="item">Videos</a>
+                    <a class="item">Favorites</a>
                     <div class="right item">
-                    <div class="ui category search item">
-                        <div class="ui icon input">
-                            <input class="prompt" type="text" placeholder="Search...">
-                                <i class="search link icon"></i>
-                            </div>
-                        <div class="results"></div>
-                    </div>
                         <a class="ui inverted button" href="login.php">Log in</a>
                         <a class="ui inverted button" href="register.php">Sign Up</a>
                     </div>
                 </div>
-
-        <?php
-        global $db;
-        $senderName = getUserName($senderId);
-        $query = "SELECT message, time FROM messages WHERE sender_id = ? AND receiver_id = ? ORDER BY time DESC";
-        $stmt = mysqli_prepare($db, $query);
-        mysqli_stmt_bind_param($stmt, "ii", $senderId, $_SESSION['user_id']);
-        mysqli_stmt_execute($stmt);
-        mysqli_stmt_bind_result($stmt, $message, $timestamp);
-        ?>
-
-        <div class="ui row segment centered">
-            <h2>Messages from <?php echo $senderName ?></h2>
-        </div>
-
-        <div class="ui items segment container">
-            <?php
-            while (mysqli_stmt_fetch($stmt))
-            {
-                echo
-                "<div class='item'>
-                    <div class='content'>
-                        <div>".$message
-                        ."</div>
-                        <div class='meta'>
-                            <span>".$timestamp."</span>
-                        </div>
-                    </div>
-                </div>";
-            }
-            mysqli_stmt_close($stmt);
-            ?>
-        </div>
-
-        <form name="messages_form" class="ui reply form" action="reply.php?receiver_id=<?php echo $senderId ?>" method="post">
-            <div class="field">
-                <textarea name="message"></textarea>
             </div>
-            <button class="ui fluid blue labeled submit icon button" name="submit">
-                Send Reply
-            </button>
-        </form>
 
-        <!-- Footer segement -->
-        <div class="ui inverted vertical footer segment container">
-            <div class="ui centered">
-                <div class="ui stackable inverted divided equal height stackable grid">
-                    <div class="three wide column">
-                        <h4 class="ui inverted header">Creators</h4>
-                        <div class="ui inverted link list">
-                            <a href="https://mbinns.github.io" class="item">Mackenzie Binns</a>
-                            <a href="#" class="item">Ronnie Funderburk</a>
-                            <a href="#" class="item">Kevin Kim</a>
+            <!-- Message Form -->
+            <div id="form" class="ui inverted middle aligned center aligned page grid">
+                <div class="column">
+                    <h2 class="ui orange image header">
+                        Send a Message
+                    </h2>
+                    <form name="send_message" class="ui inverted large form" action=<?php echo "message.php?receiver_id=$receiverId"; ?> method="post">
+                        <div class="field">
+                            <textarea name="message"></textarea>
                         </div>
-                    </div>
+                        <button class="ui fluid large blue submit button" name="submit">Send Message</button>
 
-                    <div class="seven wide column">
-                        <h4 class="ui inverted header">About</h4>
-                        <p>This is the MeTube site designed for the Clemson CPSC 4620 Databases class.</p>
+                        <div name="error" class="ui error message"></div>
+                    </form>
+
+                </div>
+            </div>
+
+            <!-- Footer segement -->
+            <div class="ui inverted vertical footer segment">
+                <div class="ui container">
+                    <div class="ui stackable inverted divided equal height stackable grid">
+                        <div class="three wide column">
+                            <h4 class="ui inverted header">Creators</h4>
+                            <div class="ui inverted link list">
+                                <a href="https://mbinns.github.io" class="item">Mackenzie Binns</a>
+                                <a href="#" class="item">Ronnie Funderburk</a>
+                                <a href="#" class="item">Kevin Kim</a>
+                            </div>
+                        </div>
+
+                        <div class="seven wide column">
+                            <h4 class="ui inverted header">About</h4>
+                            <p>This is the MeTube site designed for the Clemson CPSC 4620 Databases class.</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 </body>
 </html>

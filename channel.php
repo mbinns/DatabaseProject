@@ -306,6 +306,12 @@ $userId = $_GET['user_id'];
                     </div>
                 <?php
                 }
+                else
+                {
+                    echo
+                    "<div class='ui fluid blue labeled button' onclick=\"location.href='message.php?receiver_id=$userId';\">Send Message
+                    </div>";
+                }
                 ?>
             </div>
 
@@ -332,7 +338,7 @@ $userId = $_GET['user_id'];
                     echo
                     "<div class='item'>
                         <div class='right floated content'>
-                        <div class='ui button' onclick=\"location.href='message.php?sender_id=$senderId';\">Reply</div>
+                        <div class='ui button' onclick=\"location.href='chat.php?sender_id=$senderId';\">Reply</div>
                         </div>
                         <div class='content'>
                             <h3>".$fname." ".$lname."</h3>

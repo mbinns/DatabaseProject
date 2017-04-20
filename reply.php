@@ -15,5 +15,5 @@ mysqli_stmt_bind_param($stmt, "iiss", $_SESSION['user_id'], $receiverId, $timest
 mysqli_stmt_execute($stmt);
 mysqli_stmt_close($stmt);
 
-header("Location: message.php?sender_id=$receiverId");
+header("Location: chat.php?sender_id=$receiverId");
 ?>
