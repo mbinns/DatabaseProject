@@ -154,228 +154,28 @@ if (isset($_GET['logout']))
     <script src="Content/components/sidebar.js"></script>
     <script src="Content/components/transition.js"></script>
 	<script src= "Content/components/search.js"></script>
-    <!-- Script so the menu will follow -->
-    <script>
-        $(document)
-          .ready(function () {
-              // fix menu when passed
-              $('.masthead')
-                .visibility({
-                    once: false,
-                    onBottomPassed: function () {
-                        $('.fixed.menu').transition('fade in');
-                    },
-                    onBottomPassedReverse: function () {
-                        $('.fixed.menu').transition('fade out');
-                    }
-                })
-              ;
-              // create sidebar and attach to menu open
-              $('.ui.sidebar')
-                .sidebar('attach events', '.toc.item')
-              ;
-          })
-        ;
-    </script>
-<script>
-window.onload = function() {
-    // Setup search
+    
+    <!-- Menu Functionality Script -->
+    <?php include "menu_scripts.php";?>
 
-    <?php
-    include_once "helper.php";
-    session_start();
-
-    global $db;
-    $query = "SELECT media_id, title, type, upload_date, tags, description FROM media";
-    $result = mysqli_query($db, $query);
-    $rows = array();
-
-    while($r = mysqli_fetch_assoc($result)) {
-        $rows[] = $r;
-    }
-    echo "var content = " . json_encode($rows) . ";";
-    ?>
-    $('.ui.search')
-        .search({
-            type: 'standard',
-            source: content,
-            searchFields : [
-                'title','description', 
-            ],
-
-        onSelect: function(result, response) {
-            location.href="player.php?media_id=" + result.media_id
-        },
-        searchFullText: false
-        });
-}
-</script>
 </head>
 <body>
-
-    <!-- Following Menu -->
-    <div class="ui large top fixed hidden menu">
-        <div class="ui container">
-            <a class="active item" href="index.php">Home</a>
-            <?php
-            if (isUserLoggedIn())
-            {
-                echo
-                "<a class='item' href='channel.php?user_id=".$_SESSION['user_id']."'>My Channel</a>";
-            }
-            ?>
-            <div class="ui simple dropdown item">Media
-                <i class="dropdown icon"></i>
-                <div class="menu">
-                  <a class="item" href="all.php">All</a>
-                  <a class="item" href="videos.php">Videos</a>
-                  <a class="item" href="music.php">Music</a>
-                  <a class="item" href="pictures.php">Pictures</a>
-                </div>
-            </div>
-            <a class="item">Favorites</a>
-            <div class="right menu">
-                <?php
-                if (isUserLoggedIn())
-                {
-                    echo
-                    "<div class='item'>
-                        <a class='item' href='index.php?logout'>Log out</a>
-                    </div>";
-                }
-                else
-                {
-                    echo
-                    "<div class='item'>
-                        <a class='item' href='login.php'>Login</a>
-                    </div>";
-
-                    echo
-                    "<div class='item'>
-                        <a class='item' href='register.php'>Sign Up</a>
-                    </div>";
-                }
-                ?>
-            </div>
-        </div>
-    </div>
-
-    <!-- Sidebar Menu -->
-    <div class="ui vertical inverted sidebar menu">
-        <a class="active item" href="index.php">Home</a>
-        <?php
-        if (isUserLoggedIn())
-        {
-            echo
-            "<a class='item' href='channel.php?user_id=".$_SESSION['user_id']."'>My Channel</a>";
-        }
-        ?>
-        <div class="header item">Media
-            <div class="menu">
-                <a class="item" href="all.php">All</a>
-                <a class="item" href="videos.php">Videos</a>
-                <a class="item" href="music.php">Music</a>
-                <a class="item" href="pictures.php">Pictures</a>
-            </div>
-        </div>
-        <?php
-        if (isUserLoggedIn())
-        {
-            echo
-            "<a class='item' href='index.php?logout'>Log out</a>";
-        }
-        else
-        {
-            echo
-            "<a class='item' href='login.php'>Login</a>";
-            echo
-            "<a class='item' href='register.php'>Sign Up</a>";
-        }
-        ?>
-    </div>
-
+    <!-- Responsive Menu -->
+    <?php include "alt_menu.php";?>
 
     <!-- Page Contents -->
     <div class="pusher">
         <div class="ui inverted vertical masthead center aligned segment">
-
-            <div class="ui container">
-                <div class="ui large secondary inverted pointing menu">
-                    <a class="toc item">
-                        <i class="sidebar icon"></i>
-                    </a>
-                    <a class="active item" href="index.php">Home</a>
-                    <?php
-                    if (isUserLoggedIn())
-                    {
-                        echo
-                        "<a class='item' href='channel.php?user_id=".$_SESSION['user_id']."'>My Channel</a>";
-                    }
-                    ?>
-                    <div class="ui simple dropdown item">Media
-                        <i class="dropdown icon"></i>
-                        <div class="menu">
-                            <a class="item" href="all.php">All</a>
-                            <a class="item" href="videos.php">Videos</a>
-                            <a class="item" href="music.php">Music</a>
-                            <a class="item" href="pictures.php">Pictures</a>
-                        </div>
-                    </div>
-                    <div class="right item">
-                    <div class="ui search">
-                        <div class="ui icon input">
-                            <input class="prompt" type="text" placeholder="Search...">
-                                <i class="search icon"></i>
-                            </div>
-                        <div class="results"></div>
-                    </div>
-                        <?php
-                        if (isUserLoggedIn())
-                        {
-                            echo
-                            "<a class='item' href='index.php?logout'>Log out</a>";
-                        }
-                        else
-                        {
-                            echo
-                            "<a class='item' href='login.php'>Login</a>";
-                            echo
-                            "<a class='item' href='register.php'>Sign Up</a>";
-                        }
-                        ?>
-                    </div>
-                </div>
-            </div>
-
+            <!-- Menu -->
+            <?php include "menu.php";?>
             <div class="ui text container">
                 <h1 class="ui inverted header">
                     MeTube
                 </h1>
                 <h2>Upload Whatever, Whenever</h2>
             </div>
-
         </div>
-
-        <div class="ui inverted vertical footer segment">
-            <div class="ui container">
-                <div class="ui stackable inverted divided equal height stackable grid">
-                    <div class="three wide column">
-                        <h4 class="ui inverted header">Creators</h4>
-                        <div class="ui inverted link list">
-                            <a href="https://mbinns.github.io" class="item">Mackenzie Binns</a>
-                            <a href="#" class="item">Ronnie Funderburk</a>
-                            <a href="#" class="item">Kevin Kim</a>
-                        </div>
-                    </div>
-
-                    <div class="seven wide column">
-                        <h4 class="ui inverted header">About</h4>
-                        <p>This is the MeTube site designed for the Clemson CPSC 4620 Databases class.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <?php include "footer.php";?>
     </div>
-
 </body>
 </html>
