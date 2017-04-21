@@ -18,7 +18,6 @@
               <a class="item" href="pictures.php">Pictures</a>
             </div>
         </div>
-        <a class="item">Favorites</a>
         <div class="right menu">
             <?php
             if (isUserLoggedIn())
