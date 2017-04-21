@@ -39,7 +39,7 @@ $query = "SELECT title, type, filepath, description, user_id, upload_date, downl
 $stmt = mysqli_prepare($db, $query);
 mysqli_stmt_bind_param($stmt, "i", $mediaId);
 mysqli_stmt_execute($stmt);
-mysqli_stmt_bind_result($stmt, $title, $type, $filepath, $description, $userId, $uploadDate, $downloadCount, $mime, $showComments);
+mysqli_stmt_bind_result($stmt, $title, $type, $filepath, $description, $uploadUserId, $uploadDate, $downloadCount, $mime, $showComments);
 mysqli_stmt_fetch($stmt);
 mysqli_stmt_close($stmt);
 
@@ -260,7 +260,9 @@ $downloadCount = $downloadCount + 1;
         echo
         "<div class='caption'>
             <h1>".$title."</h1>
+            <a class='extra' href='channel.php?user_id=$uploadUserId'><h3>".getUserName($uploadUserId)."</h3></a>
             <h3>".$downloadCount."&nbsp;&nbsp;&nbsp;Views</h3>
+            <h4>Description:<br>".$description."</h4>
         </div";
 
         if (isUserLoggedIn())
