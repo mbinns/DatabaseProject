@@ -328,16 +328,19 @@ $downloadCount = $downloadCount + 1;
 
             mysqli_stmt_close($stmt);
 
-            echo
-            "<form name='comment_form' class='ui reply form' action='player.php?media_id=".$mediaId."' method='post'>
-                <div class='field'>
-                    <textarea name='comment'></textarea>
-                </div>
-                <button class='ui blue labeled submit icon button' name='submit'>
-                    <i class='icon edit'></i> Add Reply
-                </button>
-            </form>
-        </div>";
+            if (isUserLoggedIn())
+            {
+                echo
+                "<form name='comment_form' class='ui reply form' action='player.php?media_id=".$mediaId."' method='post'>
+                    <div class='field'>
+                        <textarea name='comment'></textarea>
+                    </div>
+                    <button class='ui blue labeled submit icon button' name='submit'>
+                        <i class='icon edit'></i> Add Reply
+                    </button>
+                </form>";
+            }
+            echo "</div>";
     }
     ?>
     </div>
